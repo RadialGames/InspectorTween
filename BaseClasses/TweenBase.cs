@@ -284,7 +284,7 @@ namespace InspectorTween{
 			int timeTic = (int)count;
 			if(this.loopItteration < 0 || (timeTic != this.loopItteration && this.timeRandomEveryLoop)){
 				loopItteration = timeTic;
-				timeScale = Utils.TrulyRandomRange(this.timeRandomScale.x,timeRandomScale.y,this.name);
+				timeScale = MathS.TrulyRandomRange(this.timeRandomScale.x,timeRandomScale.y,this.name);
 			}
 			return timeScale* (respectGlobalTimeScale?Time.timeScale:1);
 		}
@@ -377,8 +377,8 @@ namespace InspectorTween{
 				}
 				if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
 					if (timeSettings.delayEveryLoop && startDelay != 0) {
-						float newDelay = Utils.TrulyRandomRange(0, startDelay, this.name + currentLoop.ToString());
-                        yield return new WaitForSeconds(Utils.TrulyRandomRange(0, newDelay, this.name));
+						float newDelay = MathS.TrulyRandomRange(0, startDelay, this.name + currentLoop.ToString());
+                        yield return new WaitForSeconds(MathS.TrulyRandomRange(0, newDelay, this.name));
 						//Debug.Log(this.gameObject.name + " : " + newDelay);
                         timeAtLastUpdate = Time.realtimeSinceStartup;
 					}
@@ -587,13 +587,13 @@ namespace InspectorTween{
 				if(!setInitialAtStart){//may have already set start time...
 					count = (startAtTime.x%time)/time;
 					if(startAtTime.y >=0f){
-						count = Utils.TrulyRandomRange((startAtTime.x%time)/time,(startAtTime.y%time)/time,this.name) * time;
+						count = MathS.TrulyRandomRange((startAtTime.x%time)/time,(startAtTime.y%time)/time,this.name) * time;
 					}
 				}
 				tweenCoroutine = StartCoroutine(Tween(count));
 			}
 			else{
-				Debug.LogWarning("Invalid Tween Parameters on " + this.GetPath());
+				Debug.LogWarning("Invalid Tween Parameters on " + this.gameObject.name);//this.GetPath());
 			}
 		}
 		//protected void OnDisable(){
