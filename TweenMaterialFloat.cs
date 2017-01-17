@@ -29,9 +29,9 @@ using System.Collections;
 			case colorFunctions.Add:
 				val +=Mathf.Lerp(valueStartAndEnd.x,valueStartAndEnd.y,lerp); break;
 			}
-				if(forceSetMaterial){
-					mat.SetFloat(propID,val);
-				}else	if(renderer){
+			if(forceSetMaterial){
+				mat.SetFloat(propID,val);
+			}else	if(renderer && renderer.sharedMaterial) {
 				renderer.sharedMaterial.SetFloat(propID,val);
 			}
 
