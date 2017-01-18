@@ -63,6 +63,7 @@ namespace InspectorTween{
 			private WaitForSeconds setWait = null;// new WaitForSeconds(1f/30f);
 			WaitForSeconds startDelayWait;
 			new public string name;
+		public bool useNameAsRandomSeed = false;
 			public enum UpdateType :int{Update,FixedUpdate,GlobalTime};
 			public enum VisibilityPause {None,Self,AllChildren};
 			[System.Serializable]
@@ -284,7 +285,8 @@ namespace InspectorTween{
 			int timeTic = (int)count;
 			if(this.loopItteration < 0 || (timeTic != this.loopItteration && this.timeRandomEveryLoop)){
 				loopItteration = timeTic;
-				timeScale = MathS.TrulyRandomRange(this.timeRandomScale.x,timeRandomScale.y,this.name);
+				string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;
+                timeScale = MathS.TrulyRandomRange(this.timeRandomScale.x,timeRandomScale.y, seed);
 			}
 			return timeScale* (respectGlobalTimeScale?Time.timeScale:1);
 		}
@@ -377,7 +379,8 @@ namespace InspectorTween{
 				}
 				if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
 					if (timeSettings.delayEveryLoop && startDelay != 0) {
-						float newDelay = MathS.TrulyRandomRange(0, startDelay, this.name + currentLoop.ToString());
+						string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;			
+						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
                         yield return new WaitForSeconds(MathS.TrulyRandomRange(0, newDelay, this.name));
 						//Debug.Log(this.gameObject.name + " : " + newDelay);
                         timeAtLastUpdate = Time.realtimeSinceStartup;
@@ -587,7 +590,8 @@ namespace InspectorTween{
 				if(!setInitialAtStart){//may have already set start time...
 					count = (startAtTime.x%time)/time;
 					if(startAtTime.y >=0f){
-						count = MathS.TrulyRandomRange((startAtTime.x%time)/time,(startAtTime.y%time)/time,this.name) * time;
+						string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;
+						count = MathS.TrulyRandomRange((startAtTime.x%time)/time,(startAtTime.y%time)/time, seed) * time;
 					}
 				}
 				tweenCoroutine = StartCoroutine(Tween(count));
