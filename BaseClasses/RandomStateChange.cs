@@ -4,7 +4,7 @@ namespace InspectorTween
 {
 	public class RandomStateChange
 	{
-#if UNITY_5_4
+#if UNITY_5_4_OR_NEWER
 		Random.State oldState;
 #else
 	int oldState;
@@ -22,7 +22,7 @@ namespace InspectorTween
 
 		public void SaveCurrentState() {
 			// Just store the current state, we might be altering it and want to revert to this point.
-#if UNITY_5_4
+#if UNITY_5_4_OR_NEWER
 			oldState = Random.state;
 #else
 		oldState = Random.seed;
@@ -37,7 +37,7 @@ namespace InspectorTween
 		}
 		public void SetSeed(int newSeed) {
 			SaveCurrentState();
-#if UNITY_5_4
+#if UNITY_5_4_OR_NEWER
 			Random.InitState(newSeed);
 #else
 		Random.seed = newSeed;
@@ -45,7 +45,7 @@ namespace InspectorTween
 		}
 
 		public void Revert() {
-#if UNITY_5_4
+#if UNITY_5_4_OR_NEWER
 			Random.state = oldState;
 #else
 		Random.seed = oldState;
