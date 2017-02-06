@@ -5,58 +5,256 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
+using System;
 namespace InspectorTween{
+	//RTEase by MattRix : https://gist.github.com/MattRix/feea68fd3dae16c760d6c665fd530d46
+	public static class RTEase
+	{
+		//public static Func<float, float> Linear = (t) => { return t; };
+		public static Func<float, float> Instant = (t) => { return t < 1f ? 0f : 1f; };
+		public static Func<float, float> QuadIn = (t) => { return t * t; };
+		public static Func<float, float> QuadOut = (t) => { return 2f * t - t * t; };
+		public static Func<float, float> QuadInOut = (t) => { return (t <= 0.5f) ? (t * t * 2f) : (-1.0f + 4f * t + -2f * t * t); };
+		public static Func<float, float> CubeIn = (t) => { return t * t * t; };
+		public static Func<float, float> CubeOut = (t) => { return 1f - CubeIn(1f - t); };
+		public static Func<float, float> CubeInOut = (t) => { return (t <= 0.5f) ? CubeIn(t * 2f) * 0.5f : CubeOut(t * 2f - 1f) * 0.5f + 0.5f; };
+		public static Func<float, float> BackIn = (t) => { return t * t * (2.70158f * t - 1.70158f); };
+		public static Func<float, float> BackOut = (t) => { return 1f - BackIn(1f - t); };
+		public static Func<float, float> BackInOut = (t) => { return (t <= 0.5f) ? BackIn(t * 2f) * 0.5f : BackOut(t * 2f - 1f) * 0.5f + 0.5f; };
+		public static Func<float, float> ExpoIn = (t) => { return Mathf.Pow(2f, 10f * (t - 1.0f)); };
+		public static Func<float, float> ExpoOut = (t) => { return 1f - Mathf.Pow(2f, -10f * t); };
+		public static Func<float, float> ExpoInOut = (t) => { return t < .5f ? ExpoIn(t * 2f) * 0.5f : ExpoOut(t * 2f - 1f) * 0.5f + 0.5f; };
+		public static Func<float, float> SineIn = (t) => { return -Mathf.Cos(Mathf.PI * 0.5f * t) + 1f; };
+		public static Func<float, float> SineOut = (t) => { return Mathf.Sin(Mathf.PI * 0.5f * t); };
+		public static Func<float, float> SineInOut = (t) => { return -Mathf.Cos(Mathf.PI * t) * 0.5f + .5f; };
+		public static Func<float, float> ElasticIn = (t) => { return 1f - ElasticOut(1f - t); };
+		public static Func<float, float> ElasticOut = (t) => { return Mathf.Pow(2f, -10f * t) * Mathf.Sin((t - 0.075f) * (2f * Mathf.PI) / 0.3f) + 1f; };
+		public static Func<float, float> ElasticInOut = (t) => { return (t <= 0.5f) ? ElasticIn(t * 2f)  : ElasticOut(t * 2f - 1f) ; };
+	}
 
 	public static class ProgramaticInterpolation
 	{
+		public enum TweenTypes { Linear, Step, Quadratic, Cubic, Back, Exponential, Sine, Elastic };
+		public enum TweenLoopMode {Loop,PingPong,Continuous,Clamp }
+		public delegate float InterpolationFunc(float val);//pass interpolation type function as argument.
 		const float TAU = Mathf.PI * 2;
 		private static float Frac(float val){
-			return val - Mathf.FloorToInt(val);
+			return val % 1f;// val - Mathf.FloorToInt(val);
 		}
-		public static float Linear(float val){
-			return Frac(val);
+		private static float Linear(float val){
+			return (val);
 		}
-		public static float EaseOut(float val){
-			val = Frac(val);
-			return (val*val);
-		}
-		public static float EaseIn(float val){
-			val = 1-Frac(val);
-			return (-val*val) + 1;
-		}
-		public static float EaseInOut(float val){
-			val = Frac(val);
-			float val2 = val*val;
-			return (3*val2) - (2*val2*val);
-		}
-		public static float FlutterIn(float val){
-			val = Frac (val);
-			float valX = val*val;
-			return(Mathf.Cos (val*TAU*3) * valX + valX) * 0.5f; 
-		}
-		public static float FlutterOut(float val){
-			val =1-Frac (val);
-			float valX = val*val;
-			return(Mathf.Cos (val*TAU*3) * valX + valX) * 0.5f; 
+		private static float Step(float val) {
+			return RTEase.Instant(val);
 		}
 
-		public static float BounceIn(float val){
-			val = Frac (val);
-			float valX = val*val;
-			return(Mathf.Abs(Mathf.Cos (val*TAU*2.5f)) * valX); 
+		private static float Quadratic(float val) {
+			return RTEase.QuadInOut(val);
 		}
-		public static float BounceOut(float val){
-			val =1-Frac (val);
-			float valX = EaseIn(val);
-			return(Mathf.Abs(Mathf.Cos (val*TAU*2.5f)) * valX); 
+		private static float QuadraticIn(float val) {
+			return RTEase.QuadIn(val);
 		}
-		public static float SinTime(float val){
-			return(Mathf.Sin(val*Mathf.PI) *0.5f +0.5f);
+		private static float QuadraticOut(float val) {
+			return RTEase.QuadOut(val);
+		}
+
+		private static float Cubic(float val) {
+			return RTEase.CubeInOut(val);
+		}
+		private static float CubicIn(float val) {
+			return RTEase.CubeIn(val);
+		}
+		private static float CubicOut(float val) {
+			return RTEase.CubeOut(val);
+		}
+
+		private static float Back(float val) {
+			return RTEase.BackInOut(val);
+		}
+		private static float BackIn(float val) {
+			return RTEase.BackIn(val);
+		}
+		private static float BackOut(float val) {
+			return RTEase.BackOut(val);
+		}
+
+		private static float Exponential(float val) {
+			return RTEase.ExpoInOut(val);
+		}
+		private static float ExponentialIn(float val) {
+			return RTEase.ExpoIn(val);
+		}
+		private static float ExponentialOut(float val) {
+			return RTEase.ExpoOut(val);
+		}
+
+		private static float Sine(float val){
+			return RTEase.SineInOut(val);
+		}
+		private static float SineIn(float val) {
+			return RTEase.SineIn(val);
+		}
+		private static float SineOut(float val) {
+			return RTEase.SineOut(val);
+		}
+
+		private static float Elastic(float val) {
+			return RTEase.ElasticInOut(val);
+		}
+		private static float ElasticIn(float val) {
+			return RTEase.ElasticIn(val);
+		}
+		private static float ElasticOut(float val) {
+			return RTEase.ElasticOut(val);
+		}
+
+		/**
+		 * Get an interpolation function from enum
+		 */
+		public static InterpolationFunc GetInterpolator(TweenTypes type,bool inOnly = false, bool outOnly = false) {
+			InterpolationFunc rFunc = ProgramaticInterpolation.Linear;
+			switch (type) {
+				case TweenTypes.Linear:
+					rFunc = Linear;
+					break;
+				case TweenTypes.Step:
+					rFunc = Step;
+					break;
+				case TweenTypes.Quadratic:
+					rFunc = Quadratic;
+					if (inOnly) {
+						rFunc = QuadraticIn;
+					}
+					else if (outOnly) {
+						rFunc = QuadraticOut;
+					}
+					break;
+				case TweenTypes.Cubic:
+					rFunc = Cubic;
+					if (inOnly) {
+						rFunc = CubicIn;
+					} else if (outOnly) {
+						rFunc = CubicOut;
+					}
+					break;
+				case TweenTypes.Back:
+					rFunc = Back;
+					if (inOnly) {
+						rFunc = BackIn;
+					} else if (outOnly) {
+						rFunc = BackOut;
+					}
+					break;
+				case TweenTypes.Exponential:
+					rFunc = Exponential;
+					if (inOnly) {
+						rFunc = ExponentialIn;
+					} else if (outOnly) {
+						rFunc = ExponentialOut;
+					}
+					break;
+				case TweenTypes.Sine:
+					rFunc = Sine;
+					if (inOnly) {
+						rFunc = SineIn;
+					} else if (outOnly) {
+						rFunc = SineOut;
+					}
+					break;
+				case TweenTypes.Elastic:
+					rFunc = Elastic;
+					if (inOnly) {
+						rFunc = ElasticIn;
+					} else if (outOnly) {
+						rFunc = ElasticOut;
+					}
+					break;
+			}
+			return rFunc;
+		}
+
+		/**
+		 *Get an interpolationblended between two specified functions.
+		*/
+		private static float Interpolate(InterpolationFunc inF, InterpolationFunc outF,float val,TweenLoopMode mode = TweenLoopMode.Loop) {
+			switch (mode) {
+				case TweenLoopMode.Loop:
+					val = Frac(val);
+					break;
+				case TweenLoopMode.PingPong:
+					val = (val % 2) > 1f ? 1f-Frac(val) : Frac(val);
+					break;
+				case TweenLoopMode.Continuous:
+					//val = val; Do nothing
+					break;
+				case TweenLoopMode.Clamp:
+					val = Mathf.Clamp01(val);
+					break;
+			}
+			//val = Frac(val);
+			if (inF == outF) { //if the in and out are the same, then just do the one withoug interpolating them.
+				return inF(val);
+			}
+			if (val == 0f) {//Only Do one if at 0
+				return inF(val);
+			}
+			if (val == 1f) {//Only do one interpolation if at 1
+				return outF(val);
+			}
+			float startVal = inF(val);
+			float endVal = outF(val);
+			float blendLerpVal = Mathf.Clamp01((2f * val) - 0.5f);
+			blendLerpVal = RTEase.QuadInOut(blendLerpVal);
+			return Mathf.Lerp(startVal, endVal, blendLerpVal); //lerp between the two interpolated values.
+		}
+		/**
+		 *Get an interpolation from two specified types
+		*/
+		public static float Interpolate(TweenTypes inType, TweenTypes outType, float val) {
+			if(inType == outType) {
+				return Interpolate(GetInterpolator(inType), GetInterpolator(outType), val);
+			}
+			return Interpolate(GetInterpolator(inType,true,false), GetInterpolator(outType,false,true), val);
+		}
+		/**
+		 * Setup a function to mix to interpolators 
+		*/
+		public struct InterpolationMixer
+		{
+			TweenTypes m_inType;
+			TweenTypes m_outType;
+			TweenLoopMode m_loopMode;
+			InterpolationFunc inTween;
+			InterpolationFunc outTween;
+
+			public InterpolationMixer(TweenTypes inType, TweenTypes outType, TweenLoopMode loopMode) {
+				if (inType == outType) {
+					inTween = GetInterpolator(inType);
+					outTween = GetInterpolator(outType);
+				} else {
+					inTween = GetInterpolator(inType, true, false);
+					outTween = GetInterpolator(outType, false, true);
+				}
+				m_inType = inType;
+				m_outType = outType;
+				m_loopMode = loopMode;
+			}
+			public float Tween(float val) {
+				if(outTween == null) {
+					if(inTween == null) {
+						return val;
+					}
+					inTween(val);
+				}else if(inTween == null) {
+					return outTween(val);
+				}
+				return Interpolate(inTween, outTween, val, m_loopMode);
+			}
 		}
 	}
 
-		public abstract class TweenBase : MonoBehaviour 
-		{
+	public abstract class TweenBase : MonoBehaviour 
+	{
 		private Coroutine tweenCoroutine;
 			static WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
 			static WaitForFixedUpdate fixedWait = new WaitForFixedUpdate();
@@ -89,8 +287,8 @@ namespace InspectorTween{
 
 
 		//tween types to choose from.
-		public enum TweenTypes {Linear,EaseIn,EaseOut,EaseInOut,SinTime};
-		public enum TweenFX {None,Bounce,Step,Random,Elastic,Anticipate};
+		//public enum TweenTypes { Linear, Step, Quadratic, Cubic, Back, Exponential, Sine, Elastic };
+		//public enum TweenFX {None,Bounce,Step,Random,Elastic,Anticipate};
 
 		[System.Serializable]
 		public class TimeInterface{
@@ -139,7 +337,9 @@ namespace InspectorTween{
 			[Tooltip("Check set wrap settings for looping.")]
 			public AnimationCurve interpolation =  new AnimationCurve(new Keyframe(0,0),new Keyframe(1,1));
 			[Tooltip("Install GoTween for best results. Uses set function if useCurve is false.")]
-			public TweenTypes nonCurveInterpolation = TweenTypes.Linear;
+			public ProgramaticInterpolation.TweenTypes nonCurveInterpolation = ProgramaticInterpolation.TweenTypes.Linear;
+			public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut = ProgramaticInterpolation.TweenTypes.Linear;
+			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
 			[Space(10)]
 			[Tooltip("Loops using curve loop settings if using curve")]
 			public bool loop = true;
@@ -151,7 +351,7 @@ namespace InspectorTween{
 		//[Header("Interpolation")]
 		public InterpolationInterface interpolation;
 		protected bool useCurve {get{return interpolation.useCurve;}}
-		protected TweenTypes nonCurveInterpolation {get{return interpolation.nonCurveInterpolation;}}
+		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation {get{return interpolation.nonCurveInterpolation;}}
 		//TODO: Implement more tween types.quadratic, exponential etc.
 		protected bool loop {get{return interpolation.loop;}}
 		protected bool timeRandomEveryLoop{get{return interpolation.timeRandomEveryLoop;}}
@@ -175,29 +375,10 @@ namespace InspectorTween{
 		}
 		private bool eventInvoked = false;
 		public EventInterface events;
-	//public  eventToFire;
-	//public 
-	/**
-	* retrieve interpolation function for programatic interpolations.
-	* @param  type  type of tween method to return.
-	* @return function to adjust linear lerp value appropriatly
-	*/
-	private InterpolationFunc GetInterpolator(TweenTypes type)
-	{
-		InterpolationFunc rFunc = ProgramaticInterpolation.Linear;
-		switch (type){
-		case TweenTypes.Linear : rFunc = ProgramaticInterpolation.Linear; break;
-		case TweenTypes.EaseIn : rFunc = ProgramaticInterpolation.EaseIn;break;
-		case TweenTypes.EaseOut : rFunc = ProgramaticInterpolation.EaseOut;break;
-		case TweenTypes.EaseInOut : rFunc = ProgramaticInterpolation.EaseInOut;break;
-		case TweenTypes.SinTime : rFunc = ProgramaticInterpolation.SinTime;break;
-		}
-		return rFunc;
-	}
+
 
 		protected void Awake()
 		{
-
 			//renderer = GetComponent<Renderer>();//used to be get in children, but we pretty much expect this to work on this object only, and this way is cheaper.//now just do in color base.
             startDelayWait = new WaitForSeconds(startDelay);
 			if (updateSettings.playSpeed != UpdateInterface.PlaySpeed.All) {
@@ -218,7 +399,7 @@ namespace InspectorTween{
 					lerp = interpolation.interpolation.Evaluate(count);
 				}
 				else{
-					lerp = GetInterpolator(this.nonCurveInterpolation)(count);
+					lerp = ProgramaticInterpolation.GetInterpolator(this.nonCurveInterpolation)(count);
 				}
 				LerpParameters(lerp);//set to start values.
 			}
@@ -293,6 +474,7 @@ namespace InspectorTween{
 		private bool timeCheck() {
 			return (currentlyLooping || (count <= time && count >= 0f));
 		}
+		protected ProgramaticInterpolation.InterpolationMixer programaticTweenMixer;
 		IEnumerator Tween(float startAt)
 		{
 			currentlyLooping = loop;
@@ -310,9 +492,10 @@ namespace InspectorTween{
 			}
 			count = startAt;
 			timeAtLastUpdate = Time.time; //initialize time for start
-				InterpolationFunc getLerp = interpolation.interpolation.Evaluate;
+			ProgramaticInterpolation.InterpolationFunc getLerp = interpolation.interpolation.Evaluate;
 			if(!useCurve){
-				getLerp = GetInterpolator(this.nonCurveInterpolation);
+				programaticTweenMixer = new ProgramaticInterpolation.InterpolationMixer(interpolation.nonCurveInterpolation, interpolation.nonCurveInterpolationOut,interpolation.nonCurveLoopMode);
+				getLerp = programaticTweenMixer.Tween;
 			}
 			if(setInitialAtStart){
 				LerpParameters(getLerp(count));//set to start values.
