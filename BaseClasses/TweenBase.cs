@@ -203,9 +203,9 @@ namespace InspectorTween{
 			}
 			float startVal = inF(val);
 			float endVal = outF(val);
-			float blendLerpVal = Mathf.Clamp01((2f * val) - 0.5f);
+			float blendLerpVal = Mathf.Clamp01((2f * Frac(val)) - 0.5f);
 			blendLerpVal = RTEase.QuadInOut(blendLerpVal);
-			return Mathf.Lerp(startVal, endVal, blendLerpVal); //lerp between the two interpolated values.
+			return MathS.Lerp(startVal, endVal, blendLerpVal); //lerp between the two interpolated values.
 		}
 		/**
 		 *Get an interpolation from two specified types
