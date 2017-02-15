@@ -27,9 +27,14 @@ public class EnableComponent : MonoBehaviour {
 				var obj = component[i];
 				if(obj.GetType().IsSubclassOf(typeof(ParticleSystem))){
 					ParticleSystem ps = (ParticleSystem)obj;
-					eRate[i] = ps.emission.rate.constantMax;
+#if UNITY_5_6_OR_NEWER
+						eRate[i] = ps.emission.rateOverDistance.constantMax;
+#else
+				eRate[i] = ps.emission.rate.constantMax;
+#endif
+
+					}
 				}
-			}
 		}
 	}
 	
@@ -47,9 +52,14 @@ public class EnableComponent : MonoBehaviour {
 					return ps.isPlaying && ps.IsAlive(true);
 				}
 				else{
-					return ps.emission.rate.constantMax > 0f;
-				}
-			}else 
+#if UNITY_5_6_OR_NEWER
+						return ps.emission.rateOverDistance.constantMax > 0f;
+#else
+						return ps.emission.rate.constantMax > 0f;
+#endif
+
+					}
+				} else 
 			if(oType.IsSubclassOf(typeof(Renderer))){//handles trail renderers, etc.
 				return ((Renderer)obj).enabled;
 			} else
@@ -95,16 +105,26 @@ public class EnableComponent : MonoBehaviour {
 						}
 						if(_i>=0){//this should always be valid.
 							var emm = ps.emission;
-							emm.rate = new ParticleSystem.MinMaxCurve(this.eRate[_i]);
-							ps.Simulate(0.5f,false,true);
+#if UNITY_5_6_OR_NEWER
+								emm.rateOverDistance = new ParticleSystem.MinMaxCurve(this.eRate[_i]);
+#else
+						emm.rate = new ParticleSystem.MinMaxCurve(this.eRate[_i]);
+#endif
+
+								ps.Simulate(0.5f,false,true);
 							ps.Play(false);
 						}
 					}
 					else{
 						var emm = ps.emission;
-						emm.rate = new ParticleSystem.MinMaxCurve( 0f);
+#if UNITY_5_6_OR_NEWER
+							emm.rateOverDistance = new ParticleSystem.MinMaxCurve(0f);
+#else
+							emm.rate = new ParticleSystem.MinMaxCurve( 0f);
+#endif
+
+						}
 					}
-				}
 			}else 
 			if(oType.IsSubclassOf(typeof(Renderer))){//handles trail renderers, etc.
 				((Renderer)obj).enabled = state;

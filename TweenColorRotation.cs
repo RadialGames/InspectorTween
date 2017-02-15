@@ -30,7 +30,11 @@ public class TweenColorRotation : TweenColorBase{
 		psys = GetComponent<ParticleSystem>();
 		if(psys){
 			type = objectType.Particle;
-			initialColor = psys.startColor;
+#if UNITY_5_6_OR_NEWER
+				initialColor = psys.main.startColor.color;
+#else
+				initialColor = psys.startColor;
+#endif
 			return;
 		}
 	}

@@ -75,7 +75,11 @@ public abstract class TweenColorBase : TweenBase {
 			psys = target.GetComponent<ParticleSystem>();
 			if(psys){
 				type = objectType.Particle;
+#if UNITY_5_6_OR_NEWER
+				initialColor = psys.main.startColor.color;
+#else
 				initialColor = psys.startColor;
+#endif
 				return;
 			}
 			canvasGroup = target.GetComponent<CanvasGroup>();
@@ -123,7 +127,15 @@ public abstract class TweenColorBase : TweenBase {
 					break;
 				case objectType.Graphic : image.color = val; break;
 				case objectType.Sprite : sprite.color = val; break;
-				case objectType.Particle : psys.startColor = val; break;
+				case objectType.Particle :
+#if UNITY_5_6_OR_NEWER
+					var pMain = psys.main.startColor;
+					pMain.color = val;
+#else
+				psys.startColor = val;
+#endif
+
+					break;
 				case objectType.CanvasGroup: canvasGroup.alpha = val.a;break;
 				case objectType.TextMesh : textMesh.color = val; break;
 			}
