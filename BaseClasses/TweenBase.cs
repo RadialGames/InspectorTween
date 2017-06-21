@@ -221,8 +221,8 @@ namespace InspectorTween{
 		*/
 		public struct InterpolationMixer
 		{
-			TweenTypes m_inType;
-			TweenTypes m_outType;
+			//TweenTypes m_inType;
+			//TweenTypes m_outType;
 			TweenLoopMode m_loopMode;
 			InterpolationFunc inTween;
 			InterpolationFunc outTween;
@@ -235,8 +235,8 @@ namespace InspectorTween{
 					inTween = GetInterpolator(inType, true, false);
 					outTween = GetInterpolator(outType, false, true);
 				}
-				m_inType = inType;
-				m_outType = outType;
+				//m_inType = inType;
+				//m_outType = outType;
 				m_loopMode = loopMode;
 			}
 			public float Tween(float val) {
