@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 //[ExecuteInEditMode]
 public class PositionConstraint : MonoBehaviour {
 	public float lag;
@@ -14,10 +15,14 @@ public class PositionConstraint : MonoBehaviour {
 	public ConstraintPositionTarget[] targets = new ConstraintPositionTarget[] {new ConstraintPositionTarget()};
 	protected Vector3 smoothDampVel = Vector3.zero;
 	protected Vector3 smoothDampRotVel = Vector3.zero;
-
+	[Tooltip("Event to fire if target 0 is lost")]//Should fix to be all targets.
+	public UnityEvent onTargetLoss;
 	private Vector3 GetWeightedPosition()
 	{
 		//guaranteed to have length > 0.
+		if(targets[0].target == null && onTargetLoss.GetPersistentEventCount() > 0) {
+			onTargetLoss.Invoke();
+		}
 		Vector3 outV =  targets[0].target != null ? targets[0].target.position : this.transform.position;
 		for(int i=1 ; i < targets.Length;i++)
 		{
