@@ -277,7 +277,9 @@ namespace InspectorTween{
 			public UpdateInterface updateSettings;
 			private UpdateType updateType {get{return updateSettings.updateType;} set{updateSettings.updateType = value;}}
 			private VisibilityPause pauseOffscreen {get{return updateSettings.pauseOffscreen;} set{updateSettings.pauseOffscreen = value;}}
-			protected float count; //Current tween time. 
+        //private float _count; //Current tween time. 
+        // protected float count { get { return _count; }set { _count = value;} }
+            protected float count;
 			protected float loopCount;
 			protected int currentLoop;
 			protected float timeAtLastUpdate;
@@ -388,11 +390,12 @@ namespace InspectorTween{
 				}
 			}
 		}
-		protected void Start() {
+		protected void Start() {//Can be called after 'OnEnable' when tween has never been active before, so may already be runnning at this point!!!
 			if (this.updateSettings.pauseOffscreen == VisibilityPause.AllChildren) { 
 				renderers = GetComponentsInChildren<Renderer>(true);
 			}
-			if(setInitialAtStart){
+
+			if(tweenCoroutine == null  && setInitialAtStart) {
 				count = startAtTime.x;
 				float lerp;
 				if(useCurve){
@@ -510,7 +513,6 @@ namespace InspectorTween{
 			if(!setInitialAtStart){
 				LerpParameters(getLerp(count));//set to start values.
 			}
-
 			while(timeCheck() && this.enabled && !isPaused){
 
 				if(currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount/time >= currentLoopNumberOfTimes) break; //stop loop, not coroutine.
@@ -551,16 +553,17 @@ namespace InspectorTween{
 
 
 				float loopIncrement = timeVal * GetTimeScale();
-
 				count += loopIncrement * (reverse?-1:1) ;
-				if(updateType == UpdateType.GlobalTime) count = Time.time * (reverse?-1:1);
+                if (updateType == UpdateType.GlobalTime) {
+                    count = Time.time * (reverse ? -1 : 1);
+                }
 				loopCount += loopIncrement;
 
 				if(loopCount >= events.eventTime && !eventInvoked){
-						events.atTime.Invoke();
+					events.atTime.Invoke();
 					eventInvoked = true;
 				}
-				if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
+                if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
 					if (timeSettings.delayEveryLoop && startDelay != 0) {
 						string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;			
 						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
@@ -570,15 +573,13 @@ namespace InspectorTween{
 					}
 					currentLoop = Mathf.FloorToInt(count / time);
 				}
-				if (updateType == UpdateType.Update) {
-					yield return setWait;
-				} else {
+                if (updateType == UpdateType.Update) {
+                    yield return setWait;
+                } else {
 					yield return fixedWait;
                 }
-	
-			}
-			//this.enabled = false;
-
+            }
+            //this.enabled = false;
 			if(isPaused){
 				this.enabled = false;
 				yield break;
@@ -754,7 +755,7 @@ namespace InspectorTween{
 			timeSettings.setInitialAtStart = true; //do I want to do this really?????
 			count = startTime;
 			loopCount = 0;
-			this.enabled = true;
+            this.enabled = true;
 			//StartCoroutine(Tween(startTime));
 		}
 		/**
