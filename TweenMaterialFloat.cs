@@ -40,7 +40,7 @@ using System.Collections;
 		{
 				return (mat && mat.HasProperty(propID) && interpolation.interpolation.length>0);
 		}
-		new void Awake()
+		protected override void Awake()
 		{
 			renderer = GetComponent<Renderer>();
 			base.Awake();

@@ -379,7 +379,7 @@ namespace InspectorTween{
 		public EventInterface events;
 
 
-		protected void Awake()
+		protected virtual void Awake()
 		{
 			//renderer = GetComponent<Renderer>();//used to be get in children, but we pretty much expect this to work on this object only, and this way is cheaper.//now just do in color base.
             startDelayWait = new WaitForSeconds(startDelay);
@@ -389,23 +389,22 @@ namespace InspectorTween{
 					setWait = new WaitForSeconds(waitStep);
 				}
 			}
-		}
-		protected void Start() {//Can be called after 'OnEnable' when tween has never been active before, so may already be runnning at this point!!!
 			if (this.updateSettings.pauseOffscreen == VisibilityPause.AllChildren) { 
 				renderers = GetComponentsInChildren<Renderer>(true);
 			}
-
-			if(tweenCoroutine == null  && setInitialAtStart) {
-				count = startAtTime.x;
-				float lerp;
-				if(useCurve){
-					lerp = interpolation.interpolation.Evaluate(count);
-				}
-				else{
-					lerp = ProgramaticInterpolation.GetInterpolator(this.nonCurveInterpolation)(count);
-				}
-				LerpParameters(lerp);//set to start values.
-			}
+		}
+		protected void Start() {//Can be called after 'OnEnable' when tween has never been active before, so may already be runnning at this point!!!
+			//if(tweenCoroutine == null  && setInitialAtStart) {
+			//	count = startAtTime.x;
+			//	float lerp;
+			//	if(useCurve){
+			//		lerp = interpolation.interpolation.Evaluate(count);
+			//	}
+			//	else{
+			//		lerp = ProgramaticInterpolation.GetInterpolator(this.nonCurveInterpolation)(count);
+			//	}
+			//	LerpParameters(lerp);//set to start values.
+			//}
 		}
 		protected bool AnyChildVisible(){
 			if(renderer && renderer.isVisible) return true;

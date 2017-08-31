@@ -34,7 +34,7 @@ public abstract class TweenColorBase : TweenBase {
 		public void SetTweenTargetType(objectType newType) {
 			this.type = newType;
 		}
-		new void Awake()
+		protected override void Awake()
 		{	
 			base.Awake();
 			if(target == null) {

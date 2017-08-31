@@ -38,7 +38,7 @@ using System.Collections;
 		{
 				return (interpolation.interpolation.length>0 && (property != null || method != null) );
 		}
-		new void Awake()
+		protected override void Awake()
 		{
 			if(target == null) {
 				Debug.LogWarning("TweenProperty : " + name + " target is null. Must be assigned for this tween type");

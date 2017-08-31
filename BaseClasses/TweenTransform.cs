@@ -31,7 +31,7 @@ namespace InspectorTween{
 		protected Vector3 randomValue = Vector3.zero;
 		public abstract void SetInitial();
 
-		new protected void Awake() {
+		protected override void Awake() {
 			base.Awake();
 			if (targetTransform == null) {
 				targetTransform = this.transform;

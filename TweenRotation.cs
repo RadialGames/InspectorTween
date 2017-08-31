@@ -118,7 +118,7 @@ namespace InspectorTween{
 		{
 			return moveRotations.Length > 0;
 		} 
-		new protected void Awake()
+		protected override void Awake()
 		{
 			base.Awake();
 			SetInitial();
