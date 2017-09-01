@@ -566,7 +566,7 @@ namespace InspectorTween{
 					if (timeSettings.delayEveryLoop && startDelay != 0) {
 						string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;			
 						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
-                        yield return new WaitForSeconds(MathS.TrulyRandomRange(0, newDelay, this.name));
+                        yield return new WaitForSeconds(newDelay);
 						//Debug.Log(this.gameObject.name + " : " + newDelay);
                         timeAtLastUpdate = Time.realtimeSinceStartup;
 					}
