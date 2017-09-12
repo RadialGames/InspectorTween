@@ -1,4 +1,4 @@
-﻿// #Generic
+// #Generic
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +20,7 @@ public abstract class TweenColorBase : TweenBase {
 	protected ParticleSystem psys;
 	protected CanvasGroup canvasGroup;
 	protected TextMesh textMesh;
-		protected Light light;
+		new protected Light light;
 		protected Material mat;
 		public Material material{set{mat = value; propID = Shader.PropertyToID(materialProperty); type = objectType.Material; } get{return mat;}}
 	public enum objectType {None,Sprite,Graphic,Particle,CanvasGroup,TextMesh,Material, Light };
