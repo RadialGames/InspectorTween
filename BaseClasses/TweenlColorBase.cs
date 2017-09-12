@@ -20,9 +20,10 @@ public abstract class TweenColorBase : TweenBase {
 	protected ParticleSystem psys;
 	protected CanvasGroup canvasGroup;
 	protected TextMesh textMesh;
+		protected Light light;
 		protected Material mat;
 		public Material material{set{mat = value; propID = Shader.PropertyToID(materialProperty); type = objectType.Material; } get{return mat;}}
-	public enum objectType {None,Sprite,Graphic,Particle,CanvasGroup,TextMesh,Material};
+	public enum objectType {None,Sprite,Graphic,Particle,CanvasGroup,TextMesh,Material, Light };
 	protected objectType type;
 		public bool useMaterial;
 		public string materialProperty;
@@ -70,6 +71,12 @@ public abstract class TweenColorBase : TweenBase {
 				type = objectType.Graphic;
 				this.updateSettings.pauseOffscreen = VisibilityPause.None; //no renderer on these?
 				initialColor = image.color;
+				return;
+			}
+			light = GetComponent<Light>();
+			if(light != null) {
+				type = objectType.Light;
+				initialColor = light.color;
 				return;
 			}
 			psys = target.GetComponent<ParticleSystem>();
@@ -138,6 +145,7 @@ public abstract class TweenColorBase : TweenBase {
 					break;
 				case objectType.CanvasGroup: canvasGroup.alpha = val.a;break;
 				case objectType.TextMesh : textMesh.color = val; break;
+				case objectType.Light: light.color = val; break;
 			}
 		}
 		public override void SetToLerpPoint(float lerp){
