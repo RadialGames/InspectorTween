@@ -2,14 +2,20 @@ using UnityEngine;
 using System.Collections;
 
 public class LookAt : MonoBehaviour {
-	public enum worldUpVectors {up,down,left,right,forward,backward,specified};
-	public enum referenceSpace {world,root,parent,target};
+	public enum worldUpVectors { up, down, left, right, forward, backward, specified };
+	public enum referenceSpace { world, root, parent, target };
+
+	[Header("New mode just set .forward etc based on lookAxis")]
+	public bool newMode = false;
+	public worldUpVectors lookAxis;
+
+	[Space(10)]
 	public referenceSpace space;
 	public worldUpVectors up;
 	public Transform target;
 	public Vector3? position = null;
 	private Renderer rend;
-	public worldUpVectors lookAxis;
+
 	public Transform upTarget;
 	public float lookAheadBy;
 	[Header("Update Limiter")]
@@ -79,7 +85,8 @@ public class LookAt : MonoBehaviour {
 		}
 	}
 	// Update is called once per frame
-	void Update () {
+	Vector3 zeroV = Vector3.zero;
+	void LateUpdate () {
 		if (updateOnlyWhenVisible && rend && !rend.isVisible) {
 			return;
 		}
@@ -91,13 +98,42 @@ public class LookAt : MonoBehaviour {
 			}
 		}
 
-		Vector3 tpos = Vector3.zero;
+		Vector3 tpos = zeroV;
 		if (target) {
 			tpos = target.position + (target.forward * lookAheadBy);
 		} else if (position.HasValue) {
 			tpos = position.Value;
 		}
-		this.transform.LookAt(tpos, GetUpVector());
+		if (!newMode) {
+			this.transform.LookAt(tpos, GetUpVector());
+		} else {
+			switch (lookAxis) {
+				case worldUpVectors.up:
+				transform.up = target.position - transform.position;
+				break;
+				case worldUpVectors.down:
+				transform.up = transform.position - target.position;
+				break;
+				case worldUpVectors.left:
+				transform.right = transform.position - target.position;
+				break;
+				case worldUpVectors.right:
+				transform.right = target.position - transform.position;
+				break;
+				case worldUpVectors.forward:
+				transform.forward = target.position - transform.position;
+				break;
+				case worldUpVectors.backward:
+				transform.forward = transform.position - target.position;
+				break;
+				case worldUpVectors.specified:
+				this.transform.LookAt(tpos, GetUpVector());
+				break;
+				default:
+				transform.forward = target.position - transform.position;
+				break;
+			}
+		}
 	}
 
 
