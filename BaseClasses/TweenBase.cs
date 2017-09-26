@@ -11,25 +11,25 @@ namespace InspectorTween{
 	public static class RTEase
 	{
 		//public static Func<float, float> Linear = (t) => { return t; };
-		public static Func<float, float> Instant = (t) => { return t < 1f ? 0f : 1f; };
-		public static Func<float, float> QuadIn = (t) => { return t * t; };
-		public static Func<float, float> QuadOut = (t) => { return 2f * t - t * t; };
-		public static Func<float, float> QuadInOut = (t) => { return (t <= 0.5f) ? (t * t * 2f) : (-1.0f + 4f * t + -2f * t * t); };
-		public static Func<float, float> CubeIn = (t) => { return t * t * t; };
-		public static Func<float, float> CubeOut = (t) => { return 1f - CubeIn(1f - t); };
-		public static Func<float, float> CubeInOut = (t) => { return (t <= 0.5f) ? CubeIn(t * 2f) * 0.5f : CubeOut(t * 2f - 1f) * 0.5f + 0.5f; };
-		public static Func<float, float> BackIn = (t) => { return t * t * (2.70158f * t - 1.70158f); };
-		public static Func<float, float> BackOut = (t) => { return 1f - BackIn(1f - t); };
-		public static Func<float, float> BackInOut = (t) => { return (t <= 0.5f) ? BackIn(t * 2f) * 0.5f : BackOut(t * 2f - 1f) * 0.5f + 0.5f; };
-		public static Func<float, float> ExpoIn = (t) => { return Mathf.Pow(2f, 10f * (t - 1.0f)); };
-		public static Func<float, float> ExpoOut = (t) => { return 1f - Mathf.Pow(2f, -10f * t); };
-		public static Func<float, float> ExpoInOut = (t) => { return t < .5f ? ExpoIn(t * 2f) * 0.5f : ExpoOut(t * 2f - 1f) * 0.5f + 0.5f; };
-		public static Func<float, float> SineIn = (t) => { return -Mathf.Cos(Mathf.PI * 0.5f * t) + 1f; };
-		public static Func<float, float> SineOut = (t) => { return Mathf.Sin(Mathf.PI * 0.5f * t); };
-		public static Func<float, float> SineInOut = (t) => { return -Mathf.Cos(Mathf.PI * t) * 0.5f + .5f; };
-		public static Func<float, float> ElasticIn = (t) => { return 1f - ElasticOut(1f - t); };
-		public static Func<float, float> ElasticOut = (t) => { return Mathf.Pow(2f, -10f * t) * Mathf.Sin((t - 0.075f) * (2f * Mathf.PI) / 0.3f) + 1f; };
-		public static Func<float, float> ElasticInOut = (t) => { return (t <= 0.5f) ? ElasticIn(t * 2f)  : ElasticOut(t * 2f - 1f) ; };
+		public static Func<float, float> Instant = (t) => t < 1f ? 0f : 1f;
+		public static Func<float, float> QuadIn = (t) => t * t;
+		public static Func<float, float> QuadOut = (t) => 2f * t - t * t;
+		public static Func<float, float> QuadInOut = (t) => (t <= 0.5f) ? (t * t * 2f) : (-1.0f + 4f * t + -2f * t * t);
+		public static Func<float, float> CubeIn = (t) => t * t * t;
+		public static Func<float, float> CubeOut = (t) => 1f - CubeIn(1f - t);
+		public static Func<float, float> CubeInOut = (t) => (t <= 0.5f) ? CubeIn(t * 2f) * 0.5f : CubeOut(t * 2f - 1f) * 0.5f + 0.5f;
+		public static Func<float, float> BackIn = (t) => t * t * (2.70158f * t - 1.70158f);
+		public static Func<float, float> BackOut = (t) => 1f - BackIn(1f - t);
+		public static Func<float, float> BackInOut = (t) => (t <= 0.5f) ? BackIn(t * 2f) * 0.5f : BackOut(t * 2f - 1f) * 0.5f + 0.5f;
+		public static Func<float, float> ExpoIn = (t) => Mathf.Pow(2f, 10f * (t - 1.0f));
+		public static Func<float, float> ExpoOut = (t) => 1f - Mathf.Pow(2f, -10f * t);
+		public static Func<float, float> ExpoInOut = (t) => t < .5f ? ExpoIn(t * 2f) * 0.5f : ExpoOut(t * 2f - 1f) * 0.5f + 0.5f;
+		public static Func<float, float> SineIn = (t) => -Mathf.Cos(Mathf.PI * 0.5f * t) + 1f;
+		public static Func<float, float> SineOut = (t) => Mathf.Sin(Mathf.PI * 0.5f * t);
+		public static Func<float, float> SineInOut = (t) => -Mathf.Cos(Mathf.PI * t) * 0.5f + .5f;
+		public static Func<float, float> ElasticIn = (t) => 1f - ElasticOut(1f - t);
+		public static Func<float, float> ElasticOut = (t) => Mathf.Pow(2f, -10f * t) * Mathf.Sin((t - 0.075f) * (2f * Mathf.PI) / 0.3f) + 1f;
+		public static Func<float, float> ElasticInOut = (t) => (t <= 0.5f) ? ElasticIn(t * 2f)  : ElasticOut(t * 2f - 1f);
 	}
 
 	public static class ProgramaticInterpolation
@@ -37,7 +37,7 @@ namespace InspectorTween{
 		public enum TweenTypes { Linear, Step, Quadratic, Cubic, Back, Exponential, Sine, Elastic };
 		public enum TweenLoopMode {Loop,PingPong,Continuous,Clamp }
 		public delegate float InterpolationFunc(float val);//pass interpolation type function as argument.
-		const float TAU = Mathf.PI * 2;
+		//const float TAU = Mathf.PI * 2;
 		private static float Frac(float val){
 			return val % 1f;// val - Mathf.FloorToInt(val);
 		}
@@ -112,7 +112,7 @@ namespace InspectorTween{
 		 * Get an interpolation function from enum
 		 */
 		public static InterpolationFunc GetInterpolator(TweenTypes type,bool inOnly = false, bool outOnly = false) {
-			InterpolationFunc rFunc = ProgramaticInterpolation.Linear;
+			InterpolationFunc rFunc;
 			switch (type) {
 				case TweenTypes.Linear:
 					rFunc = Linear;
@@ -169,6 +169,9 @@ namespace InspectorTween{
 						rFunc = ElasticOut;
 					}
 					break;
+				default:
+					rFunc = Linear;
+					break;
 			}
 			return rFunc;
 		}
@@ -214,7 +217,7 @@ namespace InspectorTween{
 			if(inType == outType) {
 				return Interpolate(GetInterpolator(inType), GetInterpolator(outType), val);
 			}
-			return Interpolate(GetInterpolator(inType,true,false), GetInterpolator(outType,false,true), val);
+			return Interpolate(GetInterpolator(inType,true), GetInterpolator(outType,false,true), val);
 		}
 		/**
 		 * Setup a function to mix to interpolators 
@@ -223,16 +226,16 @@ namespace InspectorTween{
 		{
 			//TweenTypes m_inType;
 			//TweenTypes m_outType;
-			TweenLoopMode m_loopMode;
-			InterpolationFunc inTween;
-			InterpolationFunc outTween;
+			private readonly TweenLoopMode m_loopMode;
+			private readonly InterpolationFunc inTween;
+			private readonly InterpolationFunc outTween;
 
 			public InterpolationMixer(TweenTypes inType, TweenTypes outType, TweenLoopMode loopMode) {
 				if (inType == outType) {
 					inTween = GetInterpolator(inType);
 					outTween = GetInterpolator(outType);
 				} else {
-					inTween = GetInterpolator(inType, true, false);
+					inTween = GetInterpolator(inType, true);
 					outTween = GetInterpolator(outType, false, true);
 				}
 				//m_inType = inType;
@@ -256,27 +259,29 @@ namespace InspectorTween{
 	public abstract class TweenBase : MonoBehaviour 
 	{
 		private Coroutine tweenCoroutine;
-			static WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
-			static WaitForFixedUpdate fixedWait = new WaitForFixedUpdate();
-			private WaitForSeconds setWait = null;// new WaitForSeconds(1f/30f);
-			WaitForSeconds startDelayWait;
-			new public string name;
-		public bool useNameAsRandomSeed = false;
-			public enum UpdateType :int{Update,FixedUpdate,GlobalTime};
+			static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
+			static readonly WaitForFixedUpdate fixedWait = new WaitForFixedUpdate();
+			private WaitForSeconds setWait;// new WaitForSeconds(1f/30f);
+			private WaitForSeconds startDelayWait;
+			public new string name;
+		public bool useNameAsRandomSeed;
+			public enum UpdateType {Update,FixedUpdate,GlobalTime};
 			public enum VisibilityPause {None,Self,AllChildren};
-			[System.Serializable]
+			[Serializable]
 			public class UpdateInterface{
 				public UpdateType updateType;
 				public VisibilityPause pauseOffscreen = VisibilityPause.AllChildren;
 				public bool respectGlobalTimeScale = true;
 				[Tooltip("Stop interpolation at current value on script cancel")]
 				public bool allowInterupt = false;
-				public enum PlaySpeed : int { All=0,_90_FPS=90, _60_FPS = 60, _30_FPS = 30, _24_FPS = 24, _12_FPS = 12 , _6_FPS = 6, _1_FPS = 1};
+				public enum PlaySpeed { All=0,_90_FPS=90, _60_FPS = 60, _30_FPS = 30, _24_FPS = 24, _12_FPS = 12 , _6_FPS = 6, _1_FPS = 1};
 				public PlaySpeed playSpeed;
 			}
 			public UpdateInterface updateSettings;
-			private UpdateType updateType {get{return updateSettings.updateType;} set{updateSettings.updateType = value;}}
-			private VisibilityPause pauseOffscreen {get{return updateSettings.pauseOffscreen;} set{updateSettings.pauseOffscreen = value;}}
+			private UpdateType updateType {get{return updateSettings.updateType;}
+			}
+			private VisibilityPause pauseOffscreen {get{return updateSettings.pauseOffscreen;}
+			}
         //private float _count; //Current tween time. 
         // protected float count { get { return _count; }set { _count = value;} }
             protected float count;
@@ -285,14 +290,14 @@ namespace InspectorTween{
 			protected float timeAtLastUpdate;
 			protected bool respectGlobalTimeScale {get{return updateSettings.respectGlobalTimeScale;}}
 			protected bool allowInterupt {get{return updateSettings.allowInterupt;}}
-			[System.NonSerialized][HideInInspector]public bool interupt = false; //flag set to force stop of Coroutine.
+			[NonSerialized][HideInInspector]public bool interupt; //flag set to force stop of Coroutine.
 
 
 		//tween types to choose from.
 		//public enum TweenTypes { Linear, Step, Quadratic, Cubic, Back, Exponential, Sine, Elastic };
 		//public enum TweenFX {None,Bounce,Step,Random,Elastic,Anticipate};
 
-		[System.Serializable]
+		[Serializable]
 		public class TimeInterface{
 			public bool reverse;
 			[Space(5)]
@@ -301,7 +306,7 @@ namespace InspectorTween{
 			[Tooltip("multiply TIME by amount per instance. random between values specified. Good for multiple objects you want some variation on.")]
 			public Vector2 timeRandomScale = Vector2.one;
 			[Tooltip("Sets to start interpolation at script start (before delay)")]
-			public bool setInitialAtStart = false;
+			public bool setInitialAtStart;
 			[Tooltip("Reset to first value at end of playing or script cancel if allowed.")]
 			public bool resetToBegining = false;
 			[Tooltip("Time in seconds before animation starts playing")]
@@ -330,7 +335,7 @@ namespace InspectorTween{
 
 
 
-		[System.Serializable]
+		[Serializable]
 		public class InterpolationInterface{
 			[Tooltip("Uncheck to use non curve interpolation")]
 			public bool useCurve = true;
@@ -354,28 +359,27 @@ namespace InspectorTween{
 		public InterpolationInterface interpolation;
 		protected bool useCurve {get{return interpolation.useCurve;}}
 		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation {get{return interpolation.nonCurveInterpolation;}}
-		//TODO: Implement more tween types.quadratic, exponential etc.
+
 		protected bool loop {get{return interpolation.loop;}}
 		protected bool timeRandomEveryLoop{get{return interpolation.timeRandomEveryLoop;}}
 		protected float loopNumberOfTimes {get{return interpolation.loopNumberOfTimes;}}
-		protected bool currentlyLooping = false;//Set to current loop status in coroutine and used to cancel at loop end.
+		protected bool currentlyLooping;//Set to current loop status in coroutine and used to cancel at loop end.
 		protected int currentLoopNumberOfTimes;
 	
 	
 		protected abstract void LerpParameters(float lerp); //must be overriden to provide lerp
 		protected virtual bool HasValidParameters(){ return (interpolation.interpolation.length > 0);} //validate
-		protected bool isPaused = false; //pause Coroutine
+		protected bool isPaused; //pause Coroutine
 		protected new Renderer renderer; //store renderer. needed for some child types.
 		protected Renderer[] renderers; //store renderer. needed for some child types.
-		private delegate float InterpolationFunc(float val);//pass interpolation type function as argument.
 
-		[System.Serializable]
+		[Serializable]
 		public class EventInterface{
 			public float eventTime = 0f;
 			public UnityEvent atTime;
 			public UnityEvent onLoopComplete;
 		}
-		private bool eventInvoked = false;
+		private bool eventInvoked;
 		public EventInterface events;
 
 
@@ -389,30 +393,19 @@ namespace InspectorTween{
 					setWait = new WaitForSeconds(waitStep);
 				}
 			}
-			if (this.updateSettings.pauseOffscreen == VisibilityPause.AllChildren) { 
+			if (updateSettings.pauseOffscreen == VisibilityPause.AllChildren) { 
 				renderers = GetComponentsInChildren<Renderer>(true);
 			}
 		}
-		protected void Start() {//Can be called after 'OnEnable' when tween has never been active before, so may already be runnning at this point!!!
-			//if(tweenCoroutine == null  && setInitialAtStart) {
-			//	count = startAtTime.x;
-			//	float lerp;
-			//	if(useCurve){
-			//		lerp = interpolation.interpolation.Evaluate(count);
-			//	}
-			//	else{
-			//		lerp = ProgramaticInterpolation.GetInterpolator(this.nonCurveInterpolation)(count);
-			//	}
-			//	LerpParameters(lerp);//set to start values.
-			//}
-		}
+
 		protected bool AnyChildVisible(){
 			if(renderer && renderer.isVisible) return true;
-			if(renderers!=null && renderers.Length > 0){
-				foreach(var rend in renderers){
-					if(rend != null && rend.isVisible)
-						return true;
-				}
+			if ( renderers == null || renderers.Length <= 0 ) {
+				return false;
+			}
+			foreach(Renderer rend in renderers){
+				if(rend != null && rend.isVisible)
+					return true;
 			}
 			return false;
 		}
@@ -466,18 +459,19 @@ namespace InspectorTween{
 
 		protected float GetTimeScale(){
 			int timeTic = (int)count;
-			if(this.loopItteration < 0 || (timeTic != this.loopItteration && this.timeRandomEveryLoop)){
-				loopItteration = timeTic;
-				string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;
-                timeScale = MathS.TrulyRandomRange(this.timeRandomScale.x,timeRandomScale.y, seed);
+			if (loopItteration >= 0 && (timeTic == loopItteration || !timeRandomEveryLoop)) {
+				return timeScale * (respectGlobalTimeScale ? Time.timeScale : 1);
 			}
+			loopItteration = timeTic;
+			string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
+			timeScale = MathS.TrulyRandomRange(timeRandomScale.x,timeRandomScale.y, seed);
 			return timeScale* (respectGlobalTimeScale?Time.timeScale:1);
 		}
 		private bool timeCheck() {
 			return (currentlyLooping || (count <= time && count >= 0f));
 		}
 		protected ProgramaticInterpolation.InterpolationMixer programaticTweenMixer;
-		IEnumerator Tween(float startAt)
+		private IEnumerator Tween(float startAt)
 		{
 			currentlyLooping = loop;
 			currentLoopNumberOfTimes = (int)loopNumberOfTimes;
@@ -512,7 +506,7 @@ namespace InspectorTween{
 			if(!setInitialAtStart){
 				LerpParameters(getLerp(count));//set to start values.
 			}
-			while(timeCheck() && this.enabled && !isPaused){
+			while(timeCheck() && enabled && !isPaused){
 
 				if(currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount/time >= currentLoopNumberOfTimes) break; //stop loop, not coroutine.
 
@@ -555,6 +549,9 @@ namespace InspectorTween{
 				count += loopIncrement * (reverse?-1:1) ;
                 if (updateType == UpdateType.GlobalTime) {
                     count = Time.time * (reverse ? -1 : 1);
+	                if ( loopNumberOfTimes < 0f ) {
+		                count = count % 2;//2 to account for case of pingpong...
+	                }
                 }
 				loopCount += loopIncrement;
 
@@ -564,7 +561,7 @@ namespace InspectorTween{
 				}
                 if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
 					if (timeSettings.delayEveryLoop && startDelay != 0) {
-						string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;			
+						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;			
 						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
                         yield return new WaitForSeconds(newDelay);
 						//Debug.Log(this.gameObject.name + " : " + newDelay);
@@ -580,7 +577,7 @@ namespace InspectorTween{
             }
             //this.enabled = false;
 			if(isPaused){
-				this.enabled = false;
+				enabled = false;
 				yield break;
 			}
 			if(!allowInterupt || (allowInterupt && !interupt)){
@@ -606,23 +603,23 @@ namespace InspectorTween{
 			
 			}
 			interupt = false;
-			this.enabled = false;
+			enabled = false;
 		}
 
 	IEnumerator RestartCoroutine()
 	{
-		this.enabled = false;
+		enabled = false;
 		yield return fixedWait;
-		this.enabled = true;
+		enabled = true;
 	}
 	IEnumerator RestartPlay()
 	{
-		this.enabled = false;
+		enabled = false;
 		yield return fixedWait;
 		count = 0;
 		loopCount = 0;
 		DoTween();
-		this.enabled = true;
+		enabled = true;
 	}
 		/** resume when onscreen. won't work if not on object without renderer =( .*/
 		//void OnBecameVisible()
@@ -663,18 +660,18 @@ namespace InspectorTween{
 		{
 			switch (type) {
 				case TweenCancelType.Finish: //let things finish naturally
-					this.isPaused = false;
-					this.enabled = false;
+					isPaused = false;
+					enabled = false;
 					break;
 				case TweenCancelType.SoftStop: //cancel. depend on settings to reset position etc. end Events force fire.
-					this.isPaused = false;
-					this.enabled = false;
+					isPaused = false;
+					enabled = false;
 					if (tweenCoroutine != null) {
 						StopCoroutine(tweenCoroutine);
 					}
-					if (this.resetToBegining) { //this resets stuff.
+					if (resetToBegining) { //this resets stuff.
 						LerpParameters(0f);
-						this.count = 0f;
+						count = 0f;
 					}
 					if (events.onLoopComplete.GetPersistentEventCount() > 0) {
 						events.onLoopComplete.Invoke();
@@ -682,20 +679,20 @@ namespace InspectorTween{
 					break;
 				case TweenCancelType.HardStop: //force to stop where is. no end events.
 					//No matter what force back to frame 0, reset count
-					this.isPaused = false;
-					this.enabled = false;
+					isPaused = false;
+					enabled = false;
 					if (tweenCoroutine != null) {
 						StopCoroutine(tweenCoroutine);
 					}
 					LerpParameters(0f);
-					this.count = 0f;
+					count = 0f;
 					break;
 				case TweenCancelType.CancelAtLoopEnd: //finish current loop and end.
 					currentLoopNumberOfTimes = Mathf.CeilToInt(count);
                     break;
 				default: //this shouldn't ever happen
 					Debug.LogWarning("Poorly added tween cancel state? don't use this...");
-					this.enabled = false;
+					enabled = false;
 					if (tweenCoroutine != null) {
 						StopCoroutine(tweenCoroutine);
 					}
@@ -708,25 +705,25 @@ namespace InspectorTween{
 		 */
 		protected void DoTween()
 		{
-			if(this.enabled && this.gameObject.activeInHierarchy){//if we're already going, start over.
+			if(enabled && gameObject.activeInHierarchy){//if we're already going, start over.
 				StartCoroutine(RestartCoroutine());
 			}else {//otherwise enable.
-				this.enabled = true;
+				enabled = true;
 			}
 		}
 		/**
 		Initiates play of tween.
 		*/
 		public void PlayForwards(){
-			if(!this.gameObject.activeInHierarchy){
+			if(!gameObject.activeInHierarchy){
 				//Debug.LogWarning("Can't play on inactive object");
 				return;
 			}
-			if(this.enabled){
+			if(enabled){
 				StartCoroutine(RestartPlay());
 			}
 			else{
-				this.reverse = false;
+				reverse = false;
 				count = 0;
 				loopCount = 0;
 				DoTween();
@@ -737,24 +734,24 @@ namespace InspectorTween{
 		Doesn't re-enable events which may have already fired.
 		*/
 		public void ResetToStart(){
-			this.count = 0f;
+			count = 0f;
 		}
 		/**
 		Play the tween backwards, starting at time length of tween.
 		*/
 		public void PlayReverse(){
-			PlayReverse (this.time);
+			PlayReverse (time);
 		}
 		/**
 		Play tween backwards from startTime back to 0. (unless looping)
 		*/
 		public void PlayReverse(float startTime)
 		{
-			this.reverse = true;
+			reverse = true;
 			timeSettings.setInitialAtStart = true; //do I want to do this really?????
 			count = startTime;
 			loopCount = 0;
-            this.enabled = true;
+            enabled = true;
 			//StartCoroutine(Tween(startTime));
 		}
 		/**
@@ -773,14 +770,14 @@ namespace InspectorTween{
 				if(!setInitialAtStart){//may have already set start time...
 					count = (startAtTime.x%time)/time;
 					if(startAtTime.y >=0f){
-						string seed = useNameAsRandomSeed ? this.name + currentLoop.ToString() : null;
+						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
 						count = MathS.TrulyRandomRange((startAtTime.x%time)/time,(startAtTime.y%time)/time, seed) * time;
 					}
 				}
 				tweenCoroutine = StartCoroutine(Tween(count));
 			}
 			else{
-				Debug.LogWarning("Invalid Tween Parameters on " + this.gameObject.name);//this.GetPath());
+				Debug.LogWarning("Invalid Tween Parameters on " + gameObject.name);//this.GetPath());
 			}
 		}
 		//protected void OnDisable(){
