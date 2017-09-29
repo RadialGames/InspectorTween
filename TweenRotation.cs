@@ -15,12 +15,16 @@ namespace InspectorTween{
 		private Quaternion[] randomRotations;
 		private Quaternion[] newRandomRotations;
 		private bool useRandomOffset = false;
-		void MatchStartToCurrent() {
+		
+
+		
+		public void MatchStartToCurrent() {//Used by Context menu
 			moveRotations[0] = this.transform.localRotation.eulerAngles;
 		}
-		void MatchEndToCurrent() {
+		public void MatchEndToCurrent() {//Used by Context menu
 			moveRotations[moveRotations.Length-1] = this.transform.localRotation.eulerAngles;
 		}
+
 		public override void SetInitial() {
 			if (!targetTransform) {
 				targetTransform = transform;
@@ -128,8 +132,7 @@ namespace InspectorTween{
 			}
 			if(this.addRandomToTargets == Vector3.one * -1f){
 				useRandomOffset = false;
-			}
-			else{
+			} else{
 				useRandomOffset = true;
 			}
 		}

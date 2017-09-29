@@ -6,6 +6,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 using System;
+using UnityEngine.Serialization;
+
 namespace InspectorTween{
 	//RTEase by MattRix : https://gist.github.com/MattRix/feea68fd3dae16c760d6c665fd530d46
 	public static class RTEase
@@ -224,8 +226,6 @@ namespace InspectorTween{
 		*/
 		public struct InterpolationMixer
 		{
-			//TweenTypes m_inType;
-			//TweenTypes m_outType;
 			private readonly TweenLoopMode m_loopMode;
 			private readonly InterpolationFunc inTween;
 			private readonly InterpolationFunc outTween;
@@ -238,8 +238,6 @@ namespace InspectorTween{
 					inTween = GetInterpolator(inType, true);
 					outTween = GetInterpolator(outType, false, true);
 				}
-				//m_inType = inType;
-				//m_outType = outType;
 				m_loopMode = loopMode;
 			}
 			public float Tween(float val) {
@@ -299,23 +297,28 @@ namespace InspectorTween{
 
 		[Serializable]
 		public class TimeInterface{
+			[Tooltip("Play backwards")]
 			public bool reverse;
-			[Space(5)]
 			[Tooltip("Time in seconds to play")]
 			public float time = 1f;
 			[Tooltip("multiply TIME by amount per instance. random between values specified. Good for multiple objects you want some variation on.")]
 			public Vector2 timeRandomScale = Vector2.one;
+			
+			[Header("Tween Start")]
 			[Tooltip("Sets to start interpolation at script start (before delay)")]
-			public bool setInitialAtStart;
-			[Tooltip("Reset to first value at end of playing or script cancel if allowed.")]
-			public bool resetToBegining = false;
-			[Tooltip("Time in seconds before animation starts playing")]
+			public bool initBeforeDelay;
+			[Tooltip("Time in seconds before animation starts playing [depricating in favour of below]")]
 			public float startDelay = 0f;
+			[Tooltip("Start Delay within random range. Trumps `start Delay.`")]
+			public Vector2 randomStartDelay;
 			[Tooltip("Randomize and run the delay every loop iteration")]
 			public bool delayEveryLoop = false;
 			[Tooltip("Set Y above 0 for random start time. Time in Seconds")]
 			public Vector2 startAtTime = new Vector2(0f,-1f);
-
+			
+			[Header("Tween End")]
+			[Tooltip("Reset to first value at end of playing or script cancel if allowed.")]
+			public bool resetToBegining = false;
 		}
 		public TimeInterface timeSettings;
 
@@ -327,9 +330,9 @@ namespace InspectorTween{
 		protected float timeScale = 1f; //sets to randomized value.
 		protected int loopItteration = -1; //this number tracks the number of loops run.
 
-		protected bool setInitialAtStart {get{return timeSettings.setInitialAtStart;}}
+		protected bool initializeCountOnEnable = true;// {get{return timeSettings.initBeforeDelay;}}
 		protected bool resetToBegining {get{return timeSettings.resetToBegining;}}
-		protected float startDelay {get{return timeSettings.startDelay;}}
+		protected float startDelay {get{return Mathf.Max(0,timeSettings.startDelay);}}
 		protected Vector2 startAtTime {get{return timeSettings.startAtTime;}}
 
 
@@ -337,23 +340,24 @@ namespace InspectorTween{
 
 		[Serializable]
 		public class InterpolationInterface{
-			[Tooltip("Uncheck to use non curve interpolation")]
-			public bool useCurve = true;
-			[Space(-3)]
-			[Header("Wrap Mode set on curve ends")]
-			[Tooltip("Check set wrap settings for looping.")]
-			public AnimationCurve interpolation =  new AnimationCurve(new Keyframe(0,0),new Keyframe(1,1));
-			[Tooltip("Install GoTween for best results. Uses set function if useCurve is false.")]
-			public ProgramaticInterpolation.TweenTypes nonCurveInterpolation = ProgramaticInterpolation.TweenTypes.Linear;
-			public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut = ProgramaticInterpolation.TweenTypes.Linear;
-			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
-			[Space(10)]
 			[Tooltip("Loops using curve loop settings if using curve")]
 			public bool loop = true;
 			[Tooltip("Randomizes time scaling every loop instead of once at start")]
 			public bool timeRandomEveryLoop = false;
 			[Tooltip("Number of times to loop. -1 for infinite.")]
 			public float loopNumberOfTimes = -1;
+			[Header("Curve")]
+			[Tooltip("Uncheck to use non curve interpolation")]
+			public bool useCurve = true;
+			[Space(-10)]
+			[Header("!!! Wrap Mode set on curve ends")]
+			[Tooltip("Check set wrap settings for looping.")]
+			public AnimationCurve interpolation =  new AnimationCurve(new Keyframe(0,0),new Keyframe(1,1));
+			[Header("Programatic")]
+			[Tooltip("Install GoTween for best results. Uses set function if useCurve is false.")]
+			public ProgramaticInterpolation.TweenTypes nonCurveInterpolation = ProgramaticInterpolation.TweenTypes.Linear;
+			public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut = ProgramaticInterpolation.TweenTypes.Linear;
+			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
 		}
 		//[Header("Interpolation")]
 		public InterpolationInterface interpolation;
@@ -383,29 +387,48 @@ namespace InspectorTween{
 		public EventInterface events;
 
 
-		protected virtual void Awake()
-		{
-			//renderer = GetComponent<Renderer>();//used to be get in children, but we pretty much expect this to work on this object only, and this way is cheaper.//now just do in color base.
-            startDelayWait = new WaitForSeconds(startDelay);
+		protected virtual void Awake() {
+			if ( timeSettings.randomStartDelay.x > 0 && timeSettings.randomStartDelay.y > 0 ) {
+				string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
+				float newDelay = MathS.TrulyRandomRange(Mathf.Max(0,timeSettings.randomStartDelay.x), Mathf.Max(0,timeSettings.randomStartDelay.y), seed);
+				startDelayWait = new WaitForSeconds(newDelay);
+				timeAtLastUpdate = Time.realtimeSinceStartup;
+			} else {
+				startDelayWait = new WaitForSeconds(startDelay);
+			}
+
+			
+			
 			if (updateSettings.playSpeed != UpdateInterface.PlaySpeed.All) {
 				float waitStep = 1f / (float)updateSettings.playSpeed;
 				if (waitStep > Time.fixedDeltaTime) {
 					setWait = new WaitForSeconds(waitStep);
 				}
 			}
-			if (updateSettings.pauseOffscreen == VisibilityPause.AllChildren) { 
-				renderers = GetComponentsInChildren<Renderer>(true);
+			switch ( updateSettings.pauseOffscreen ) {
+				case VisibilityPause.AllChildren:
+					renderers = GetComponentsInChildren<Renderer>(true);
+					break;
+				case VisibilityPause.Self:
+					renderer = GetComponent<Renderer>();
+					break;
 			}
 		}
-
+		/// <summary>
+		/// Determine visibility of collective renderers.
+		/// </summary>
+		/// <returns>any renderer on self or in children are visible to any cameras</returns>
 		protected bool AnyChildVisible(){
-			if(renderer && renderer.isVisible) return true;
-			if ( renderers == null || renderers.Length <= 0 ) {
+			if ( renderer != null && renderer.isVisible ) {
+				return true;
+			}
+			if ( renderers == null || renderers.Length == 0 ) {
 				return false;
 			}
 			foreach(Renderer rend in renderers){
-				if(rend != null && rend.isVisible)
+				if ( rend != null && rend.isVisible ) {
 					return true;
+				}
 			}
 			return false;
 		}
@@ -467,7 +490,11 @@ namespace InspectorTween{
 			timeScale = MathS.TrulyRandomRange(timeRandomScale.x,timeRandomScale.y, seed);
 			return timeScale* (respectGlobalTimeScale?Time.timeScale:1);
 		}
-		private bool timeCheck() {
+		/// <summary>
+		/// check if tween loop should keep going or not. 
+		/// </summary>
+		/// <returns></returns>
+		private bool TimeCheck() {
 			return (currentlyLooping || (count <= time && count >= 0f));
 		}
 		protected ProgramaticInterpolation.InterpolationMixer programaticTweenMixer;
@@ -477,15 +504,7 @@ namespace InspectorTween{
 			currentLoopNumberOfTimes = (int)loopNumberOfTimes;
 
 			eventInvoked = false;
-			if(pauseOffscreen == VisibilityPause.AllChildren){
-				while( !AnyChildVisible()){
-					isPaused=true;
-						yield return pauseWait;
-				}
-				isPaused=false;
-				//this.enabled = false;
-				//yield break;
-			}
+
 			count = startAt;
 			timeAtLastUpdate = Time.time; //initialize time for start
 			ProgramaticInterpolation.InterpolationFunc getLerp = interpolation.interpolation.Evaluate;
@@ -493,7 +512,7 @@ namespace InspectorTween{
 				programaticTweenMixer = new ProgramaticInterpolation.InterpolationMixer(interpolation.nonCurveInterpolation, interpolation.nonCurveInterpolationOut,interpolation.nonCurveLoopMode);
 				getLerp = programaticTweenMixer.Tween;
 			}
-			if(setInitialAtStart){
+			if(timeSettings.initBeforeDelay){
 				LerpParameters(getLerp(count));//set to start values.
 			}
 			if(startDelay > 0f){
@@ -503,28 +522,25 @@ namespace InspectorTween{
 				events.atTime.Invoke();
 				eventInvoked = true;
 			}
-			if(!setInitialAtStart){
+			if(!timeSettings.initBeforeDelay){
 				LerpParameters(getLerp(count));//set to start values.
 			}
-			while(timeCheck() && enabled && !isPaused){
+			while(TimeCheck() && enabled){
 
 				if(currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount/time >= currentLoopNumberOfTimes) break; //stop loop, not coroutine.
 
-	
-
-				if (pauseOffscreen == VisibilityPause.AllChildren && !AnyChildVisible()){
+				bool doPause = false;
+				if (pauseOffscreen == VisibilityPause.AllChildren && !AnyChildVisible()) {
+					doPause = true;
+				}else if ( pauseOffscreen == VisibilityPause.Self && renderer != null && renderer.isVisible == false ) {
+					doPause = true;
+				}
+				if ( doPause ) {
 					isPaused=true;
-					//yield break;
-					yield return pauseWait;
+					yield return pauseWait; //wait a little to check again.
+					continue;//go back to start of loop.
 				}
 				isPaused=false;
-
-				//if(renderer && !renderer.isVisible){
-				//	isPaused=true;
-				//	this.enabled = false;
-				//	yield break;
-				//}
-
 
 				float lerp;// =  interpolation.Evaluate(count/time);//getLerp(count/time);
 				if(useCurve){
@@ -560,12 +576,17 @@ namespace InspectorTween{
 					eventInvoked = true;
 				}
                 if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
-					if (timeSettings.delayEveryLoop && startDelay != 0) {
+					if (timeSettings.delayEveryLoop && startDelay != 0) { //depricate this at some point.
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;			
 						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
                         yield return new WaitForSeconds(newDelay);
 						//Debug.Log(this.gameObject.name + " : " + newDelay);
                         timeAtLastUpdate = Time.realtimeSinceStartup;
+					}else if (timeSettings.delayEveryLoop && timeSettings.randomStartDelay.x != 0 && timeSettings.randomStartDelay.y != 0 ) {
+						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;			
+						float newDelay = MathS.TrulyRandomRange(timeSettings.randomStartDelay.x, timeSettings.randomStartDelay.y , seed);
+						yield return new WaitForSeconds(newDelay);
+						timeAtLastUpdate = Time.realtimeSinceStartup;
 					}
 					currentLoop = Mathf.FloorToInt(count / time);
 				}
@@ -575,11 +596,7 @@ namespace InspectorTween{
 					yield return fixedWait;
                 }
             }
-            //this.enabled = false;
-			if(isPaused){
-				enabled = false;
-				yield break;
-			}
+            
 			if(!allowInterupt || (allowInterupt && !interupt)){
 				var start = 0f;
 				var end = 0.9999999f;
@@ -591,8 +608,7 @@ namespace InspectorTween{
 				if(useCurve){
 						lerp =  interpolation.interpolation.Evaluate(resetToBegining?start:end);//getLerp(count/time);
 				
-				}
-				else{
+				} else {
 					lerp = getLerp(resetToBegining?start:end);
 				}
 				//Debug.Log ("end  : interrupted " + interupt);
@@ -605,50 +621,34 @@ namespace InspectorTween{
 			interupt = false;
 			enabled = false;
 		}
-
-	IEnumerator RestartCoroutine()
-	{
-		enabled = false;
-		yield return fixedWait;
-		enabled = true;
-	}
-	IEnumerator RestartPlay()
-	{
-		enabled = false;
-		yield return fixedWait;
-		count = 0;
-		loopCount = 0;
-		DoTween();
-		enabled = true;
-	}
-		/** resume when onscreen. won't work if not on object without renderer =( .*/
-		//void OnBecameVisible()
-		//{
-		//	if(pauseOffscreen == VisibilityPause.Self && this.isPaused){
-		//		this.isPaused = false;
-		//		this.enabled = true;
-		//	}
-		//}
-		/** pause when offscreen*/
-		//void OnBecameInvisible()
-		//{
-		//	if(pauseOffscreen == VisibilityPause.Self && this.enabled){
-		//		this.isPaused = true;
-		//		this.enabled = false;
-		//	}
-		//}
-		/** CancelTween
-		 * send command to stop tweening on this script.
-		  *@param doInterupt defaults to false. Force tween to stop where it is.
-		*/
-		//Finish now
-		//Stop in place
-		//Stop and Reset
-		//Stop at loop end
+	
+		private IEnumerator RestartCoroutine()
+		{
+			enabled = false;
+			yield return fixedWait;
+			enabled = true;
+		}
+		private IEnumerator RestartPlay()
+		{
+			enabled = false;
+			yield return fixedWait;
+			count = 0;
+			loopCount = 0;
+			DoTween();
+			enabled = true;
+		}
+		
 		public enum TweenCancelType {Finish, SoftStop, HardStop, CancelAtLoopEnd, };
+		/// <summary>
+		/// Cancel tween. basic way equivalent to .enabled = false;
+		/// </summary>
 		public void CancelTween() {
 			CancelTween(TweenCancelType.Finish);
 		}
+		/// <summary>
+		/// Useful for Events. Cancel either Hard  or Soft stop
+		/// </summary>
+		/// <param name="hardStop">stop end events from firing</param>
 		public void CancelTween(bool hardStop) {
 			if (hardStop) {
 				CancelTween(TweenCancelType.HardStop);
@@ -656,24 +656,28 @@ namespace InspectorTween{
 				CancelTween(TweenCancelType.SoftStop);
 			}
 		}
+		/// <summary>
+		/// Cancel tween by one of a variety of methods. 
+		/// </summary>
+		/// <param name="type"></param>
 		public void CancelTween(TweenCancelType type)
 		{
 			switch (type) {
 				case TweenCancelType.Finish: //let things finish naturally
 					isPaused = false;
-					enabled = false;
+					enabled = false;//will stop at current frame and play all the end tween events, so may go to last frame or not depending on settings. will fire end events.
 					break;
 				case TweenCancelType.SoftStop: //cancel. depend on settings to reset position etc. end Events force fire.
 					isPaused = false;
-					enabled = false;
+					enabled = false;//Stops loop on next tick
 					if (tweenCoroutine != null) {
-						StopCoroutine(tweenCoroutine);
+						StopCoroutine(tweenCoroutine); //forcing end anyhoo
 					}
-					if (resetToBegining) { //this resets stuff.
+					if (resetToBegining) { //force move back to beginning and reset count 
 						LerpParameters(0f);
 						count = 0f;
 					}
-					if (events.onLoopComplete.GetPersistentEventCount() > 0) {
+					if (events.onLoopComplete.GetPersistentEventCount() > 0) { //manually fire end event.
 						events.onLoopComplete.Invoke();
 					}
 					break;
@@ -688,7 +692,7 @@ namespace InspectorTween{
 					count = 0f;
 					break;
 				case TweenCancelType.CancelAtLoopEnd: //finish current loop and end.
-					currentLoopNumberOfTimes = Mathf.CeilToInt(count);
+					currentLoopNumberOfTimes = Mathf.CeilToInt(count); //this loop count will remain at this value on nect play...
                     break;
 				default: //this shouldn't ever happen
 					Debug.LogWarning("Poorly added tween cancel state? don't use this...");
@@ -700,9 +704,9 @@ namespace InspectorTween{
 				}
 			}
 
-		/**DoTween()
-		 * used to start tween by script. Will restart if already running.
-		 */
+		/// <summary>
+		/// used to start tween by script. Will restart if already running.
+		/// </summary>
 		protected void DoTween()
 		{
 			if(enabled && gameObject.activeInHierarchy){//if we're already going, start over.
@@ -711,9 +715,10 @@ namespace InspectorTween{
 				enabled = true;
 			}
 		}
-		/**
-		Initiates play of tween.
-		*/
+
+		/// <summary>
+		/// Initiates play of tween from 0.
+		/// </summary>
 		public void PlayForwards(){
 			if(!gameObject.activeInHierarchy){
 				//Debug.LogWarning("Can't play on inactive object");
@@ -721,53 +726,56 @@ namespace InspectorTween{
 			}
 			if(enabled){
 				StartCoroutine(RestartPlay());
-			}
-			else{
+			} else{
 				reverse = false;
+				initializeCountOnEnable = true;//in case was reversed previously
 				count = 0;
 				loopCount = 0;
 				DoTween();
 			}
 		}
-		/**
-		sets the count to 0. if coroutine is running this should move the animation back to beginning.
-		Doesn't re-enable events which may have already fired.
-		*/
+		
+		/// <summary>
+		/// Sets the count to 0. if coroutine is running this should move the animation back to beginning.
+		/// Doesn't re-enable events which may have already fired.
+		/// </summary>
 		public void ResetToStart(){
 			count = 0f;
 		}
-		/**
-		Play the tween backwards, starting at time length of tween.
-		*/
+		
+		/// <summary>
+		/// Play the tween backwards, starting at time length of tween.
+		/// </summary>
 		public void PlayReverse(){
 			PlayReverse (time);
 		}
-		/**
-		Play tween backwards from startTime back to 0. (unless looping)
-		*/
+		
+		/// <summary>
+		/// Play tween backwards from startTime back to 0. (unless looping)
+		/// </summary>
+		/// <param name="startTime">time of play in seconds at which to start the tween</param>
 		public void PlayReverse(float startTime)
 		{
 			reverse = true;
-			timeSettings.setInitialAtStart = true; //do I want to do this really?????
+			initializeCountOnEnable = false; //set this to respect input start time parameter on enable
 			count = startTime;
 			loopCount = 0;
             enabled = true;
-			//StartCoroutine(Tween(startTime));
 		}
-		/**
-		Go to this point in the tween Directly. Doesn't animate (or set current time if running)
-		*/
+
+		/// <summary>
+		/// Go to this point in the tween Directly. Doesn't animate (or set current time if running)
+		/// </summary>
+		/// <param name="lerp"> point in lerp to go to [0-1]</param>
 		public virtual void SetToLerpPoint(float lerp){
 			//used for editor scripts/
 		}
-		//bool wasenabled=false;
+
 		protected void OnEnable()
 		{
-			//if(wasenabled) {Debug.Log ("huh?");return;}
-			//wasenabled = true;
 			if(HasValidParameters())
 			{
-				if(!setInitialAtStart){//may have already set start time...
+				if(initializeCountOnEnable){//may have already set start time...
 					count = (startAtTime.x%time)/time;
 					if(startAtTime.y >=0f){
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
@@ -780,12 +788,11 @@ namespace InspectorTween{
 				Debug.LogWarning("Invalid Tween Parameters on " + gameObject.name);//this.GetPath());
 			}
 		}
-		//protected void OnDisable(){
-		//	wasenabled = false;
-		//}
-		/**
-		Since we already (in some cases) have this stored, expose it to so we can access without another GetComponentCall.
-		*/
+
+		/// <summary>
+		/// Since we already (in some cases) have this stored, expose it to so we can access without another GetComponentCall.
+		/// </summary>
+		/// <returns></returns>
 		public Renderer GetRenderer(){
 			return renderer;
 		}

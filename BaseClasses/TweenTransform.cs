@@ -3,9 +3,7 @@
 * Base for Radial Games Tween scripts.
 */
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Serialization;
-using System.Linq.Expressions;
 namespace InspectorTween{
 	public abstract class TweenTransform : TweenBase 
 	{
@@ -14,7 +12,7 @@ namespace InspectorTween{
 		public Transform targetTransform;
 		[Space(10)]
 		[Tooltip("Start is relative from initial transform")]
-		[FormerlySerializedAs("StartFromCurrentState")]
+	
 		[SerializeField]
 		[ContextMenuItem("Set Array 0  to current","MatchStartToCurrent")]
 		public bool startRelative = false;
@@ -37,11 +35,16 @@ namespace InspectorTween{
 				targetTransform = this.transform;
 			}
 		}
+		/// <summary>
+		/// Set which transform this tween is affecting. Initialized initial transform.
+		/// </summary>
+		/// <param name="newTarget"></param>
 		public void SetTargetTransform(Transform newTarget) {
-			if (newTarget) {
-				targetTransform = newTarget;
-				SetInitial();//make sure initial position is reset correctly to match the new target
+			if ( !newTarget ) {
+				return;
 			}
+			targetTransform = newTarget;
+			SetInitial();//make sure initial position is reset correctly to match the new target
 		}
 		protected void SetRandom(int tweenArrLength){
 			if (addRandomToTargets.x < 0 && addRandomToTargets.y < 0f && addRandomToTargets.z < 0f) {
@@ -83,6 +86,7 @@ namespace InspectorTween{
 		{
 			return LerpArray(vArr,lerp) + LerpRandomTargets(randomTargets, newRandomTargets, lerp, timeLerp);
 		}
+		
 		protected abstract Vector3 GetStartRelative(Vector3 startVal,float lerp);
 		protected abstract Vector3 GetEndRelative(Vector3 endVal,float lerp);
 		protected abstract Vector3 GetRelative(Vector3 endVal,float lerp);
@@ -109,6 +113,10 @@ namespace InspectorTween{
 	
 			return scaleArrayLerp;
 		}
+		/// <summary>
+		/// Set to point in current tween
+		/// </summary>
+		/// <param name="lerp">0-1 value of where along tween to set transform</param>
 		public override void SetToLerpPoint(float lerp){
 			this.LerpParameters(lerp);
 		}
