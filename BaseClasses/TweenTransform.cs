@@ -27,12 +27,23 @@ namespace InspectorTween{
 		protected Vector3[] randomTargets;
 		protected Vector3[] newRandomTargets;
 		protected Vector3 randomValue = Vector3.zero;
+		protected Vector3[] reversedValues;
+		private Vector3[] tweenValues;
+		
 		public abstract void SetInitial();
 
 		protected override void Awake() {
 			base.Awake();
 			if (targetTransform == null) {
 				targetTransform = this.transform;
+			}
+		}
+
+		protected void CacheReversedTweenValues(Vector3[] values) {
+			reversedValues = new Vector3[values.Length];
+			int lengthMinusOne = values.Length - 1;
+			for ( int i = 0; i < values.Length; i++ ) {
+				reversedValues[lengthMinusOne - i] = values[i];
 			}
 		}
 		/// <summary>

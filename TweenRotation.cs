@@ -15,8 +15,29 @@ namespace InspectorTween{
 		private Quaternion[] randomRotations;
 		private Quaternion[] newRandomRotations;
 		private bool useRandomOffset = false;
+		private Quaternion[] reversedQuaternions;
 		
-
+		protected override void Awake()
+		{
+			base.Awake();
+			SetInitial();
+			rotationList = new Quaternion[moveRotations.Length];
+			for(int i = 0; i<moveRotations.Length;i++){
+				rotationList[i] = Quaternion.Euler(moveRotations[i]);
+			}
+			if(this.addRandomToTargets == Vector3.one * -1f){
+				useRandomOffset = false;
+			} else{
+				useRandomOffset = true;
+			}
+			
+			CacheReversedTweenValues(moveRotations);
+			reversedQuaternions = new Quaternion[rotationList.Length];
+			int lengthMinusOne = rotationList.Length - 1;
+			for ( int i = 0; i < rotationList.Length; i++ ) {
+				reversedQuaternions[lengthMinusOne - i] = rotationList[i];
+			}
+		}
 		
 		public void MatchStartToCurrent() {//Used by Context menu
 			moveRotations[0] = this.transform.localRotation.eulerAngles;
@@ -102,7 +123,11 @@ namespace InspectorTween{
         {
 			Transform tform = targetTransform != null? targetTransform : transform;
             if (rotationType == rotationTypes.Euler) {
-				tform.localRotation = Quaternion.Euler(base.LerpParameter(this.moveRotations, lerp));
+	            if ( timeSettings.reverseValues ) {
+		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.reversedValues, lerp));
+	            } else {
+		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.moveRotations, lerp));
+	            }
             }else {
 #if UNITY_EDITOR
 				if (!Application.isPlaying) {
@@ -112,7 +137,12 @@ namespace InspectorTween{
 					}
 				}
 #endif
-				tform.localRotation = LerpParameter(this.rotationList,lerp);
+	            if ( timeSettings.reverseValues ) {
+		            tform.localRotation = LerpParameter(this.reversedQuaternions,lerp);
+	            } else {
+		            tform.localRotation = LerpParameter(this.rotationList,lerp);
+	            }
+
 			}
 		}
 
@@ -122,20 +152,7 @@ namespace InspectorTween{
 		{
 			return moveRotations.Length > 0;
 		} 
-		protected override void Awake()
-		{
-			base.Awake();
-			SetInitial();
-			rotationList = new Quaternion[moveRotations.Length];
-			for(int i = 0; i<moveRotations.Length;i++){
-				rotationList[i] = Quaternion.Euler(moveRotations[i]);
-			}
-			if(this.addRandomToTargets == Vector3.one * -1f){
-				useRandomOffset = false;
-			} else{
-				useRandomOffset = true;
-			}
-		}
+
 		protected float FixForClosestRotation(float match,float inRot){
 			if(match < 0 && inRot > 180) return inRot -360;
 			if(match >180 && inRot < 0) return inRot + 360;

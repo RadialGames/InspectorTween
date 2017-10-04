@@ -299,6 +299,8 @@ namespace InspectorTween{
 		public class TimeInterface{
 			[Tooltip("Play backwards")]
 			public bool reverse;
+			[Tooltip("Play curve forwards over value in reverse order")]
+			public bool reverseValues;
 			[Tooltip("Time in seconds to play")]
 			public float time = 1f;
 			[Tooltip("multiply TIME by amount per instance. random between values specified. Good for multiple objects you want some variation on.")]
@@ -456,6 +458,7 @@ namespace InspectorTween{
 			Vector3 val = MathS.Vector3LerpUnclamped(inArr[fromIndex],inArr[toIndex],sectionLerp);
 			return val;
 		}
+		
 		protected static T LerpArray<T>(T[] inArr, float lerp,LerpFunc<T> Lerp){
 			if(inArr == null){ 
 				return default(T);
@@ -549,7 +552,7 @@ namespace InspectorTween{
 				else{
 					lerp = getLerp(count/time);
 				}
-				LerpParameters(lerp);
+				LerpParameters(lerp); //*** DO THE ACTUAL LERP***
 				float timeVal = Time.unscaledDeltaTime;
                 if (updateSettings.playSpeed != UpdateInterface.PlaySpeed.All) {
 					float timeNow = Time.realtimeSinceStartup;
@@ -599,9 +602,9 @@ namespace InspectorTween{
             
 			if(!allowInterupt || (allowInterupt && !interupt)){
 				var start = 0f;
-				var end = 0.9999999f;
+				var end = 1f;
 				if(reverse){
-					start = 0.9999999f;
+					start = 1f;
 					end = 0f;
 				}
 				float lerp;
