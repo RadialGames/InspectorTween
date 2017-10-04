@@ -27,7 +27,12 @@ public class TweenColor : TweenColorBase {
 	}
 	protected override Color LerpColor(float lerp) 
 	{//Can add any : en.wikipedia.org/wiki/Blend_modes . Underlay? 
-		Color var = colorOverTime.Evaluate(lerp)*colorOverTimeMultiplier;
+		Color var;
+		if ( timeSettings.reverseValues ) {
+			var = colorOverTime.Evaluate(1 - lerp) * colorOverTimeMultiplier;
+		} else {
+			var = colorOverTime.Evaluate(lerp)*colorOverTimeMultiplier;
+		}
 		switch(colorFunction){
 			case colorFunctions.Normal : break;
 			case colorFunctions.Multiply : var *= initialColor; break;

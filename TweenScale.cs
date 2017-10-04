@@ -2,6 +2,8 @@
 /*
 Tween Transform scale
 */
+
+using System;
 using UnityEngine;
 using System.Collections;
 	namespace InspectorTween{
@@ -13,6 +15,11 @@ using System.Collections;
 		public Vector3? initialScale;
 		[Tooltip("Example, 0.2 would make relative end of 1 == 5 (1 divided by 0.2)")]
 		public bool scaleRelativeEndRelativeToStart;
+
+		protected override void Awake() {
+			base.Awake();
+			CacheReversedTweenValues(scales);
+		}
 
 		void MatchStartToCurrent() {
 			scales[0] = targetTransform.localScale;
@@ -29,7 +36,11 @@ using System.Collections;
 		protected override void LerpParameters(float lerp)
 		{
 			if(!initialScale.HasValue) SetInitial();
-			targetTransform.localScale = LerpParameter(this.scales,lerp);
+			if ( timeSettings.reverseValues ) {
+				targetTransform.localScale = LerpParameter(reversedValues,lerp);
+			} else {
+				targetTransform.localScale = LerpParameter(this.scales,lerp);
+			}
 		}
 
 		protected override bool HasValidParameters()

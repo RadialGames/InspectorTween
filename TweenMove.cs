@@ -10,18 +10,29 @@ namespace InspectorTween{
 		private Vector3 initialPosition;
 		private Vector3 initialAnchor;
 		private RectTransform rTransform;
+
+		protected override void Awake()
+		{
+			base.Awake();
+			SetInitial();
+			CacheReversedTweenValues(movePositions);
+		}
+		
 		void MatchStartToCurrent() {
 			movePositions[0] = this.transform.localPosition;
 		}
 		void MatchEndToCurrent() {
 			movePositions[movePositions.Length-1] = this.transform.localPosition;
 		}
-		protected override void LerpParameters(float lerp)
-		{
+		protected override void LerpParameters(float lerp) {
+			Vector3[] values = movePositions;
+			if ( timeSettings.reverseValues ) {
+				values = reversedValues;
+			}
 			if(rTransform){
-				rTransform.anchoredPosition3D = LerpParameter(this.movePositions,lerp);
+				rTransform.anchoredPosition3D = LerpParameter(values,lerp);
 			}else{
-				targetTransform.localPosition = LerpParameter(this.movePositions,lerp);
+				targetTransform.localPosition = LerpParameter(values,lerp);
 			}
 
 		}
@@ -38,12 +49,7 @@ namespace InspectorTween{
 		{
 			return movePositions.Length > 0;
 		} 
-		protected override void Awake()
-		{
-			base.Awake();
-			SetInitial();
 
-		}
 		protected override Vector3 GetRelative (Vector3 endVal, float lerp)
 		{
 			return endVal + (rTransform!= null?initialAnchor:initialPosition);
