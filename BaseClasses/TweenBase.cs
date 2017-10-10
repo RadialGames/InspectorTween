@@ -270,10 +270,13 @@ namespace InspectorTween{
 				public UpdateType updateType;
 				public VisibilityPause pauseOffscreen = VisibilityPause.AllChildren;
 				public bool respectGlobalTimeScale = true;
-				[Tooltip("Stop interpolation at current value on script cancel")]
-				public bool allowInterupt = false;
+
 				public enum PlaySpeed { All=0,_90_FPS=90, _60_FPS = 60, _30_FPS = 30, _24_FPS = 24, _12_FPS = 12 , _6_FPS = 6, _1_FPS = 1};
 				public PlaySpeed playSpeed;
+				[Space(-10)]
+				[Header("On Disable")]
+				[Tooltip("Stop interpolation at current value on disable")]
+				public bool allowInterupt = false;
 			}
 			public UpdateInterface updateSettings;
 			private UpdateType updateType {get{return updateSettings.updateType;}
@@ -288,7 +291,7 @@ namespace InspectorTween{
 			protected float timeAtLastUpdate;
 			protected bool respectGlobalTimeScale {get{return updateSettings.respectGlobalTimeScale;}}
 			protected bool allowInterupt {get{return updateSettings.allowInterupt;}}
-			[NonSerialized][HideInInspector]public bool interupt; //flag set to force stop of Coroutine.
+			//[NonSerialized][HideInInspector]public bool interupt; //flag set to force stop of Coroutine.
 
 
 		//tween types to choose from.
@@ -352,9 +355,10 @@ namespace InspectorTween{
 			[Tooltip("Uncheck to use non curve interpolation")]
 			public bool useCurve = true;
 			[Space(-10)]
-			[Header("!!! Wrap Mode set on curve ends")]
+			[WarningHeader("!!! Wrap Mode set on curve ends","yellow")]
 			[Tooltip("Check set wrap settings for looping.")]
 			public AnimationCurve interpolation =  new AnimationCurve(new Keyframe(0,0),new Keyframe(1,1));
+	
 			[Header("Programatic")]
 			[Tooltip("Install GoTween for best results. Uses set function if useCurve is false.")]
 			public ProgramaticInterpolation.TweenTypes nonCurveInterpolation = ProgramaticInterpolation.TweenTypes.Linear;
@@ -574,10 +578,18 @@ namespace InspectorTween{
                 }
 				loopCount += loopIncrement;
 
-				if(loopCount >= events.eventTime && !eventInvoked){
-					events.atTime.Invoke();
-					eventInvoked = true;
+				if ( reverse ) {
+					if(loopCount <= events.eventTime && !eventInvoked){
+						events.atTime.Invoke();
+						eventInvoked = true;
+					}
+				} else {
+					if(loopCount >= events.eventTime && !eventInvoked){
+						events.atTime.Invoke();
+						eventInvoked = true;
+					}
 				}
+				
                 if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
 					if (timeSettings.delayEveryLoop && startDelay != 0) { //depricate this at some point.
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;			
@@ -599,29 +611,26 @@ namespace InspectorTween{
 					yield return fixedWait;
                 }
             }
-            
-			if(!allowInterupt || (allowInterupt && !interupt)){
-				var start = 0f;
-				var end = 1f;
-				if(reverse){
-					start = 1f;
-					end = 0f;
-				}
-				float lerp;
-				if(useCurve){
-						lerp =  interpolation.interpolation.Evaluate(resetToBegining?start:end);//getLerp(count/time);
-				
-				} else {
-					lerp = getLerp(resetToBegining?start:end);
-				}
-				//Debug.Log ("end  : interrupted " + interupt);
-				LerpParameters(lerp);
-				if(events.onLoopComplete.GetPersistentEventCount() > 0){
-					events.onLoopComplete.Invoke();
-				}
-			
+			if ( allowInterupt && enabled == false) { //in the case of disabling and we want to stop where we are.
+				yield break;
 			}
-			interupt = false;
+			var start = 0f;
+			var end = 1f;
+			if(reverse){
+				start = 1f;
+				end = 0f;
+			}
+			float lerpVal;
+			if(useCurve){
+				lerpVal =  interpolation.interpolation.Evaluate(resetToBegining?start:end);//getLerp(count/time);
+			
+			} else {
+				lerpVal = getLerp(resetToBegining?start:end);
+			}
+			LerpParameters(lerpVal);
+			if(events.onLoopComplete.GetPersistentEventCount() > 0){
+				events.onLoopComplete.Invoke();
+			}
 			enabled = false;
 		}
 	
