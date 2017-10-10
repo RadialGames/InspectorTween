@@ -9,6 +9,9 @@ public class TweenMoveEditor : Editor {
         if (item.WarnCurveLooping(item)) {
             UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
         }
+        if ( item.WarningRendererVisibilityCheck(item) ) {
+            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
+        }
         DrawDefaultInspector();
         if ( GUILayout.Button("Set to Start") ) {
             SetToStart();
@@ -33,6 +36,9 @@ public class TweenScaleEditor : Editor {
         TweenBase item = (TweenBase)target;
         if (item.WarnCurveLooping(item)) {
             UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
+        }
+        if ( item.WarningRendererVisibilityCheck(item) ) {
+            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
         }
         DrawDefaultInspector();
         if ( GUILayout.Button("Set to Start") ) {
@@ -61,6 +67,9 @@ public class TweenRotationEditor : Editor {
         if (item.WarnCurveLooping(item)) {
             UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
         }
+        if ( item.WarningRendererVisibilityCheck(item) ) {
+            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
+        }
         DrawDefaultInspector();		
 
         if ( GUILayout.Button("Set to Start") ) {
@@ -88,6 +97,9 @@ public class TweenColorEditor : Editor {
         if (item.WarnCurveLooping(item)) {
             UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
         }
+        if ( item.WarningRendererVisibilityCheck(item) ) {
+            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
+        }
         DrawDefaultInspector();	
     }
 }
@@ -99,6 +111,9 @@ public class TweenMaterialFloatEditor : Editor {
         if (item.WarnCurveLooping(item)) {
             UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
         }
+        if ( item.WarningRendererVisibilityCheck(item) ) {
+            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
+        }
         DrawDefaultInspector();	
     }
 }
@@ -109,6 +124,9 @@ public class TweenPropertyEditor : Editor {
         TweenBase item = (TweenBase)target;
         if (item.WarnCurveLooping(item)) {
             UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
+        }
+        if ( item.WarningRendererVisibilityCheck(item) ) {
+            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
         }
         DrawDefaultInspector();	
     }

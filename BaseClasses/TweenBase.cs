@@ -822,6 +822,18 @@ namespace InspectorTween{
 			}
 			return false;
 		}
+		public bool WarningRendererVisibilityCheck(TweenBase tween) {
+			if ( Application.isPlaying == false ) {
+				return false;
+			}
+			if ( tween.pauseOffscreen == VisibilityPause.AllChildren && (tween.renderers == null || tween.renderers.Length == 0 )) {
+				return true;
+			}
+			if ( tween.pauseOffscreen == VisibilityPause.Self && tween.renderer == null ) {
+				return true;
+			}
+			return false;
+		}
 #endif
 	}
 }
