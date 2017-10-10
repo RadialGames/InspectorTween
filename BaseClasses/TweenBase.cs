@@ -799,5 +799,20 @@ namespace InspectorTween{
 		public Renderer GetRenderer(){
 			return renderer;
 		}
+#if UNITY_EDITOR
+		public bool WarnCurveLooping(TweenBase tween) { //Function used for inspector warning.
+			if (tween.interpolation.useCurve && tween.interpolation.loop ) {
+				if ( tween.timeSettings.reverse ) {
+					return (tween.interpolation.interpolation.preWrapMode == WrapMode.Clamp ||
+					        tween.interpolation.interpolation.preWrapMode == WrapMode.Default ||
+					        tween.interpolation.interpolation.preWrapMode == WrapMode.ClampForever);
+				}
+				return (tween.interpolation.interpolation.postWrapMode == WrapMode.Clamp ||
+				        tween.interpolation.interpolation.postWrapMode == WrapMode.Default ||
+				        tween.interpolation.interpolation.postWrapMode == WrapMode.ClampForever);
+			}
+			return false;
+		}
+#endif
 	}
 }
