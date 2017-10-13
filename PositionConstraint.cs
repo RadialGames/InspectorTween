@@ -59,8 +59,11 @@ public class PositionConstraint : MonoBehaviour {
 			Quaternion toRotation = GetWeightedRotation();
 			if(lag > 0f){
 				toPosition = Vector3.SmoothDamp(transform.position, toPosition, ref smoothDampVel, lag);
-				toRotation = Quaternion.Slerp(transform.rotation, toRotation, rotLag);
 			}
+			if ( rotLag > 0f ) {
+				toRotation = Quaternion.Slerp(transform.rotation, toRotation, 1f-rotLag);
+			}
+			
 			this.transform.position = toPosition;
 			if (applyRotation) {
 				this.transform.rotation = toRotation;
