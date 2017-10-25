@@ -20,14 +20,34 @@ public class TweenMoveEditor : Editor {
         if ( GUILayout.Button("Set to End") ) {
             SetToEnd();
         }
+        if ( GUILayout.Button("InsertFrame") ) {
+            InsertFrame();
+        }
     }
 
     public void SetToStart() {
-        ((TweenTransform) target).SetToLerpPoint(0f);
+        TweenTransform tween = ((TweenTransform) target);
+        tween.targetTransform = tween.transform;
+        tween.SetToLerpPoint(0f);
     }
 
     public void SetToEnd() {
-        ((TweenTransform) target).SetToLerpPoint(1f);
+        TweenTransform tween = ((TweenTransform) target);
+        tween.targetTransform = tween.transform;
+        tween.SetToLerpPoint(1f);
+    }
+    protected void InsertFrame() {
+        var tween = (TweenMove) target;
+        var keys = tween.movePositions;
+        int count = keys.Length;
+        var newKeys = new Vector3[count + 1];
+        for ( int i = 0; i < count; i++ ) {
+            newKeys[i] = keys[i];
+        }
+        int insertFrame = count - 1;
+        newKeys[count] = newKeys[count-1];
+        newKeys[insertFrame] = tween.transform.localPosition;
+        tween.movePositions = newKeys;
     }
 }
 
@@ -49,15 +69,36 @@ public class TweenScaleEditor : Editor {
         if ( GUILayout.Button("Set to End") ) {
             SetToEnd();
         }
+        if ( GUILayout.Button("InsertFrame") ) {
+            InsertFrame();
+        }
 
     }
 
+    protected void InsertFrame() {
+        var tween = (TweenScale) target;
+        var keys = tween.scales;
+        int count = keys.Length;
+        var newKeys = new Vector3[count + 1];
+        for ( int i = 0; i < count; i++ ) {
+            newKeys[i] = keys[i];
+        }
+        int insertFrame = count - 1;
+        newKeys[count] = newKeys[count-1];
+        newKeys[insertFrame] = tween.transform.localScale;
+        tween.scales = newKeys;
+    }
+    
     public void SetToStart() {
-        ((TweenTransform) target).SetToLerpPoint(0f);
+        TweenTransform tween = ((TweenTransform) target);
+        tween.targetTransform = tween.transform;
+        tween.SetToLerpPoint(0f);
     }
 
     public void SetToEnd() {
-        ((TweenTransform) target).SetToLerpPoint(1f);
+        TweenTransform tween = ((TweenTransform) target);
+        tween.targetTransform = tween.transform;
+        tween.SetToLerpPoint(1f);
     }
 }
 
@@ -81,15 +122,35 @@ public class TweenRotationEditor : Editor {
         if ( GUILayout.Button("Set to End") ) {
             SetToEnd();
         }
+        if ( GUILayout.Button("InsertFrame") ) {
+            InsertFrame();
+        }
 
     }
 
     public void SetToStart() {
-        ((TweenTransform) target).SetToLerpPoint(0f);
+        TweenTransform tween = ((TweenTransform) target);
+        tween.targetTransform = tween.transform;
+        tween.SetToLerpPoint(0f);
     }
 
     public void SetToEnd() {
-        ((TweenTransform) target).SetToLerpPoint(1f);
+        TweenTransform tween = ((TweenTransform) target);
+        tween.targetTransform = tween.transform;
+        tween.SetToLerpPoint(1f);
+    }
+    protected void InsertFrame() {
+        var tween = (TweenRotation) target;
+        var keys = tween.moveRotations;
+        int count = keys.Length;
+        var newKeys = new Vector3[count + 1];
+        for ( int i = 0; i < count; i++ ) {
+            newKeys[i] = keys[i];
+        }
+        int insertFrame = count - 1;
+        newKeys[count] = newKeys[count-1];
+        newKeys[insertFrame] = tween.transform.localRotation.eulerAngles;
+        tween.moveRotations = newKeys;
     }
 }
 [CustomEditor(typeof(TweenColor))]
