@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(TweenMove))]
+[CanEditMultipleObjects]
 public class TweenMoveEditor : Editor {
     public override void OnInspectorGUI() {
         TweenBase item = (TweenBase)target;
@@ -31,6 +32,7 @@ public class TweenMoveEditor : Editor {
 }
 
 [CustomEditor(typeof(TweenScale))]
+[CanEditMultipleObjects]
 public class TweenScaleEditor : Editor {
     public override void OnInspectorGUI() {
         TweenBase item = (TweenBase)target;
@@ -60,6 +62,7 @@ public class TweenScaleEditor : Editor {
 }
 
 [CustomEditor(typeof(TweenRotation))]
+[CanEditMultipleObjects]
 public class TweenRotationEditor : Editor {
     public override void OnInspectorGUI() {
        // base.OnInspectorGUI();
@@ -90,6 +93,7 @@ public class TweenRotationEditor : Editor {
     }
 }
 [CustomEditor(typeof(TweenColor))]
+[CanEditMultipleObjects]
 public class TweenColorEditor : Editor {
     public override void OnInspectorGUI() {
         // base.OnInspectorGUI();
@@ -104,6 +108,7 @@ public class TweenColorEditor : Editor {
     }
 }
 [CustomEditor(typeof(TweenMaterialFloat))]
+[CanEditMultipleObjects]
 public class TweenMaterialFloatEditor : Editor {
     public override void OnInspectorGUI() {
         // base.OnInspectorGUI();
@@ -118,6 +123,7 @@ public class TweenMaterialFloatEditor : Editor {
     }
 }
 [CustomEditor(typeof(TweenProperty))]
+[CanEditMultipleObjects]
 public class TweenPropertyEditor : Editor {
     public override void OnInspectorGUI() {
         // base.OnInspectorGUI();
