@@ -746,6 +746,13 @@ namespace InspectorTween{
 				DoTween();
 			}
 		}
+
+		public void PlayForwards(bool cancelActive) {
+			if ( tweenCoroutine != null && cancelActive) {
+				CancelTween(true);
+			}
+			PlayForwards();
+		}
 		
 		/// <summary>
 		/// Sets the count to 0. if coroutine is running this should move the animation back to beginning.
