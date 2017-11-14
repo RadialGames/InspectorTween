@@ -1,0 +1,150 @@
+Inspector Tween
+Inspector Tween is a usefull set of components for triggering changes to object transforms or other properties as specified.
+It uses a shared set of common tween settings. It is open and extensible to any project specific parameters you may wish to set up to be animated
+as well as providing as general a set of uses as possible.
+It saves project clutter with being able to make simple animations without haveing to manage a new set of extra resource files.
+Simple tweens with animation curves in the interface make it so that actions that a programmer may be tempted to script in can be easily added and refined by an artist.
+With the philosophy akin to a particle system, exposed randomness settings allow the addition of variability so that common simple animations do not become repetitive.
+
+
+TWEEN COMMON SETTINGS.
+enable
+Tweens which are enabled in the inspector will start to play automatically. Disable the tween to have it not play.
+Manually enabling the tween in the inspector will also activate it, and conversely disabling the component will stop the playback
+in acoordance to any settings for ending a tween.
+
+UPDATE SETTINGS
+
+Pause Offscreen  -
+This will effectively make the tween stop updating until the objects specified are visible.
+Renderers are determined on Awake (when component is first in scope) unless renderers are updated by a call in code.
+None - Will always update independent of visibility
+Self - Will only check the renderer on the object on which this component is attached ( or specified target has a renderer)
+AllChildren - Will update if any of the renderers in the hierarchy under the node on which component is applied are visible to any camera
+
+Respect Global Time Scale-
+if this is disabled, changes to the 'time' scale will not affect the tween (will play while paused)
+
+Play Speed - 
+Selective update less frequently than every frame. This is especially usefull when running at high framerates, or the motion is subtle enough that less frequent changes are needed.
+
+Allow Interupt-
+If tween is 'allowInterupt = true' it will stop where it is in the tween and not fire events when disabled.
+
+
+
+
+
+TIME SETTINGS
+Reverse
+When checked, on start tween will play from end time back to start time if not looping.
+Activating 'reverse' can be done mid-tween to play from the current state back to the beginning, although events which have already been triggered may not fire.
+
+Reverse Values
+Play the tween interpolated over the reverse of supplied values. This is usefull if you have a curve set that doesn't lend itself to runnning backwards, but one still wants to play back and forth between values.
+
+Time
+Time in seconds over which the tween is to play
+
+Time Random Scale-
+Multiplies the 'time' setting and picks a random value between the two results. 
+Example a tween od length 10.0 with random values 0.9 and 1.2 will play with a time somewhere between 9 and 12 seconds.
+
+Init Before Delay
+Set initial tween value and fire relevant events if applicable before the delay wait.
+Example:  A rotation tween would set the rotation of the object to time '0' rotation, then wait the delay time before playing out.
+
+Start Delay
+Time in seconds to wait before starting the tween once fired. This time is in addition to the play time value of the tween.
+
+Random Start Delay
+This will override the above, which I hope to depricate. Resulting delay will be a time between the two values entered.
+
+Delay Every Loop
+For a looping tween, do a delay every loop instead of only once at the start of tweening.
+
+Start At Time
+Start the tween at some random time within the time range
+This is usefull if tween is applied to many instances and it is not desired to have all playing in synch.
+
+	TWEEN END
+Reset to Beginning
+At the end of playing the tween, set the value to be the same as at time 0.		
+This will also activate if object is disabled, or tween is canceled.
+
+
+
+INTERPOLATION
+Loop
+Play the tween continuously.
+
+Time Random Every Loop
+Randomize the time length of the tween every loop as opposed to once at the beginning of play.
+
+Loop Number of Times
+Loop a set number of times instead of continuously. -1 (default) or any number 0 or less is continuously.
+
+	CURVE
+use Curve 
+-Interpolate tween based on values set on the curve.
+Be aware that curves have 'loop' settings at the start and end values which Unity defaults to 'Continuous' which appears to be non-looping.
+
+-interpolation (curve)
+supplied animation curve.
+Point 0 is time 0, point 1 is the end time of the tween.
+Supplied tween values are distributed evenly across the vertical axis.
+	
+	PROGRAMATIC
+TODO : Explain each programmatic type. Plot a graph.
+	
+nonCurveInterpolation
+Programatically determined interpolation for the first half of interpolation.
+
+nonCurveInterpolationOut
+Mathematically computed interpolation type for the second half of interpolation
+
+
+nonCurveLoopMode
+What happens with interpolation as the loop count increases.
+TODO: Explain loop modes.
+
+EVENTS
+event Time -
+One event, if supplied will fire at this time (in seconds) Defaults to 0 which will be on start (before or after delay based on settings)
+
+atTime
+Event to fire at time supplied
+onLoop Complete
+Event to fire at the end of the tween.
+Needs renaming as it does not fire at the end of each loop.
+May fire on tween cancel depending on tween and cancel call settings.
+
+
+
+
+TWEEN MOVE
+
+
+
+TWEEN ROTATION
+
+
+TWEEN Scale-
+
+TWEEN PROPERTY
+
+TWEEN COLOR
+
+TWEEN MATERIAL FLOAT
+
+TWEEN COLOR ROTATION (EXPERIMENTAL)
+
+
+
+
+
+
+TWEEN QUEUE
+Tween Queue is usefull when multiple tweens may be needed to be played simultaneously and called in an organized manner.
+You can set up several groups of tweens, but you may find you need to open two inspector pannels and lock the one with the tween queue on it to effectively assign the tweens if you have several on a targeted object.
+Tweens can be forced to have a particular time length or to be reversed.
