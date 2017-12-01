@@ -782,6 +782,15 @@ namespace InspectorTween{
             enabled = true;
 		}
 
+        /// <summary>
+        /// Play the tween backwards
+        /// </summary>
+        /// <param name="keepTime">If true will reverse tween from the current time, else will be set to the end</param>
+        public void PlayReverse(bool keepTime)
+        {
+            PlayReverse(keepTime ? count : time);
+        }
+
 		/// <summary>
 		/// Go to this point in the tween Directly. Doesn't animate (or set current time if running)
 		/// </summary>
