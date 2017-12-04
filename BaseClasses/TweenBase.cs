@@ -788,6 +788,10 @@ namespace InspectorTween{
         /// <param name="keepTime">If true will reverse tween from the current time, else will be set to the end</param>
         public void PlayReverse(bool keepTime)
         {
+	        if ( enabled && keepTime ) {
+		        reverse = true;
+		        return;
+	        }
             PlayReverse(keepTime ? count : time);
         }
 
