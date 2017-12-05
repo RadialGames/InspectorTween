@@ -619,7 +619,12 @@ namespace InspectorTween{
 			if(reverse){
 				start = 1f;
 				end = 0f;
+                count = 0;
 			}
+            else
+            {
+                count = time;
+            }
 			float lerpVal;
 			if(useCurve){
 				lerpVal =  interpolation.interpolation.Evaluate(resetToBegining?start:end);//getLerp(count/time);
