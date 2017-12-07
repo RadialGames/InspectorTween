@@ -6,6 +6,7 @@ namespace InspectorTween{
 		public string label;
 		public TweenBase[] tweens = new TweenBase[1];
 		public bool reverse;
+		public bool reverseValues;
 		public float timeLengthOverride = -1f;
 		public bool setInitialTransforms;
 	}
@@ -55,13 +56,15 @@ namespace InspectorTween{
 					if(itemQueue[ind].timeLengthOverride != -1){
 						tweenI.timeSettings.time = itemQueue[ind].timeLengthOverride;
 					}
+
+					tweenI.timeSettings.reverseValues = itemQueue[ind].reverseValues;
+
 					if(itemQueue[ind].reverse){
 						tweenI.PlayReverse();
 					}
 					else{
 						tweenI.PlayForwards();
 					}
-					
 				}
 			}
 		}
