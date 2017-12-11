@@ -36,6 +36,12 @@ namespace InspectorTween{
 			}
 			return propInd;
 		}
+
+		public void ToggleReverseValues(int ind) {
+			if ( itemQueue.Length > ind ) {
+				itemQueue[ind].reverseValues = !itemQueue[ind].reverseValues;
+			}
+		}
 		public void Play(){
 			Play (0);
 		}
