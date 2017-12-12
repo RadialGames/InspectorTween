@@ -26,10 +26,10 @@ namespace InspectorTween{
 				}
 			}
 		}
-		public int GetNamedIndex(string name){
+		public int GetNamedIndex(string inStr){
 			int propInd = -1;
 			for(int ind=0;ind<itemQueue.Length;ind++){
-				if(itemQueue[ind].label.ToLower() == name.ToLower()){
+				if(string.Compare(itemQueue[ind].label,inStr,true) == 0){
 					propInd = ind;
 					break;
 				}
