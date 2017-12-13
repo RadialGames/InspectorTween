@@ -256,6 +256,8 @@ namespace InspectorTween{
 
 	public abstract class TweenBase : MonoBehaviour 
 	{
+
+		
 		private Coroutine tweenCoroutine;
 			static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
 			static readonly WaitForFixedUpdate fixedWait = new WaitForFixedUpdate();
@@ -391,7 +393,25 @@ namespace InspectorTween{
 		}
 		private bool eventInvoked;
 		public EventInterface events;
-
+		
+		protected virtual void Reset() {//Called Editor only when Component is first added.
+			if ( interpolation == null ) {
+				interpolation = new InterpolationInterface();
+				Debug.Log("no class yet");
+			}
+			if ( interpolation.interpolation == null ) {
+				Debug.Log("no curve yet");
+			}
+			interpolation.interpolation.postWrapMode = WrapMode.Loop;
+			interpolation.interpolation.preWrapMode = WrapMode.Loop;
+			RectTransform rt = GetComponent<RectTransform>();
+			if ( rt != null ) { //Default UI components to have a sane default
+				updateSettings = new UpdateInterface();//this hasn't been created yet as that 'usually' happens in UI
+				updateSettings.pauseOffscreen = VisibilityPause.None;
+				updateSettings.respectGlobalTimeScale = false;
+			}
+			
+		}
 
 		protected virtual void Awake() {
 			if ( timeSettings.randomStartDelay.x > 0 && timeSettings.randomStartDelay.y > 0 ) {
