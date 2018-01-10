@@ -542,7 +542,7 @@ namespace InspectorTween{
 			if(timeSettings.initBeforeDelay){
 				LerpParameters(getLerp(count));//set to start values.
 			}
-			if(startDelay > 0f){
+			if(startDelayWait != null){
 				yield return startDelayWait;
 			}
 			if(events.eventTime == 0 && !eventInvoked){ //invoke time zero events before lerp.
