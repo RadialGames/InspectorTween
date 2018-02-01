@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Serialization;
+
 //[ExecuteInEditMode]
 public class ParentConstraint : MonoBehaviour {
 
 	[System.Serializable]
 	public class ConstraintTarget{
 		public Transform target;
-		public bool usePosition;
+		[FormerlySerializedAs("usePosition")]
+		public bool specifyPositionInTargetParentSpace = false;
 		public Vector3 position;
 		public float weight = 1f;
 		public bool useSetRotation;
@@ -26,6 +29,16 @@ public class ParentConstraint : MonoBehaviour {
 	//private float[] weights;
 	public bool maintainOffset = true;
 
+	public bool rigigbodySweep = false;
+	private Rigidbody _rigidbody;
+	private new Rigidbody rigidbody {
+		get {
+			if ( _rigidbody == null ) {
+				_rigidbody = GetComponent<Rigidbody>();
+			}
+			return _rigidbody;
+		}
+	}
 	void Awake()
 	{
 		if(targets.Length > 0)
@@ -38,13 +51,13 @@ public class ParentConstraint : MonoBehaviour {
 	}
 
 	public void InitializePositionalOffset(){
-		positionalOffset = this.transform.localPosition - GetWeightedPosition();
+		positionalOffset = this.transform.position - GetWeightedPosition(true);
 	}
 	public void SetTarget(Transform targ, int indx,float weight){
 		if(indx < targets.Length){
 			targets[indx].target = targ;
 			targets[indx].weight = weight;
-			targets[indx].usePosition = false;
+			targets[indx].specifyPositionInTargetParentSpace = false;
 		}
 	}
 	public void SetPosition(Vector3 worldPosition,int indx,float weight){
@@ -52,7 +65,7 @@ public class ParentConstraint : MonoBehaviour {
 			targets[indx].target = null;
 			targets[indx].weight = weight;
 			targets[indx].position = worldPosition;
-			targets[indx].usePosition = true;
+			targets[indx].specifyPositionInTargetParentSpace = true;
 		}
 	}
 	public void SetTargetWeight(int indx, float weight){
@@ -61,26 +74,34 @@ public class ParentConstraint : MonoBehaviour {
 		}
 	}
 
-	private Vector3 GetWeightedPosition()
-	{
+	private Vector3 GetWeightedPosition(bool worldSpace = false){
 		var outV = this.transform.localPosition;
-		if(targets.Length > 0)
-		{
-			//if(targets[0].usePosition){
-			//	outV = this.transform.parent.InverseTransformPoint(targets[0].position);
-			//}
-			//else if(targets[0].target != null){
-			//	outV = this.transform.parent.InverseTransformPoint(targets[0].target.position);
-			//}
-			for(int i=0;i < targets.Length;i++)
-			{
-				if(targets[i].usePosition){
-					outV = Vector3.Lerp(outV, this.transform.parent.InverseTransformPoint(targets[i].position),targets[i].weight);
-				}else if(targets[i].target)
-				{
-					outV = Vector3.Lerp(outV, this.transform.parent.InverseTransformPoint(targets[i].target.position),targets[i].weight);
+		if ( worldSpace ) {
+			outV = this.transform.position;
+			if(targets.Length > 0) {
+				for(int i=0;i < targets.Length;i++) {
+					if(targets[i].specifyPositionInTargetParentSpace){
+						outV = Vector3.Lerp(outV, targets[i].position,targets[i].weight);
+					} else if(targets[i].target) {
+						outV = Vector3.Lerp(outV, targets[i].target.position,targets[i].weight);
+					} else {
+						outV = Vector3.Lerp(outV, this.transform.position,targets[i].weight);
+					}
 				}
-				else{
+				if(!xPosition) outV.x = 0;
+				if(!yPosition) outV.y = 0;
+				if(!zPosition) outV.z = 0;
+			}
+			return outV;
+		}
+
+		if(targets.Length > 0) {
+			for(int i=0;i < targets.Length;i++) {
+				if(targets[i].specifyPositionInTargetParentSpace){
+					outV = Vector3.Lerp(outV, this.transform.parent.InverseTransformPoint(targets[i].position),targets[i].weight);
+				} else if(targets[i].target) {
+					outV = Vector3.Lerp(outV, this.transform.parent.InverseTransformPoint(targets[i].target.position),targets[i].weight);
+				} else {
 					outV = Vector3.Lerp(outV, this.transform.localPosition,targets[i].weight);
 				}
 			}
@@ -95,15 +116,11 @@ public class ParentConstraint : MonoBehaviour {
 	private Quaternion GetWeightedRotation()
 	{
 		var outV = this.transform.rotation;
-		if(targets.Length > 0)
-		{
-			for(int i=0;i < targets.Length;i++)
-			{
+		if(targets.Length > 0) {
+			for(int i=0;i < targets.Length;i++) {
 				if(targets[i].useSetRotation){
 					outV = Quaternion.Slerp(outV,Quaternion.Euler(targets[i].rotation),targets[i].weight) * Quaternion.Euler(rotationalOffset);
-				}
-				else if(targets[i].target)
-				{
+				} else if(targets[i].target) {
 					outV = Quaternion.Slerp(outV,targets[i].target.rotation,targets[i].weight) * Quaternion.Euler(rotationalOffset);
 				}
 			}
@@ -113,15 +130,17 @@ public class ParentConstraint : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		if(targets.Length > 0)
-		{
-			if(maintainOffset)
-			{
-				this.transform.localPosition = GetWeightedPosition() + this.positionalOffset;
+		if(targets.Length > 0) {
+			Vector3 pos;
+			if ( maintainOffset ) {
+				pos = GetWeightedPosition() + this.positionalOffset;
+			} else {
+				pos = GetWeightedPosition();
 			}
-			else
-			{
-				this.transform.localPosition = GetWeightedPosition();
+			if ( rigigbodySweep ) {
+				rigidbody.MovePosition(targets[0].target.parent.TransformPoint(pos));
+			} else {
+				this.transform.localPosition = pos;
 			}
 			if(useRotation){
 				this.transform.rotation = GetWeightedRotation();
