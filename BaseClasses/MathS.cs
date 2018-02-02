@@ -72,7 +72,23 @@ namespace InspectorTween{
 		}
 
 		public static Vector3 Bezier2(Vector3 start, Vector3 control, Vector3 end, float t) {
-			return (((1 - t) * (1 - t)) * start) + (2 * t * (1 - t) * control) + ((t * t) * end);
+			float oneMinusT = 1 - t;
+			float s0 = (oneMinusT* oneMinusT);
+			float tSquare = t * t;
+			float midVal = 2 * t * oneMinusT;
+			
+			start.x *= s0;
+			start.y *= s0;
+			start.z *= s0;
+			
+			start.x += end.x * tSquare;
+			start.y += end.y * tSquare;
+			start.z += end.z * tSquare;
+			
+			start.x += control.x * midVal;
+			start.y += control.y * midVal;
+			start.z += control.z * midVal;
+			return start;
 		}
 
 		public static bool RandomChance(float numerator, float denominator) {
