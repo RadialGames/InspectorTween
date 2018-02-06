@@ -24,6 +24,9 @@ public class LookAt : MonoBehaviour {
 	protected float nextRenderTime;
 	[Header("OnVisible")]
 	public bool updateOnlyWhenVisible;
+
+	public bool useLateUpdate;
+	[Header("Partial")] public float lookAmount = 1f;
 	Vector3 GetWorldUpVector()
 	{
 		Vector3 rVal = Vector3.zero;
@@ -86,7 +89,8 @@ public class LookAt : MonoBehaviour {
 	}
 	// Update is called once per frame
 	Vector3 zeroV = Vector3.zero;
-	void LateUpdate () {
+
+	void DoLookat() {
 		if (updateOnlyWhenVisible && rend && !rend.isVisible) {
 			return;
 		}
@@ -106,33 +110,49 @@ public class LookAt : MonoBehaviour {
 		}
 		if (!newMode) {
 			this.transform.LookAt(tpos, GetUpVector());
+			
 		} else {
 			switch (lookAxis) {
 				case worldUpVectors.up:
-				transform.up = target.position - transform.position;
-				break;
+					transform.up = target.position - transform.position;
+					break;
 				case worldUpVectors.down:
-				transform.up = transform.position - target.position;
-				break;
+					transform.up = transform.position - target.position;
+					break;
 				case worldUpVectors.left:
-				transform.right = transform.position - target.position;
-				break;
+					transform.right = transform.position - target.position;
+					break;
 				case worldUpVectors.right:
-				transform.right = target.position - transform.position;
-				break;
+					transform.right = target.position - transform.position;
+					break;
 				case worldUpVectors.forward:
-				transform.forward = target.position - transform.position;
-				break;
+					transform.forward = target.position - transform.position;
+					break;
 				case worldUpVectors.backward:
-				transform.forward = transform.position - target.position;
-				break;
+					transform.forward = transform.position - target.position;
+					break;
 				case worldUpVectors.specified:
-				this.transform.LookAt(tpos, GetUpVector());
-				break;
+					this.transform.LookAt(tpos, GetUpVector());
+					break;
 				default:
-				transform.forward = target.position - transform.position;
-				break;
+					transform.forward = target.position - transform.position;
+					break;
 			}
+		}
+
+		if ( lookAmount != 1f ) {
+			transform.localRotation = Quaternion.Lerp(Quaternion.identity, transform.localRotation, lookAmount);//TODO make this cheap
+		}
+	}
+	void Update() {
+		if ( !useLateUpdate ) {
+			DoLookat();
+		}
+
+	}
+	void LateUpdate () {
+		if ( useLateUpdate ) {
+			DoLookat();
 		}
 	}
 
