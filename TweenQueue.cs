@@ -48,29 +48,28 @@ namespace InspectorTween{
 		public void Play(string label){
 			Play (GetNamedIndex(label));
 		}
-		public void Play(int ind)
-		{
-			if(itemQueue.Length > ind)
-			{
-				foreach(var tweenI in itemQueue[ind].tweens){
-					if(itemQueue[ind].setInitialTransforms){
-						if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
-							((InspectorTween.TweenTransform)tweenI).SetInitial();
-						}
+		public void Play(int ind) {
+			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
+				return;
+			}
+			foreach(var tweenI in itemQueue[ind].tweens){
+				if(itemQueue[ind].setInitialTransforms){
+					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
+						((InspectorTween.TweenTransform)tweenI).SetInitial();
 					}
-					if(tweenI == null) continue;
-					if(itemQueue[ind].timeLengthOverride != -1){
-						tweenI.timeSettings.time = itemQueue[ind].timeLengthOverride;
-					}
+				}
+				if(tweenI == null) continue;
+				if(itemQueue[ind].timeLengthOverride != -1){
+					tweenI.timeSettings.time = itemQueue[ind].timeLengthOverride;
+				}
 
-					tweenI.timeSettings.reverseValues = itemQueue[ind].reverseValues;
+				tweenI.timeSettings.reverseValues = itemQueue[ind].reverseValues;
 
-					if(itemQueue[ind].reverse){
-						tweenI.PlayReverse();
-					}
-					else{
-						tweenI.PlayForwards();
-					}
+				if(itemQueue[ind].reverse){
+					tweenI.PlayReverse();
+				}
+				else{
+					tweenI.PlayForwards();
 				}
 			}
 		}
