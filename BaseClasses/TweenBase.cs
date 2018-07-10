@@ -834,9 +834,11 @@ namespace InspectorTween{
 			{
 				if(initializeCountOnEnable){//may have already set start time...
 					count = (startAtTime.x%time)/time;
-					if(startAtTime.y >=0f){
+					if(startAtTime.y >=0f || startAtTime.x >=0f){
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
-						count = MathS.TrulyRandomRange((startAtTime.x%time)/time,(startAtTime.y%time)/time, seed) * time;
+						float modX = Mathf.Min(startAtTime.x, time);
+						float modY = Mathf.Min(startAtTime.y, time);
+						count = MathS.TrulyRandomRange(modX,modY, seed);
 					}
 				}
 				tweenCoroutine = StartCoroutine(Tween(count));
