@@ -631,6 +631,7 @@ namespace InspectorTween{
 					yield return fixedWait;
                 }
             }
+
 			if ( allowInterupt && enabled == false) { //in the case of disabling and we want to stop where we are.
 				yield break;
 			}
@@ -834,7 +835,7 @@ namespace InspectorTween{
 			{
 				if(initializeCountOnEnable){//may have already set start time...
 					count = (startAtTime.x%time)/time;
-					if(startAtTime.y >=0f || startAtTime.x >=0f){
+					if(startAtTime.y >=0f && startAtTime.x >=0f){
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
 						float modX = Mathf.Min(startAtTime.x, time);
 						float modY = Mathf.Min(startAtTime.y, time);
