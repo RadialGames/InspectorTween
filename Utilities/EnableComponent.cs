@@ -5,6 +5,10 @@ using UnityEngine;
 using System.Collections;
 namespace InspectorTween{
 public class EnableComponent : MonoBehaviour {
+	public enum ActivateState {None,Awake,OnEnable,Start
+	}
+
+	public ActivateState activeOn;
 	public Component[] component;
 	//particle system variables
 	[Header("Particle System Settings")]
@@ -36,8 +40,23 @@ public class EnableComponent : MonoBehaviour {
 					}
 				}
 		}
+
+		if ( activeOn == ActivateState.Awake ) {
+			EnableAll();
+		}
 	}
-	
+
+	void OnEnable() {
+		if ( activeOn == ActivateState.OnEnable ) {
+			EnableAll();
+		}
+	}
+
+	void Start() {
+		if ( activeOn == ActivateState.Start ) {
+			EnableAll();
+		}
+	}
 	
 	
 	private bool GetComponentState(Component obj){
