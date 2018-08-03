@@ -87,7 +87,7 @@ public class TweenColorRotation : TweenColorBase{
 		//outMatrix.SetRow(1,new Vector4(0.99962f, -0.27227f,-0.64745f,0f)); 
 		//outMatrix.SetRow(2,new Vector4(1.00281f, -1.10685f, 1.70541f,0f));
 		
-		Matrix4x4 cMatrix = (inMatrix * adjustMatrix) * outMatrix;
+		Matrix4x4 cMatrix = (outMatrix * adjustMatrix) * inMatrix;
 		//Matrix4x4 cMatrix = (inMatrix ) * outMatrix;
 		return cMatrix;//(Color)(cMatrix*(Vector4)col);
 	}
