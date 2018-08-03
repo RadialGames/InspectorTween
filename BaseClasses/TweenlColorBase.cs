@@ -40,23 +40,42 @@ namespace InspectorTween{
         }
 
         protected void Initialize() {
-           if(useMaterial && (materialProperty != null) && renderer != null){
+           if(useMaterial && (materialProperty != null) ){
                 type = objectType.Material;
+               
                 propID = Shader.PropertyToID(materialProperty);
-                if(!dontInstanceMaterial)
-                {
-                    mat =  new Material(renderer.sharedMaterial);
-                    renderer.material = mat;
-                }
-                else{
-                    mat = renderer.sharedMaterial;
-                }
-                if(!mat){
-                    return;
-                }
-                initialColor = mat.GetColor(propID);
-                return;
-            }
+               if ( renderer != null ) {
+                   if(!dontInstanceMaterial)
+                   {
+                       mat =  new Material(renderer.sharedMaterial);
+                       renderer.material = mat;
+                   }
+                   else{
+                       mat = renderer.sharedMaterial;
+                   }
+                   if(!mat){
+                       return;
+                   }
+                   initialColor = mat.GetColor(propID);
+                   return;
+               }else {//could be a canvas object
+                   image = target.GetComponent<Graphic>();
+                   if ( image != null ) {
+
+                       if ( dontInstanceMaterial ) {
+                           mat = image.material;
+  
+                           //initialColor = mat.GetColor(propID);
+                       } else {
+                           mat =  new Material(image.material);
+                           image.material = mat;
+                       }
+
+                       return;
+                   }
+               }
+               
+            } 
 
             sprite = target.GetComponent<SpriteRenderer>();
             if(sprite != null){
