@@ -12,84 +12,86 @@ public class TweenColorRotation : TweenColorBase{
 	public Vector3[] hsvValues = new Vector3[2]{new Vector3(0f,1f,1f),new Vector3(360,1,1)};
 	public bool setMatrix;
 
-	private new void Awake(){
+	
+	public new void Awake(){
 		base.Awake();
+		propID = Shader.PropertyToID(materialProperty);
 	}
+
+	protected override void Reset() {
+		base.Reset();
+		//Initialize for shader based rendering.
+		updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None};
+		useMaterial = true;
+		setMatrix = true;
+		materialProperty = "_MatrixYIQ";
+	}
+
+	private static readonly Matrix4x4 matrixYIQtoRGB = new Matrix4x4 {
+		m00 = 0.299f,
+		m01 = 0.587f,
+		m02 = 0.114f,
+		m03 = 0,
+		m10 = 0.596f,
+		m11 = -0.274f,
+		m12 = -0.321f,
+		m13 = 0,
+		m20 = 0.211f,
+		m21 = -0.523f,
+		m22 = 0.311f,
+		m23 = 0,
+		m30 = 0f,
+		m31 = 0f,
+		m32 = 0f,
+		m33 = 1
+	};
+	private static readonly Matrix4x4 matrixRGBtoYIQ = new Matrix4x4 {
+		m00 = 0.99966f,
+		m01 = 0.95654f,
+		m02 = 0.62086f,
+		m03 = 0,
+		m10 = 0.99962f,
+		m11 = -0.27227f,
+		m12 = -0.64745f,
+		m13 = 0,
+		m20 = 1.00281f,
+		m21 = -1.10685f,
+		m22 = 1.70541f,
+		m23 = 0,
+		m30 = 0f,
+		m31 = 0f,
+		m32 = 0f,
+		m33 = 1
+	};
+	private static Matrix4x4 adjustMatrix = Matrix4x4.identity;
+	
 	public static Matrix4x4 YIQ (Vector3 hsv)
 	{
-		Matrix4x4 inMatrix;// =  Matrix4x4.identity;
-		inMatrix.m00 = 0.299f;
-		inMatrix.m01 = 0.587f;
-		inMatrix.m02 = 0.114f;
-		inMatrix.m03 = 0;
-		inMatrix.m10 = 0.596f;
-		inMatrix.m11 = -0.274f;
-		inMatrix.m12 = -0.321f;
-		inMatrix.m13 = 0;
-		inMatrix.m20 = 0.211f;
-		inMatrix.m21 = -0.523f;
-		inMatrix.m22 = 0.311f;
-		inMatrix.m23 = 0;
-		inMatrix.m30 = 0f;
-		inMatrix.m31 = 0f;
-		inMatrix.m32 = 0f;
-		inMatrix.m33 = 1;
-		//inMatrix.SetRow(0,new Vector4(0.299f, 0.587f, 0.114f, 0f));
-		//inMatrix.SetRow(1,new Vector4(0.596f, -0.274f, -0.321f,0f));
-		//inMatrix.SetRow(2,new Vector4(0.211f, -0.523f, 0.311f, 0f));
-		
-		Matrix4x4 adjustMatrix;// = Matrix4x4.identity;
 		float VSU = hsv.z * hsv.y * Mathf.Cos(hsv.x*Mathf.Deg2Rad);
 		float VSW = hsv.z * hsv.y * Mathf.Sin(hsv.x*Mathf.Deg2Rad);
 		adjustMatrix.m00 = hsv.z;
-		adjustMatrix.m01 = 0;
-		adjustMatrix.m02 = 0f;
-		adjustMatrix.m03 = 0;
+		//adjustMatrix.m01 = 0;
+		//adjustMatrix.m02 = 0f;
+		//adjustMatrix.m03 = 0;
 		
-		adjustMatrix.m10 = 0f;
+		//adjustMatrix.m10 = 0f;
 		adjustMatrix.m11 = VSU;
 		adjustMatrix.m12 = -VSW;
-		adjustMatrix.m13 = 0;
+		//adjustMatrix.m13 = 0;
 		
-		adjustMatrix.m20 = 0f;
+		//adjustMatrix.m20 = 0f;
 		adjustMatrix.m21 = VSW;
 		adjustMatrix.m22 = VSU;
-		adjustMatrix.m23 = 0f;
+		//adjustMatrix.m23 = 0f;
 		
-		adjustMatrix.m30 = 0f;
-		adjustMatrix.m31 = 0f;
-		adjustMatrix.m32 = 0f;
-		adjustMatrix.m33 = 1;
+		//adjustMatrix.m30 = 0f;
+		//adjustMatrix.m31 = 0f;
+		//adjustMatrix.m32 = 0f;
+		//adjustMatrix.m33 = 1;
+
 		
-		
-		//adjustMatrix.SetRow(0,new Vector4(hsv.z, 0f,0f,0f));
-		//adjustMatrix.SetRow(1,new Vector4(0f, VSU, VSW,0f));
-		//adjustMatrix.SetRow(2,new Vector4(0f, -VSW, VSU,0f));
-		
-		Matrix4x4 outMatrix;// =  Matrix4x4.identity;
-		outMatrix.m00 = 0.99966f;
-		outMatrix.m01 = 0.95654f;
-		outMatrix.m02 = 0.62086f;
-		outMatrix.m03 = 0;
-		outMatrix.m10 = 0.99962f;
-		outMatrix.m11 = -0.27227f;
-		outMatrix.m12 = -0.64745f;
-		outMatrix.m13 = 0;
-		outMatrix.m20 = 1.00281f;
-		outMatrix.m21 = -1.10685f;
-		outMatrix.m22 = 1.70541f;
-		outMatrix.m23 = 0;
-		outMatrix.m30 = 0f;
-		outMatrix.m31 = 0f;
-		outMatrix.m32 = 0f;
-		outMatrix.m33 = 1;
-		//outMatrix.SetRow(0,new Vector4(0.99966f,  0.95654f, 0.62086f,0f));
-		//outMatrix.SetRow(1,new Vector4(0.99962f, -0.27227f,-0.64745f,0f)); 
-		//outMatrix.SetRow(2,new Vector4(1.00281f, -1.10685f, 1.70541f,0f));
-		
-		Matrix4x4 cMatrix = (outMatrix * adjustMatrix) * inMatrix;
-		//Matrix4x4 cMatrix = (inMatrix ) * outMatrix;
-		return cMatrix;//(Color)(cMatrix*(Vector4)col);
+		Matrix4x4 cMatrix = (matrixRGBtoYIQ * adjustMatrix) * matrixYIQtoRGB;
+		return cMatrix;
 	}
 	public static Color YUV (Color initial,Vector3 hsv)
 	{
@@ -158,10 +160,16 @@ public class TweenColorRotation : TweenColorBase{
 		}
 		return var;
 	}
-	protected override bool HasValidParameters()
-	{
-		if(mat != null && useMaterial){
-			return mat.HasProperty(propID) && base.HasValidParameters();
+	protected override bool HasValidParameters() {
+		bool hasMat = mat != null;
+		if(hasMat && useMaterial) {
+			bool hasProperty = mat.HasProperty(propID);
+			if ( !mat.HasProperty(propID) ) {//For some reason this is incorrectly returning false???
+				//Debug.LogWarning("material doesn't have specified property : " + propID);
+			}
+			//return hasProperty && base.HasValidParameters();
+		} else if(useMaterial) {
+			Debug.LogWarning("no material at this stage");
 		}
 		return (base.HasValidParameters());
 	}

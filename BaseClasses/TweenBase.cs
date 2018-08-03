@@ -397,7 +397,7 @@ namespace InspectorTween{
 		protected virtual void Reset() {//Called Editor only when Component is first added.
 			if ( interpolation == null ) {
 				interpolation = new InterpolationInterface();
-				Debug.Log("no class yet");
+				//Debug.Log("no class yet");
 			}
 			if ( interpolation.interpolation == null ) {
 				Debug.Log("no curve yet");

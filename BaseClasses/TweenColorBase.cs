@@ -56,7 +56,13 @@ namespace InspectorTween{
                    if(!mat){
                        return;
                    }
-                   initialColor = mat.GetColor(propID);
+
+                   if ( this is TweenColorRotation && ((TweenColorRotation) this).setMatrix ) {
+                       initialColor = mat.color;
+                   } else {
+                       initialColor = mat.GetColor(propID);
+                   }
+                   
                    return;
                }else {//could be a canvas object
                    image = target.GetComponent<Graphic>();
