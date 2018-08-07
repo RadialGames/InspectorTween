@@ -164,7 +164,7 @@ public class TweenColorRotation : TweenColorBase{
 		bool hasMat = mat != null;
 		if(hasMat && useMaterial) {
 			bool hasProperty = mat.HasProperty(propID);
-			if ( !mat.HasProperty(propID) ) {//For some reason this is incorrectly returning false???
+			if ( !hasProperty ) {//For some reason this is incorrectly returning false???
 				//Debug.LogWarning("material doesn't have specified property : " + propID);
 			}
 			//return hasProperty && base.HasValidParameters();
