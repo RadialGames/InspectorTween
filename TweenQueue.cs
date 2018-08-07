@@ -14,9 +14,13 @@ namespace InspectorTween{
 	public class TweenQueue : MonoBehaviour {
 		public TweenQueueItem[] itemQueue = new TweenQueueItem[1]{new TweenQueueItem()};
 		public int tweenToPlay = 0;//for editor script
+		/// <summary>
+		/// Call CancelTween on all tweens in all queues
+		/// </summary>
 		public void CancelAll() {
 			CancelAll(false);
         }
+		
         public void CancelAll(bool doInterupt){
 			for(int ind=0;ind<itemQueue.Length;ind++){
 				foreach(var tween in itemQueue[ind].tweens){
@@ -26,6 +30,19 @@ namespace InspectorTween{
 				}
 			}
 		}
+		/// <summary>
+		/// Cancel all tweens on specified queue item.
+		/// </summary>
+		/// <param name="queueIndex">index of queue. use GetNamedIndex to find index by name</param>
+		/// <param name="doInterupt"></param>
+		public void Cancel(int queueIndex,bool doInterupt=false) {
+			foreach(var tween in itemQueue[queueIndex].tweens){
+				if(tween && tween.enabled){
+					tween.CancelTween(doInterupt);
+				}
+			}
+		}
+		
 		public int GetNamedIndex(string inStr){
 			int propInd = -1;
 			for(int ind=0;ind<itemQueue.Length;ind++){
