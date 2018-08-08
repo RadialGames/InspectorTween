@@ -21,9 +21,10 @@ namespace InspectorTween{
         protected CanvasGroup canvasGroup;
         protected TextMesh textMesh;
         protected new Light light;
+        protected new Camera camera;
         protected Material mat;
         public Material material{set{mat = value; propID = Shader.PropertyToID(materialProperty); type = objectType.Material; } get{return mat;}}
-        public enum objectType {None,Sprite,Graphic,Particle,CanvasGroup,TextMesh,Material, Light };
+        public enum objectType {None,Sprite,Graphic,Particle,CanvasGroup,TextMesh,Material, Light, Camera};
         protected objectType type;
         public bool useMaterial;
         public string materialProperty;
@@ -125,6 +126,13 @@ namespace InspectorTween{
                 initialColor = textMesh.color;
                 return;
             }
+
+            camera = GetComponent<Camera>();
+            if ( camera != null ) {
+                type = objectType.Camera;
+                initialColor = camera.backgroundColor;
+                return;
+            }
         }
         
         protected override void Awake()
@@ -205,6 +213,12 @@ namespace InspectorTween{
                         initialColor = light.color;
                     }
                     break;
+                case objectType.Camera:
+                    if ( camera != null ) {
+                        initialColor = camera.backgroundColor;
+                    }
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -223,12 +237,16 @@ namespace InspectorTween{
                 case objectType.Material :
                     if(forceSetMaterial){
                         mat.SetColor(propID,val);
-                    }else{
+                    } else {
                         renderer.sharedMaterial.SetColor(propID,val); 
                     }
                     break;
-                case objectType.Graphic : image.color = val; break;
-                case objectType.Sprite : sprite.color = val; break;
+                case objectType.Graphic : 
+                    image.color = val; 
+                    break;
+                case objectType.Sprite : 
+                    sprite.color = val; 
+                    break;
                 case objectType.Particle :
 #if UNITY_5_6_OR_NEWER
                     ParticleSystem.MinMaxGradient pMain = psys.main.startColor;
@@ -237,9 +255,18 @@ namespace InspectorTween{
 	    			psys.startColor = val;
 #endif
                     break;
-                case objectType.CanvasGroup: canvasGroup.alpha = val.a;break;
-                case objectType.TextMesh : textMesh.color = val; break;
-                case objectType.Light: light.color = val; break;
+                case objectType.CanvasGroup: 
+                    canvasGroup.alpha = val.a;
+                    break;
+                case objectType.TextMesh : 
+                    textMesh.color = val; 
+                    break;
+                case objectType.Light: 
+                    light.color = val;
+                    break;
+                case objectType.Camera:
+                    camera.backgroundColor = val;
+                    break;
             }
         }
         public override void SetToLerpPoint(float lerp){
