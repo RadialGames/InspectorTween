@@ -31,7 +31,11 @@ public class ParentConstraint : MonoBehaviour {
 
 	public bool rigigbodySweep = false;
 	private Rigidbody _rigidbody;
-	private new Rigidbody rigidbody {
+#if UNITY_EDITOR
+	private new Rigidbody rigidbody{//store renderer. needed for some child types.
+#else
+	private Rigidbody rigidbody{
+#endif
 		get {
 			if ( _rigidbody == null ) {
 				_rigidbody = GetComponent<Rigidbody>();

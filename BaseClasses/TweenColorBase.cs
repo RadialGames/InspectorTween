@@ -20,8 +20,14 @@ namespace InspectorTween{
         protected ParticleSystem psys;
         protected CanvasGroup canvasGroup;
         protected TextMesh textMesh;
+//Compiler warns new isn't needed, but unity complains if it isn't there.
+#if UNITY_EDITOR
         protected new Light light;
-        protected new Camera camera;
+        protected new Camera camera;        
+#else
+	    protected Light light;
+	    protected Camera camera;
+#endif     
         protected Material mat;
         public Material material{set{mat = value; propID = Shader.PropertyToID(materialProperty); type = objectType.Material; } get{return mat;}}
         public enum objectType {None,Sprite,Graphic,Particle,CanvasGroup,TextMesh,Material, Light, Camera};

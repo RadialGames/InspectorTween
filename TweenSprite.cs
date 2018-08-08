@@ -12,8 +12,11 @@ namespace InspectorTween {
 
 		private Image image;
 		private SpriteRenderer spriteRenderer;
+#if UNITY_EDITOR
 		private new ParticleSystem particleSystem;
-		
+#else
+		private ParticleSystem particleSystem;
+#endif
 		public enum objectType {None,Sprite,Image,Particle,Material };
 		protected objectType type;
 		

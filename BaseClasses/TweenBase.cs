@@ -382,7 +382,12 @@ namespace InspectorTween{
 		protected abstract void LerpParameters(float lerp); //must be overriden to provide lerp
 		protected virtual bool HasValidParameters(){ return (interpolation.interpolation.length > 0);} //validate
 		protected bool isPaused; //pause Coroutine
-		protected new Renderer renderer; //store renderer. needed for some child types.
+		
+#if UNITY_EDITOR
+		protected new Renderer renderer;//store renderer. needed for some child types.
+#else
+		protected Renderer renderer;
+#endif
 		protected Renderer[] renderers; //store renderer. needed for some child types.
 
 		[Serializable]
