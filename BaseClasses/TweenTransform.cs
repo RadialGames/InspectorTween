@@ -124,11 +124,17 @@ namespace InspectorTween{
 	
 			return scaleArrayLerp;
 		}
+
 		/// <summary>
 		/// Set to point in current tween
 		/// </summary>
 		/// <param name="lerp">0-1 value of where along tween to set transform</param>
+		private float lastLerpPoint = float.MinValue;
 		public override void SetToLerpPoint(float lerp){
+			if (Application.isPlaying && lerp == lastLerpPoint ) {
+				return;
+			}
+			lastLerpPoint = lerp;
 			this.LerpParameters(lerp);
 		}
 		
