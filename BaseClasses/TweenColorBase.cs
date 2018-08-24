@@ -28,6 +28,7 @@ namespace InspectorTween{
 	    protected Light light;
 	    protected Camera camera;
 #endif     
+        
         protected Material mat;
         public Material material{set{mat = value; propID = Shader.PropertyToID(materialProperty); type = objectType.Material; } get{return mat;}}
         public enum objectType {None,Sprite,Graphic,Particle,CanvasGroup,TextMesh,Material, Light, Camera};
@@ -55,7 +56,7 @@ namespace InspectorTween{
                    if(!dontInstanceMaterial)
                    {
                        mat =  new Material(renderer.sharedMaterial);
-                       renderer.material = mat;
+                       renderer.sharedMaterial = mat;
                    }
                    else{
                        mat = renderer.sharedMaterial;
@@ -235,10 +236,10 @@ namespace InspectorTween{
             return ((type != objectType.None));
         }
 
-        protected abstract Color LerpColor(float lerp);
+        protected abstract Color LerpColor(float lerp,Color initial);
         protected override void LerpParameters(float lerp)
         {
-            Color val = LerpColor(lerp);
+            Color val = LerpColor(lerp,initialColor);
             switch(type){
                 case objectType.Material :
                     if(forceSetMaterial){

@@ -25,9 +25,10 @@ public class TweenColor : TweenColorBase {
 		}
 		return baseColor;
 	}
-	protected override Color LerpColor(float lerp) 
+	protected override Color LerpColor(float lerp,Color initial) 
 	{//Can add any : en.wikipedia.org/wiki/Blend_modes . Underlay? 
 		Color var;
+		
 		if ( timeSettings.reverseValues ) {
 			var = colorOverTime.Evaluate(1 - lerp) * colorOverTimeMultiplier;
 		} else {
@@ -35,11 +36,11 @@ public class TweenColor : TweenColorBase {
 		}
 		switch(colorFunction){
 			case colorFunctions.Normal : break;
-			case colorFunctions.Multiply : var *= initialColor; break;
-			case colorFunctions.Add : var += initialColor; break;
-			case colorFunctions.Overlay : var = Overlay(var,initialColor); break;
-			case colorFunctions.MultiplyAdd : var = initialColor +  (initialColor * var);break;
-			case colorFunctions.Dodge : var = ColorDodge(initialColor,var);break;
+			case colorFunctions.Multiply : var *= initial; break;
+			case colorFunctions.Add : var += initial; break;
+			case colorFunctions.Overlay : var = Overlay(var,initial); break;
+			case colorFunctions.MultiplyAdd : var = initial +  (initial * var);break;
+			case colorFunctions.Dodge : var = ColorDodge(initial,var);break;
 		}
 		return var;
 	}
