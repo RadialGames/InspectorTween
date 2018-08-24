@@ -148,15 +148,15 @@ public class TweenColorRotation : TweenColorBase{
 		var colorLum = Vector3.Dot (new Vector3(0.22f, 0.707f, 0.071f),new Vector3(inCol.r,inCol.g,inCol.b));
 		return MathS.ColorLerpUnclamped( new Color(colorLum,colorLum,colorLum,inCol.a),inCol,lerp);
 	}
-	protected override Color LerpColor(float lerp)
+	protected override Color LerpColor(float lerp,Color initial)
 	{
 		Vector3 lerpedVector = LerpArray(hsvValues,lerp,Vector3.Lerp);
 		Color var;
 		switch(colorSpace){
-		case ColorSpaces.HSV_YIQ : var = (Color)(YIQ(lerpedVector)*(Vector4)initialColor); break;
-		case ColorSpaces.YUV_BlendExperiment : var = (Color)(YUV(initialColor,lerpedVector)*(Vector4)initialColor); break;
-		case ColorSpaces.SaturationOnly : var = SetSaturation(initialColor,lerpedVector.y);break;
-		default : var = initialColor; break;
+		case ColorSpaces.HSV_YIQ : var = (Color)(YIQ(lerpedVector)*(Vector4)initial); break;
+		case ColorSpaces.YUV_BlendExperiment : var = (Color)(YUV(initial,lerpedVector)*(Vector4)initial); break;
+		case ColorSpaces.SaturationOnly : var = SetSaturation(initial,lerpedVector.y);break;
+		default : var = initial; break;
 		}
 		return var;
 	}
@@ -176,7 +176,7 @@ public class TweenColorRotation : TweenColorBase{
 	protected override void LerpParameters(float lerp)
 	{
 		if(useMaterial){
-			Color val = LerpColor(lerp);
+			Color val = LerpColor(lerp,initialColor);
 			if ( setMatrix ) {
 				Vector3 lerpedVector = LerpArray(hsvValues,lerp,Vector3.Lerp);
 				Matrix4x4 matrix = YIQ(lerpedVector);

@@ -42,7 +42,18 @@ namespace InspectorTween{
 				}
 			}
 		}
-		
+		/// <summary>
+		/// Set overide time on specified queue item
+		/// </summary>
+		/// <param name="index"></param>
+		public void SetOverrideTime(int index, float time) {
+			itemQueue[index].timeLengthOverride = time;
+		}
+		public void SetOverrideTime(float time) {
+			for ( int i = 0; i < itemQueue.Length; i++ ) {
+				SetOverrideTime(i,time);
+			}
+		}
 		public int GetNamedIndex(string inStr){
 			int propInd = -1;
 			for(int ind=0;ind<itemQueue.Length;ind++){
