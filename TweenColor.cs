@@ -29,7 +29,7 @@ public class TweenColor : TweenColorBase {
 	{//Can add any : en.wikipedia.org/wiki/Blend_modes . Underlay? 
 		Color var;
 		
-		if ( timeSettings.reverseValues ) {
+		if ( reverseValues ) {
 			var = colorOverTime.Evaluate(1 - lerp) * colorOverTimeMultiplier;
 		} else {
 			var = colorOverTime.Evaluate(lerp)*colorOverTimeMultiplier;

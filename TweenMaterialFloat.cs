@@ -38,7 +38,7 @@ using System.Collections;
 		}
 		protected override bool HasValidParameters()
 		{
-				return (mat && mat.HasProperty(propID) && interpolation.interpolation.length>0);
+				return (mat && mat.HasProperty(propID) && interpolationCurve.length>0);
 		}
 		protected override void Awake()
 		{

@@ -13,7 +13,7 @@ public class TweenMoveEditor : Editor {
         if ( item.WarningRendererVisibilityCheck(item) ) {
             UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
         }
-        DrawDefaultInspector();
+        base.OnInspectorGUI();
         if ( GUILayout.Button("Set to Start") ) {
             SetToStart();
         }

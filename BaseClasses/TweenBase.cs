@@ -6,7 +6,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 using System;
-using UnityEngine.Serialization;
+
 
 namespace InspectorTween{
 	//RTEase by MattRix : https://gist.github.com/MattRix/feea68fd3dae16c760d6c665fd530d46
@@ -254,51 +254,66 @@ namespace InspectorTween{
 		}
 	}
 
-	public abstract class TweenBase : MonoBehaviour 
-	{
-
+	public abstract class TweenBase : MonoBehaviour {
+		public TweenMask settingsMask;
 		
 		private Coroutine tweenCoroutine;
-			static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
-			static readonly WaitForFixedUpdate fixedWait = new WaitForFixedUpdate();
-			private WaitForSeconds setWait;// new WaitForSeconds(1f/30f);
-			private WaitForSeconds startDelayWait;
-			public new string name;
+		static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
+		static readonly WaitForFixedUpdate fixedWait = new WaitForFixedUpdate();
+		private WaitForSeconds setWait;// new WaitForSeconds(1f/30f);
+		private WaitForSeconds startDelayWait;
+		public new string name;
 		public bool useNameAsRandomSeed;
-			public enum UpdateType {Update,FixedUpdate,GlobalTime};
-			public enum VisibilityPause {None,Self,AllChildren};
-			[Serializable]
-			public class UpdateInterface{
-				public UpdateType updateType;
-				public VisibilityPause pauseOffscreen = VisibilityPause.AllChildren;
-				public bool respectGlobalTimeScale = true;
 
-				public enum PlaySpeed { All=0,_90_FPS=90, _60_FPS = 60, _30_FPS = 30, _24_FPS = 24, _12_FPS = 12 , _6_FPS = 6, _1_FPS = 1};
-				public PlaySpeed playSpeed;
-				[Space(-10)]
-				[Header("On Disable")]
-				[Tooltip("Stop interpolation at current value on disable")]
-				public bool allowInterupt = false;
-			}
-			public UpdateInterface updateSettings;
-			private UpdateType updateType {get{return updateSettings.updateType;}
-			}
-			private VisibilityPause pauseOffscreen {get{return updateSettings.pauseOffscreen;}
-			}
-        //private float _count; //Current tween time. 
-        // protected float count { get { return _count; }set { _count = value;} }
+		public enum UpdateType {
+			Update,
+			FixedUpdate,
+			GlobalTime
+		};
+
+		public enum VisibilityPause {
+			None,
+			Self,
+			AllChildren
+		};
+
+		[Serializable]
+		public class UpdateInterface {
+			public UpdateType updateType;
+			public VisibilityPause pauseOffscreen = VisibilityPause.AllChildren;
+			public bool respectGlobalTimeScale = true;
+
+			public enum PlaySpeed {
+				All = 0,
+				_90_FPS = 90,
+				_60_FPS = 60,
+				_30_FPS = 30,
+				_24_FPS = 24,
+				_12_FPS = 12,
+				_6_FPS = 6,
+				_1_FPS = 1
+			};
+
+			public PlaySpeed playSpeed;
+
+			[Space(-10)] [Header("On Disable")] [Tooltip("Stop interpolation at current value on disable")]
+			public bool allowInterupt;
+		}
+		public UpdateInterface updateSettings;
+#region updateAccessors
+		private UpdateType updateType => settingsMask == null ? updateSettings.updateType : settingsMask.updateSettings.updateType;
+		private VisibilityPause pauseOffscreen => settingsMask == null ? updateSettings.pauseOffscreen : settingsMask.updateSettings.pauseOffscreen;
+		protected bool respectGlobalTimeScale => settingsMask == null ? updateSettings.respectGlobalTimeScale : settingsMask.updateSettings.respectGlobalTimeScale;
+		private UpdateInterface.PlaySpeed playSpeed => settingsMask == null ? updateSettings.playSpeed : settingsMask.updateSettings.playSpeed;
+		protected bool allowInterupt => settingsMask == null ? updateSettings.allowInterupt : settingsMask.updateSettings.allowInterupt;
+
+		#endregion
+#region updateRuntimeVariables
             protected float count;
 			protected float loopCount;
 			protected int currentLoop;
 			protected float timeAtLastUpdate;
-			protected bool respectGlobalTimeScale {get{return updateSettings.respectGlobalTimeScale;}}
-			protected bool allowInterupt {get{return updateSettings.allowInterupt;}}
-			//[NonSerialized][HideInInspector]public bool interupt; //flag set to force stop of Coroutine.
-
-
-		//tween types to choose from.
-		//public enum TweenTypes { Linear, Step, Quadratic, Cubic, Back, Exponential, Sine, Elastic };
-		//public enum TweenFX {None,Bounce,Step,Random,Elastic,Anticipate};
+#endregion
 
 		[Serializable]
 		public class TimeInterface{
@@ -315,34 +330,65 @@ namespace InspectorTween{
 			[Tooltip("Sets to start interpolation at script start (before delay)")]
 			public bool initBeforeDelay;
 			[Tooltip("Time in seconds before animation starts playing [depricating in favour of below]")]
-			public float startDelay = 0f;
+			public float startDelay;
 			[Tooltip("Start Delay within random range. Trumps `start Delay.`")]
 			public Vector2 randomStartDelay;
 			[Tooltip("Randomize and run the delay every loop iteration")]
-			public bool delayEveryLoop = false;
+			public bool delayEveryLoop ;
 			[Tooltip("Set Y above 0 for random start time. Time in Seconds")]
 			public Vector2 startAtTime = new Vector2(0f,-1f);
 			
 			[Header("Tween End")]
 			[Tooltip("Reset to first value at end of playing or script cancel if allowed.")]
-			public bool resetToBegining = false;
+			public bool resetToBegining;
 		}
 		public TimeInterface timeSettings;
+#region timeSettingsAccessors
+		protected bool reverse {
+			get{return settingsMask == null ? timeSettings.reverse : settingsMask.runtimeTimeReverse;} 
+			set {
+				if ( settingsMask == null ) {
+					timeSettings.reverse = value;
+				} else {
+					settingsMask.runtimeTimeReverse = value;
+				}
+			}
+		}
+		public bool reverseValues {
+			get { return settingsMask == null ? timeSettings.reverseValues : settingsMask.runtimeTimeReverseValues; }
+			set {
+				if ( settingsMask == null ) {
+					timeSettings.reverseValues = value;
+				} else {
+					settingsMask.runtimeTimeReverseValues = value;
+				}
+				
+			}
+		}
+		public float time {get{return settingsMask == null ? timeSettings.time : settingsMask.runtimeTime;} 
+			set{
+				if ( settingsMask == null ) {
+					timeSettings.time = value;
+				} else {
+					settingsMask.runtimeTime = value;
+				}
+			}
+		}
+		protected Vector2 timeRandomScale => settingsMask == null ? timeSettings.timeRandomScale : settingsMask.timeSettings.timeRandomScale;
+		protected bool initBeforeDelay => settingsMask == null ? timeSettings.initBeforeDelay : settingsMask.timeSettings.initBeforeDelay;
+		protected bool delayEveryLoop => settingsMask == null ? timeSettings.delayEveryLoop : settingsMask.timeSettings.delayEveryLoop;
+		protected Vector2 startAtTime => settingsMask == null ? timeSettings.startAtTime : settingsMask.timeSettings.startAtTime;
+		protected bool resetToBegining => settingsMask == null ? timeSettings.resetToBegining : settingsMask.timeSettings.resetToBegining;
 
-		protected bool reverse {get{return timeSettings.reverse;} set {timeSettings.reverse=value;} }
-
-		protected float time {get{return timeSettings.time;}}
-		protected Vector2 timeRandomScale {get{return timeSettings.timeRandomScale;}}
-
+		#endregion
+#region timeRelatedVariablesRuntime
 		protected float timeScale = 1f; //sets to randomized value.
 		protected int loopItteration = -1; //this number tracks the number of loops run.
-
 		protected bool initializeCountOnEnable = true;// {get{return timeSettings.initBeforeDelay;}}
-		protected bool resetToBegining {get{return timeSettings.resetToBegining;}}
-		protected float startDelay {get{return Mathf.Max(0,timeSettings.startDelay);}}
-		protected Vector2 startAtTime {get{return timeSettings.startAtTime;}}
-
-
+		
+		protected float startDelay => Mathf.Max(0,settingsMask == null ? timeSettings.startDelay : settingsMask.timeSettings.startDelay);
+		protected Vector2 randomStartDelay => settingsMask == null ? timeSettings.randomStartDelay : settingsMask.timeSettings.randomStartDelay;
+#endregion
 
 
 		[Serializable]
@@ -350,7 +396,7 @@ namespace InspectorTween{
 			[Tooltip("Loops using curve loop settings if using curve")]
 			public bool loop = true;
 			[Tooltip("Randomizes time scaling every loop instead of once at start")]
-			public bool timeRandomEveryLoop = false;
+			public bool timeRandomEveryLoop;
 			[Tooltip("Number of times to loop. -1 for infinite.")]
 			public float loopNumberOfTimes = -1;
 			[Header("Curve")]
@@ -367,20 +413,28 @@ namespace InspectorTween{
 			public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut = ProgramaticInterpolation.TweenTypes.Linear;
 			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
 		}
-		//[Header("Interpolation")]
 		public InterpolationInterface interpolation;
-		protected bool useCurve {get{return interpolation.useCurve;}}
-		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation {get{return interpolation.nonCurveInterpolation;}}
-
+		
+#region interpolationAccessors
 		protected bool loop {get{return interpolation.loop;}}
 		protected bool timeRandomEveryLoop{get{return interpolation.timeRandomEveryLoop;}}
 		protected float loopNumberOfTimes {get{return interpolation.loopNumberOfTimes;}}
+		protected bool useCurve {get{return interpolation.useCurve;}}
+		protected AnimationCurve interpolationCurve => settingsMask == null ? interpolation.interpolation : settingsMask.interpolation.interpolation;
+		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation => 
+			settingsMask == null ? interpolation.nonCurveInterpolation :settingsMask.interpolation.nonCurveInterpolation;
+		public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut => 
+			settingsMask == null ? interpolation.nonCurveInterpolationOut : settingsMask.interpolation.nonCurveInterpolationOut;
+		public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode => 
+			settingsMask == null ? interpolation.nonCurveLoopMode : settingsMask.interpolation.nonCurveLoopMode;
+#endregion
+		
 		protected bool currentlyLooping;//Set to current loop status in coroutine and used to cancel at loop end.
 		protected int currentLoopNumberOfTimes;
 	
 	
 		protected abstract void LerpParameters(float lerp); //must be overriden to provide lerp
-		protected virtual bool HasValidParameters(){ return (interpolation.interpolation.length > 0);} //validate
+		protected virtual bool HasValidParameters(){ return (interpolationCurve.length > 0);} //validate
 		protected bool isPaused; //pause Coroutine
 		
 #if UNITY_EDITOR
@@ -392,36 +446,40 @@ namespace InspectorTween{
 
 		[Serializable]
 		public class EventInterface{
-			public float eventTime = 0f;
+			public float eventTime;
 			public UnityEvent atTime;
 			public UnityEvent onLoopComplete;
 		}
+		
 		private bool eventInvoked;
 		public EventInterface events;
+		protected float eventTime => settingsMask == null ? events.eventTime : settingsMask.events.eventTime;
+		public UnityEvent atTime => settingsMask == null ? events.atTime : settingsMask.events.atTime;
+		public UnityEvent onLoopComplete => settingsMask == null ? events.onLoopComplete : settingsMask.events.onLoopComplete;
+		
 		
 		protected virtual void Reset() {//Called Editor only when Component is first added.
 			if ( interpolation == null ) {
 				interpolation = new InterpolationInterface();
 				//Debug.Log("no class yet");
 			}
-			if ( interpolation.interpolation == null ) {
-				Debug.Log("no curve yet");
-			}
 			interpolation.interpolation.postWrapMode = WrapMode.Loop;
 			interpolation.interpolation.preWrapMode = WrapMode.Loop;
 			RectTransform rt = GetComponent<RectTransform>();
-			if ( rt != null ) { //Default UI components to have a sane default
-				updateSettings = new UpdateInterface();//this hasn't been created yet as that 'usually' happens in UI
-				updateSettings.pauseOffscreen = VisibilityPause.None;
-				updateSettings.respectGlobalTimeScale = false;
+			if ( rt == null ) {
+				return;
 			}
-			
+
+			//Default UI components to have a sane default
+			updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
 		}
 
+
+
 		protected virtual void Awake() {
-			if ( timeSettings.randomStartDelay.x > 0 && timeSettings.randomStartDelay.y > 0 ) {
+			if ( randomStartDelay.x > 0 && randomStartDelay.y > 0 ) {
 				string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
-				float newDelay = MathS.TrulyRandomRange(Mathf.Max(0,timeSettings.randomStartDelay.x), Mathf.Max(0,timeSettings.randomStartDelay.y), seed);
+				float newDelay = MathS.TrulyRandomRange(Mathf.Max(0,randomStartDelay.x), Mathf.Max(0,randomStartDelay.y), seed);
 				startDelayWait = new WaitForSeconds(newDelay);
 				timeAtLastUpdate = Time.realtimeSinceStartup;
 			} else {
@@ -430,13 +488,13 @@ namespace InspectorTween{
 
 			
 			
-			if (updateSettings.playSpeed != UpdateInterface.PlaySpeed.All) {
-				float waitStep = 1f / (float)updateSettings.playSpeed;
+			if (playSpeed != UpdateInterface.PlaySpeed.All) {
+				float waitStep = 1f / (float)playSpeed;
 				if (waitStep > Time.fixedDeltaTime) {
 					setWait = new WaitForSeconds(waitStep);
 				}
 			}
-			switch ( updateSettings.pauseOffscreen ) {
+			switch ( settingsMask == null ? updateSettings.pauseOffscreen : settingsMask.updateSettings.pauseOffscreen ) {
 				case VisibilityPause.AllChildren:
 					renderers = GetComponentsInChildren<Renderer>(true);
 					break;
@@ -539,22 +597,22 @@ namespace InspectorTween{
 
 			count = startAt;
 			timeAtLastUpdate = Time.time; //initialize time for start
-			ProgramaticInterpolation.InterpolationFunc getLerp = interpolation.interpolation.Evaluate;
+			ProgramaticInterpolation.InterpolationFunc getLerp = interpolationCurve.Evaluate;
 			if(!useCurve){
-				programaticTweenMixer = new ProgramaticInterpolation.InterpolationMixer(interpolation.nonCurveInterpolation, interpolation.nonCurveInterpolationOut,interpolation.nonCurveLoopMode);
+				programaticTweenMixer = new ProgramaticInterpolation.InterpolationMixer(nonCurveInterpolation, nonCurveInterpolationOut,nonCurveLoopMode);
 				getLerp = programaticTweenMixer.Tween;
 			}
-			if(timeSettings.initBeforeDelay){
+			if(initBeforeDelay){
 				LerpParameters(getLerp(count));//set to start values.
 			}
 			if(startDelayWait != null){
 				yield return startDelayWait;
 			}
-			if(events.eventTime == 0 && !eventInvoked){ //invoke time zero events before lerp.
-				events.atTime.Invoke();
+			if(eventTime == 0 && !eventInvoked){ //invoke time zero events before lerp.
+				atTime.Invoke();
 				eventInvoked = true;
 			}
-			if(!timeSettings.initBeforeDelay){
+			if(!initBeforeDelay){
 				LerpParameters(getLerp(count));//set to start values.
 			}
 			while(TimeCheck() && enabled){
@@ -576,14 +634,14 @@ namespace InspectorTween{
 
 				float lerp;// =  interpolation.Evaluate(count/time);//getLerp(count/time);
 				if(useCurve){
-						lerp =  interpolation.interpolation.Evaluate(count/time);//getLerp(count/time);
+						lerp = interpolationCurve.Evaluate(count/time);//getLerp(count/time);
 				}
 				else{
 					lerp = getLerp(count/time);
 				}
 				LerpParameters(lerp); //*** DO THE ACTUAL LERP***
 				float timeVal = Time.unscaledDeltaTime;
-                if (updateSettings.playSpeed != UpdateInterface.PlaySpeed.All) {
+                if (playSpeed != UpdateInterface.PlaySpeed.All) {
 					float timeNow = Time.realtimeSinceStartup;
 					timeVal = timeNow - timeAtLastUpdate;
 					timeAtLastUpdate = timeNow;
@@ -604,27 +662,27 @@ namespace InspectorTween{
 				loopCount += loopIncrement;
 
 				if ( reverse ) {
-					if(loopCount <= events.eventTime && !eventInvoked){
-						events.atTime.Invoke();
+					if(loopCount <= eventTime && !eventInvoked){
+						atTime.Invoke();
 						eventInvoked = true;
 					}
 				} else {
-					if(loopCount >= events.eventTime && !eventInvoked){
-						events.atTime.Invoke();
+					if(loopCount >= eventTime && !eventInvoked){
+						atTime.Invoke();
 						eventInvoked = true;
 					}
 				}
 				
                 if (currentLoop != Mathf.FloorToInt(count / time)) {//DetectStart of new loop
-					if (timeSettings.delayEveryLoop && startDelay != 0) { //depricate this at some point.
+					if (delayEveryLoop && startDelay != 0) { //depricate this at some point.
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;			
 						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
                         yield return new WaitForSeconds(newDelay);
 						//Debug.Log(this.gameObject.name + " : " + newDelay);
                         timeAtLastUpdate = Time.realtimeSinceStartup;
-					}else if (timeSettings.delayEveryLoop && timeSettings.randomStartDelay.x != 0 && timeSettings.randomStartDelay.y != 0 ) {
+					}else if (delayEveryLoop && randomStartDelay.x != 0 && randomStartDelay.y != 0 ) {
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;			
-						float newDelay = MathS.TrulyRandomRange(timeSettings.randomStartDelay.x, timeSettings.randomStartDelay.y , seed);
+						float newDelay = MathS.TrulyRandomRange(randomStartDelay.x, randomStartDelay.y , seed);
 						yield return new WaitForSeconds(newDelay);
 						timeAtLastUpdate = Time.realtimeSinceStartup;
 					}
@@ -653,14 +711,14 @@ namespace InspectorTween{
             }
 			float lerpVal;
 			if(useCurve){
-				lerpVal =  interpolation.interpolation.Evaluate(resetToBegining?start:end);//getLerp(count/time);
+				lerpVal =  interpolationCurve.Evaluate(resetToBegining?start:end);//getLerp(count/time);
 			
 			} else {
 				lerpVal = getLerp(resetToBegining?start:end);
 			}
 			LerpParameters(lerpVal);
-			if(events.onLoopComplete.GetPersistentEventCount() > 0){
-				events.onLoopComplete.Invoke();
+			if(onLoopComplete.GetPersistentEventCount() > 0){
+				onLoopComplete.Invoke();
 			}
 			enabled = false;
 		}
@@ -720,8 +778,8 @@ namespace InspectorTween{
 						LerpParameters(0f);
 						count = 0f;
 					}
-					if (events.onLoopComplete.GetPersistentEventCount() > 0) { //manually fire end event.
-						events.onLoopComplete.Invoke();
+					if (onLoopComplete.GetPersistentEventCount() > 0) { //manually fire end event.
+						onLoopComplete.Invoke();
 					}
 					break;
 				case TweenCancelType.HardStop: //force to stop where is. no end events.
