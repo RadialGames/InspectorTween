@@ -36,7 +36,7 @@ using System.Collections;
 		}
 		protected override bool HasValidParameters()
 		{
-				return (interpolation.interpolation.length>0 && (property != null || method != null) );
+				return (interpolationCurve.length>0 && (property != null || method != null) );
 		}
 		protected override void Awake()
 		{

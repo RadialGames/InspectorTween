@@ -47,7 +47,7 @@ namespace InspectorTween {
 
 		protected override bool HasValidParameters()
 		{
-				return (interpolation.interpolation.length>0 && (sprites.Length>0) && base.HasValidParameters() );
+				return (interpolationCurve.length>0 && (sprites.Length>0) && base.HasValidParameters() );
 		}
 		protected override void Awake() {
 			if ( target == null ) {

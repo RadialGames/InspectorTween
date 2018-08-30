@@ -123,7 +123,7 @@ namespace InspectorTween{
         {
 			Transform tform = targetTransform != null? targetTransform : transform;
             if (rotationType == rotationTypes.Euler) {
-	            if ( timeSettings.reverseValues ) {
+	            if ( reverseValues ) {
 		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.reversedValues, lerp));
 	            } else {
 		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.moveRotations, lerp));
@@ -137,7 +137,7 @@ namespace InspectorTween{
 					}
 				}
 #endif
-	            if ( timeSettings.reverseValues ) {
+	            if ( reverseValues ) {
 		            tform.localRotation = LerpParameter(this.reversedQuaternions,lerp);
 	            } else {
 		            tform.localRotation = LerpParameter(this.rotationList,lerp);
