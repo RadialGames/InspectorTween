@@ -344,7 +344,7 @@ namespace InspectorTween{
 		}
 		public TimeInterface timeSettings;
 #region timeSettingsAccessors
-		protected bool reverse {
+		public bool reverse {
 			get{return settingsMask == null ? timeSettings.reverse : settingsMask.runtimeTimeReverse;} 
 			set {
 				if ( settingsMask == null ) {
@@ -816,7 +816,23 @@ namespace InspectorTween{
 				enabled = true;
 			}
 		}
-
+		/// <summary>
+		/// Plays the tween from current settings
+		/// </summary>
+		public void PlayFromCurrentState(){
+			if(!gameObject.activeInHierarchy){
+				//Debug.LogWarning("Can't play on inactive object");
+				return;
+			}
+			if(enabled){
+				StartCoroutine(RestartPlay());
+			} else{
+				initializeCountOnEnable =  !reverse; //in case was reversed previously//set this to respect input start time parameter on enable
+				count = reverse ? time : 0;
+				loopCount = 0;
+				DoTween();
+			}
+		}
 		/// <summary>
 		/// Initiates play of tween from 0.
 		/// </summary>
