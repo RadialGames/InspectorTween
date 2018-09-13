@@ -14,10 +14,17 @@ public class TweenMoveEditor : TweenBaseEditor {
             UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
         }
         base.OnInspectorGUI();
-        if ( GUILayout.Button("Set to Start") ) {
+        //if ( GUILayout.Button("Set to Start") ) {
+        //EditorGUILayout.GetControlRect(false, 50);
+        Rect buttonSize = EditorGUILayout.GetControlRect(false, 19);
+        buttonSize.width = buttonSize.width * 0.5f;
+        
+        if ( GUI.Button(buttonSize,"Set to Start") ) {
             SetToStart();
         }
-        if ( GUILayout.Button("Set to End") ) {
+
+        buttonSize.x += buttonSize.width;
+        if ( GUI.Button(buttonSize,"Set to End") ) {
             SetToEnd();
         }
         if ( GUILayout.Button("InsertFrame") ) {

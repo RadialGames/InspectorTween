@@ -9,17 +9,21 @@ namespace InspectorTween{
 	{
 		[Space(10)]
 		[Tooltip("Leave this as null for current object.")]
+		[ConditionalHide("simpleMode",true,true)]
 		public Transform targetTransform;
 		[Space(10)]
 		[Tooltip("Start is relative from initial transform")]
 	
 		[SerializeField]
 		[ContextMenuItem("Set Array 0  to current","MatchStartToCurrent")]
+		[ConditionalHide("simpleMode",true,true)]
 		public bool startRelative = false;
 		[Tooltip("End is relative from initial transform")]
 		[SerializeField]
 		[ContextMenuItem("Set Array End  to current", "MatchEndToCurrent")]
+		[ConditionalHide("simpleMode",true,true)]
 		public bool EndIsRelativeOffsetFromStart = false;
+		[ConditionalHide("simpleMode",true,true)]
 		public Vector3 addRandomToTargets = new Vector3(-1,-1,-1);
 		protected int lastRandomTarget = -1;
 

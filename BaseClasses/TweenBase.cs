@@ -255,6 +255,8 @@ namespace InspectorTween{
 	}
 
 	public abstract class TweenBase : MonoBehaviour {
+		public bool simpleMode;
+		[ConditionalHide("simpleMode",true,true)]
 		public TweenMask settingsMask;
 		
 		private Coroutine tweenCoroutine;
@@ -263,6 +265,7 @@ namespace InspectorTween{
 		private WaitForSeconds setWait;// new WaitForSeconds(1f/30f);
 		private WaitForSeconds startDelayWait;
 		public new string name;
+		[ConditionalHide("simpleMode",true,true)]
 		public bool useNameAsRandomSeed;
 
 		public enum UpdateType {
@@ -296,9 +299,10 @@ namespace InspectorTween{
 
 			public PlaySpeed playSpeed;
 
-			[Space(-10)] [Header("On Disable")] [Tooltip("Stop interpolation at current value on disable")]
+			[Header("On Disable")] [Tooltip("Stop interpolation at current value on disable")]
 			public bool allowInterupt;
 		}
+		[ConditionalHide("simpleMode",true,true)]
 		public UpdateInterface updateSettings;
 #region updateAccessors
 		private UpdateType updateType => settingsMask == null ? updateSettings.updateType : settingsMask.updateSettings.updateType;
@@ -318,8 +322,10 @@ namespace InspectorTween{
 		[Serializable]
 		public class TimeInterface{
 			[Tooltip("Play backwards")]
+			[ConditionalHide("simpleMode",true,true)]
 			public bool reverse;
 			[Tooltip("Play curve forwards over value in reverse order")]
+			[ConditionalHide("simpleMode",true,true)]
 			public bool reverseValues;
 			[Tooltip("Time in seconds to play")]
 			public float time = 1f;
@@ -328,18 +334,22 @@ namespace InspectorTween{
 			
 			[Header("Tween Start")]
 			[Tooltip("Sets to start interpolation at script start (before delay)")]
+			[ConditionalHide("simpleMode",true,true)]
 			public bool initBeforeDelay;
 			[Tooltip("Time in seconds before animation starts playing [depricating in favour of below]")]
+			[ConditionalHide("simpleMode",true,true)]
 			public float startDelay;
 			[Tooltip("Start Delay within random range. Trumps `start Delay.`")]
 			public Vector2 randomStartDelay;
 			[Tooltip("Randomize and run the delay every loop iteration")]
+			[ConditionalHide("interpolation.loop",true,false)]
 			public bool delayEveryLoop ;
 			[Tooltip("Set Y above 0 for random start time. Time in Seconds")]
 			public Vector2 startAtTime = new Vector2(0f,-1f);
 			
 			[Header("Tween End")]
 			[Tooltip("Reset to first value at end of playing or script cancel if allowed.")]
+			[ConditionalHide("simpleMode",true,true)]
 			public bool resetToBegining;
 		}
 		public TimeInterface timeSettings;
@@ -396,23 +406,30 @@ namespace InspectorTween{
 			[Tooltip("Loops using curve loop settings if using curve")]
 			public bool loop = true;
 			[Tooltip("Randomizes time scaling every loop instead of once at start")]
+			[ConditionalHide("interpolation.loop",true,false)]
 			public bool timeRandomEveryLoop;
 			[Tooltip("Number of times to loop. -1 for infinite.")]
+			[ConditionalHide("interpolation.loop",true,false)]
 			public float loopNumberOfTimes = -1;
-			[Header("Curve")]
+			//[Header("Curve")]
 			[Tooltip("Uncheck to use non curve interpolation")]
 			public bool useCurve = true;
-			[Space(-10)]
-			[WarningHeader("!!! Wrap Mode set on curve ends","yellow")]
+
+			//[WarningHeader("!!! Wrap Mode set on curve ends","yellow")]
 			[Tooltip("Check set wrap settings for looping.")]
+			[ConditionalHide("useCurve",false,false)]
 			public AnimationCurve interpolation =  new AnimationCurve(new Keyframe(0,0),new Keyframe(1,1));
 	
-			[Header("Programatic")]
+			//[Header("Programatic")]
 			[Tooltip("Install GoTween for best results. Uses set function if useCurve is false.")]
+			[ConditionalHide("useCurve",true,true)]
 			public ProgramaticInterpolation.TweenTypes nonCurveInterpolation = ProgramaticInterpolation.TweenTypes.Linear;
+			[ConditionalHide("useCurve",true,true)]
 			public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut = ProgramaticInterpolation.TweenTypes.Linear;
+			[ConditionalHide("useCurve",true,true)]
 			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
 		}
+		
 		public InterpolationInterface interpolation;
 		
 #region interpolationAccessors
@@ -420,7 +437,17 @@ namespace InspectorTween{
 		protected bool timeRandomEveryLoop{get{return interpolation.timeRandomEveryLoop;}}
 		protected float loopNumberOfTimes {get{return interpolation.loopNumberOfTimes;}}
 		protected bool useCurve {get{return interpolation.useCurve;}}
-		protected AnimationCurve interpolationCurve => settingsMask == null ? interpolation.interpolation : settingsMask.interpolation.interpolation;
+		public AnimationCurve interpolationCurve {
+			get => settingsMask == null ? interpolation.interpolation : settingsMask.interpolation.interpolation;
+			set {
+				if ( settingsMask == null ) {
+					interpolation.interpolation = value;
+				} else {
+					settingsMask.interpolation.interpolation = value;
+				} 
+			}
+		}
+
 		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation => 
 			settingsMask == null ? interpolation.nonCurveInterpolation :settingsMask.interpolation.nonCurveInterpolation;
 		public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut => 
@@ -465,13 +492,15 @@ namespace InspectorTween{
 			}
 			interpolation.interpolation.postWrapMode = WrapMode.Loop;
 			interpolation.interpolation.preWrapMode = WrapMode.Loop;
-			RectTransform rt = GetComponent<RectTransform>();
-			if ( rt == null ) {
-				return;
-			}
 
-			//Default UI components to have a sane default
-			updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
+			RectTransform rt = GetComponent<RectTransform>();
+			if ( rt != null ) {
+				//Default UI components to have a sane default
+				updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
+			}
+#if UNITY_EDITOR
+			simpleMode = UnityEditor.EditorPrefs.GetBool("SimpleMode", false);
+#endif
 		}
 
 
