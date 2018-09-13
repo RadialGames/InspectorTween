@@ -15,7 +15,14 @@ public class TweenBaseEditor : Editor{
 	};
 
     public override void OnInspectorGUI() {
-	    Object t = target;
+	    TweenBase item = (TweenBase) target;
+	    if ( item.WarnCurveLooping(item) ) {
+		    UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
+	    }
+
+	    if ( item.WarningRendererVisibilityCheck(item) ) {
+		    UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
+	    }
 	    DoDrawDefaultInspector(this.serializedObject);
          //base.OnInspectorGUI();
 

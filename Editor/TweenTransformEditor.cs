@@ -2,20 +2,13 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(TweenMove))]
+
+
+[CustomEditor(typeof(TweenTransform))]
 [CanEditMultipleObjects]
-public class TweenMoveEditor : TweenBaseEditor {
+public class TweenTransformEditor : TweenBaseEditor {
     public override void OnInspectorGUI() {
-        TweenBase item = (TweenBase)target;
-        if (item.WarnCurveLooping(item)) {
-            UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
-        }
-        if ( item.WarningRendererVisibilityCheck(item) ) {
-            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
-        }
         base.OnInspectorGUI();
-        //if ( GUILayout.Button("Set to Start") ) {
-        //EditorGUILayout.GetControlRect(false, 50);
         Rect buttonSize = EditorGUILayout.GetControlRect(false, 19);
         buttonSize.width = buttonSize.width * 0.5f;
         
@@ -31,20 +24,32 @@ public class TweenMoveEditor : TweenBaseEditor {
             InsertFrame();
         }
     }
-
-    public void SetToStart() {
+    public virtual void SetToStart() {
         TweenTransform tween = ((TweenTransform) target);
         tween.targetTransform = tween.transform;
         tween.SetToLerpPoint(0f);
     }
 
-    public void SetToEnd() {
+    public virtual void SetToEnd() {
         TweenTransform tween = ((TweenTransform) target);
         tween.targetTransform = tween.transform;
         tween.SetToLerpPoint(1f);
     }
-    protected void InsertFrame() {
-        var tween = (TweenMove) target;
+
+    protected virtual void InsertFrame() {
+    }
+}
+
+[CustomEditor(typeof(TweenPosition))]
+[CanEditMultipleObjects]
+public class TweenPositionEditor : TweenTransformEditor {
+    public override void OnInspectorGUI() {
+        TweenBase item = (TweenBase)target;
+        base.OnInspectorGUI();
+
+    }
+    protected override void InsertFrame() {
+        var tween = (TweenPosition) target;
         var keys = tween.movePositions;
         int count = keys.Length;
         var newKeys = new Vector3[count + 1];
@@ -60,29 +65,14 @@ public class TweenMoveEditor : TweenBaseEditor {
 
 [CustomEditor(typeof(TweenScale))]
 [CanEditMultipleObjects]
-public class TweenScaleEditor : Editor {
+public class TweenScaleEditor : TweenTransformEditor {
+    
     public override void OnInspectorGUI() {
         TweenBase item = (TweenBase)target;
-        if (item.WarnCurveLooping(item)) {
-            UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
-        }
-        if ( item.WarningRendererVisibilityCheck(item) ) {
-            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
-        }
-        DrawDefaultInspector();
-        if ( GUILayout.Button("Set to Start") ) {
-            SetToStart();
-        }
-        if ( GUILayout.Button("Set to End") ) {
-            SetToEnd();
-        }
-        if ( GUILayout.Button("InsertFrame") ) {
-            InsertFrame();
-        }
-
+        base.OnInspectorGUI();
     }
 
-    protected void InsertFrame() {
+    protected override void InsertFrame() {
         var tween = (TweenScale) target;
         var keys = tween.scales;
         int count = keys.Length;
@@ -95,58 +85,19 @@ public class TweenScaleEditor : Editor {
         newKeys[insertFrame] = tween.transform.localScale;
         tween.scales = newKeys;
     }
-    
-    public void SetToStart() {
-        TweenTransform tween = ((TweenTransform) target);
-        tween.targetTransform = tween.transform;
-        tween.SetToLerpPoint(0f);
-    }
-
-    public void SetToEnd() {
-        TweenTransform tween = ((TweenTransform) target);
-        tween.targetTransform = tween.transform;
-        tween.SetToLerpPoint(1f);
-    }
 }
 
 [CustomEditor(typeof(TweenRotation))]
 [CanEditMultipleObjects]
-public class TweenRotationEditor : Editor {
+public class TweenRotationEditor : TweenTransformEditor {
     public override void OnInspectorGUI() {
        // base.OnInspectorGUI();
         TweenBase item = (TweenBase)target;
-        if (item.WarnCurveLooping(item)) {
-            UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
-        }
-        if ( item.WarningRendererVisibilityCheck(item) ) {
-            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
-        }
-        DrawDefaultInspector();		
 
-        if ( GUILayout.Button("Set to Start") ) {
-            SetToStart();
-        }
-        if ( GUILayout.Button("Set to End") ) {
-            SetToEnd();
-        }
-        if ( GUILayout.Button("InsertFrame") ) {
-            InsertFrame();
-        }
-
+        base.OnInspectorGUI();	
     }
 
-    public void SetToStart() {
-        TweenTransform tween = ((TweenTransform) target);
-        tween.targetTransform = tween.transform;
-        tween.SetToLerpPoint(0f);
-    }
-
-    public void SetToEnd() {
-        TweenTransform tween = ((TweenTransform) target);
-        tween.targetTransform = tween.transform;
-        tween.SetToLerpPoint(1f);
-    }
-    protected void InsertFrame() {
+    protected override void InsertFrame() {
         var tween = (TweenRotation) target;
         var keys = tween.moveRotations;
         int count = keys.Length;
@@ -161,54 +112,28 @@ public class TweenRotationEditor : Editor {
     }
 }
 
-
-
 [CustomEditor(typeof(TweenColor))]
 [CanEditMultipleObjects]
-public class TweenColorEditor : Editor {
+public class TweenColorEditor : TweenBaseEditor {
     public override void OnInspectorGUI() {
         // base.OnInspectorGUI();
         TweenBase item = (TweenBase)target;
-        if (item.WarnCurveLooping(item)) {
-            UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
-        }
-        if ( item.WarningRendererVisibilityCheck(item) ) {
-            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
-        }
-        DrawDefaultInspector();	
+        base.OnInspectorGUI();
     }
 }
 [CustomEditor(typeof(TweenColorRotation))]
 [CanEditMultipleObjects]
-public class TweenColorRotationEditor : Editor {
-    
+public class TweenColorRotationEditor : TweenTransformEditor {
     public override void OnInspectorGUI() {
         // base.OnInspectorGUI();
         TweenColorRotation item = (TweenColorRotation)target;
-        if (item.WarnCurveLooping(item)) {
-            UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
-        }
-        if ( item.WarningRendererVisibilityCheck(item) ) {
-            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
-        }
-        DrawDefaultInspector();	
-   
+        base.OnInspectorGUI();
         if (item.setMatrix) {
             UnityEditor.EditorGUILayout.HelpBox("use _MatrixYIQ property for supplied shaders or equivalent.", UnityEditor.MessageType.Info);
         }
         if ( GUILayout.Button("SetColor") ) {
             SetColor();
         }
-        if ( GUILayout.Button("Set to Start") ) {
-            SetToStart();
-        }
-        if ( GUILayout.Button("Set to End") ) {
-            SetToEnd();
-        }
-        if ( GUILayout.Button("InsertFrame") ) {
-            InsertFrame();
-        }
-
     }
 
     private bool initialSet;
@@ -220,7 +145,7 @@ public class TweenColorRotationEditor : Editor {
         TweenColorRotation tween = ((TweenColorRotation) target);
         tween.Awake();
     }
-    public void SetToStart() {
+    public override void SetToStart() {
         TweenColorRotation tween = ((TweenColorRotation) target);
         if ( !tween.useMaterial ) {
             Color initial;
@@ -242,7 +167,7 @@ public class TweenColorRotationEditor : Editor {
     }
 
 
-    public void SetToEnd() {
+    public override void SetToEnd() {
         TweenColorRotation tween = ((TweenColorRotation) target);
         if ( !tween.useMaterial ) {
             tween.Awake();
@@ -250,7 +175,7 @@ public class TweenColorRotationEditor : Editor {
         }
 
     }
-    protected void InsertFrame() {
+    protected override void InsertFrame() {
         var tween = (TweenColorRotation) target;
         var keys = tween.hsvValues;
         int count = keys.Length;
@@ -267,31 +192,17 @@ public class TweenColorRotationEditor : Editor {
 
 [CustomEditor(typeof(TweenMaterialFloat))]
 [CanEditMultipleObjects]
-public class TweenMaterialFloatEditor : Editor {
+public class TweenMaterialFloatEditor : TweenBaseEditor {
     public override void OnInspectorGUI() {
-        // base.OnInspectorGUI();
         TweenBase item = (TweenBase)target;
-        if (item.WarnCurveLooping(item)) {
-            UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
-        }
-        if ( item.WarningRendererVisibilityCheck(item) ) {
-            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
-        }
-        DrawDefaultInspector();	
+        base.OnInspectorGUI();
     }
 }
 [CustomEditor(typeof(TweenProperty))]
 [CanEditMultipleObjects]
-public class TweenPropertyEditor : Editor {
+public class TweenPropertyEditor : TweenBaseEditor {
     public override void OnInspectorGUI() {
-        // base.OnInspectorGUI();
         TweenBase item = (TweenBase)target;
-        if (item.WarnCurveLooping(item)) {
-            UnityEditor.EditorGUILayout.HelpBox("Curve is set to clamp, but tween is set to looping.", UnityEditor.MessageType.Warning);
-        }
-        if ( item.WarningRendererVisibilityCheck(item) ) {
-            UnityEditor.EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", UnityEditor.MessageType.Warning);
-        }
-        DrawDefaultInspector();	
+        base.OnInspectorGUI();
     }
 }
