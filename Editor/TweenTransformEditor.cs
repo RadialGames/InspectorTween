@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CustomEditor(typeof(TweenMove))]
 [CanEditMultipleObjects]
-public class TweenMoveEditor : Editor {
+public class TweenMoveEditor : TweenBaseEditor {
     public override void OnInspectorGUI() {
         TweenBase item = (TweenBase)target;
         if (item.WarnCurveLooping(item)) {
