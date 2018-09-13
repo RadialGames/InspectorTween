@@ -480,9 +480,9 @@ namespace InspectorTween{
 		
 		private bool eventInvoked;
 		public EventInterface events;
-		protected float eventTime => settingsMask == null ? events.eventTime : settingsMask.events.eventTime;
-		public UnityEvent atTime => settingsMask == null ? events.atTime : settingsMask.events.atTime;
-		public UnityEvent onLoopComplete => settingsMask == null ? events.onLoopComplete : settingsMask.events.onLoopComplete;
+		protected float eventTime => events.eventTime ;
+		public UnityEvent atTime => events.atTime ;
+		public UnityEvent onLoopComplete =>  events.onLoopComplete;
 		
 		
 		protected virtual void Reset() {//Called Editor only when Component is first added.

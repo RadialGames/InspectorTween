@@ -15,7 +15,6 @@ namespace InspectorTween {
 		[NonSerialized] public bool runtimeTimeReverseValues; //TODO : wrangle some fancyness so code side flipping doesn't mess up scriptable object initial setup.
 
 		public TweenBase.InterpolationInterface interpolation;
-		public TweenBase.EventInterface events;
 
 		private void Awake() {
 			runtimeTime = timeSettings.time;
