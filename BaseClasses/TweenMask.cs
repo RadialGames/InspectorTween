@@ -4,6 +4,8 @@ using UnityEngine;
 namespace InspectorTween {
 	[CreateAssetMenu(fileName = "TweenMask", menuName = "", order = 1)]
 	public class TweenMask : ScriptableObject {
+		public bool simpleMode;
+		[ConditionalHide("simpleMode",true,true)]
 		public TweenBase.UpdateInterface updateSettings;
 
 		
@@ -19,6 +21,17 @@ namespace InspectorTween {
 			runtimeTime = timeSettings.time;
 			runtimeTimeReverse = timeSettings.reverse;
 			runtimeTimeReverseValues = timeSettings.reverseValues;
+		}
+		protected virtual void Reset() {//Called Editor only when Component is first added.
+			if ( interpolation == null ) {
+				interpolation = new TweenBase.InterpolationInterface();
+				//Debug.Log("no class yet");
+			}
+			interpolation.interpolation.postWrapMode = WrapMode.Loop;
+			interpolation.interpolation.preWrapMode = WrapMode.Loop;
+#if UNITY_EDITOR
+			simpleMode = UnityEditor.EditorPrefs.GetBool("SimpleMode", false);
+#endif
 		}
 	}
 }
