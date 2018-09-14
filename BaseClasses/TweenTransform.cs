@@ -32,8 +32,8 @@ namespace InspectorTween{
 		protected Vector3[] newRandomTargets;
 		protected Vector3 randomValue = Vector3.zero;
 		protected Vector3[] reversedValues;
-		private Vector3[] tweenValues;
-		
+		//private Vector3[] tweenValues;
+		public abstract Vector3[] values { get; set; }
 		public abstract void SetInitial();
 
 		protected override void Awake() {

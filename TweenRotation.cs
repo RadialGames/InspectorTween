@@ -16,7 +16,10 @@ namespace InspectorTween{
 		private Quaternion[] newRandomRotations;
 		private bool useRandomOffset = false;
 		private Quaternion[] reversedQuaternions;
-		
+		public override Vector3[] values {
+			get => moveRotations;
+			set => moveRotations = value;
+		}
 		protected override void Awake()
 		{
 			base.Awake();

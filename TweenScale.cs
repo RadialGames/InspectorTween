@@ -20,7 +20,10 @@ using System.Collections;
 			base.Awake();
 			CacheReversedTweenValues(scales);
 		}
-
+		public override Vector3[] values {
+			get => scales;
+			set => scales = value;
+		}
 		void MatchStartToCurrent() {
 			scales[0] = targetTransform.localScale;
 		}

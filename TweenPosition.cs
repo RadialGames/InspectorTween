@@ -17,7 +17,10 @@ namespace InspectorTween{
 			SetInitial();
 			CacheReversedTweenValues(movePositions);
 		}
-		
+		public override Vector3[] values {
+			get => movePositions;
+			set => movePositions = value;
+		}
 		void MatchStartToCurrent() {
 			movePositions[0] = this.transform.localPosition;
 		}
