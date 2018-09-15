@@ -88,7 +88,7 @@ namespace InspectorTween{
 				}
 				if(tweenI == null) continue;
 				if(itemQueue[ind].timeLengthOverride != -1){
-					tweenI.Time( itemQueue[ind].timeLengthOverride );
+					tweenI.time = ( itemQueue[ind].timeLengthOverride );
 				}
 
 				tweenI.ReverseValues(itemQueue[ind].reverseValues);

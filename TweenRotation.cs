@@ -1,21 +1,21 @@
 ﻿// #Generic
 
+using System;
 using UnityEngine;
-using System.Collections;
 namespace InspectorTween{
 	[AddComponentMenu("InspectorTween/TweenRotation",2)]
 
-	public class TweenRotation : InspectorTween.TweenTransform
+	public class TweenRotation : TweenTransform
 	{
 		public enum rotationTypes {Euler,Slerp,Lerp};
 		public rotationTypes rotationType;
-		public Vector3[] moveRotations = new Vector3[2]{new Vector3(0,0,-180),new Vector3(0,0,180)};
+		public Vector3[] moveRotations = {new Vector3(0,0,-180),new Vector3(0,0,180)};
 		private Quaternion intitalRotation;
-		private Quaternion[] rotationList;
-		private Quaternion[] randomRotations;
-		private Quaternion[] newRandomRotations;
-		private bool useRandomOffset = false;
-		private Quaternion[] reversedQuaternions;
+		private Quaternion[] rotationList = new Quaternion[2];
+		private Quaternion[] randomRotations= new Quaternion[2];
+		private Quaternion[] newRandomRotations= new Quaternion[2];
+		private bool useRandomOffset;
+		[NonSerialized]private Quaternion[] reversedQuaternions= new Quaternion[2];
 		public override Vector3[] values {
 			get => moveRotations;
 			set => moveRotations = value;

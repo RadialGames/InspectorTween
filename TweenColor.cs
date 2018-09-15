@@ -3,6 +3,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Runtime.CompilerServices;
+
 namespace InspectorTween{
 [AddComponentMenu("InspectorTween/TweenColor",4)]
 
@@ -12,14 +14,15 @@ public class TweenColor : TweenColorBase {
 	public colorFunctions colorFunction;
 	public float colorOverTimeMultiplier = 1;
 
-
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	protected float Overlay(float a, float b){
 		return a<0.5f?2f*a*b:1-(2f*(1f-a)*(1f-b));
 	}
 	protected Color Overlay(Color a, Color b){
 		return new Color(Overlay(a.r,b.r),Overlay(a.g,b.g),Overlay(a.b,b.b),Overlay(a.a,b.a));
 	}
-	Color ColorDodge(Color baseColor,Color overColor){
+
+	private static Color ColorDodge(Color baseColor,Color overColor){
 		for(int i=0;i<4;i++){
 			baseColor[i] = baseColor[i] / (1f - Mathf.Min(0.99f,overColor[i]));
 		}

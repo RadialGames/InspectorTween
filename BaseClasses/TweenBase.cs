@@ -301,20 +301,36 @@ namespace InspectorTween {
 	}
 
 	public abstract class TweenBase : MonoBehaviour {
-		public bool simpleMode;
-
+		[SerializeField]protected bool simpleMode;
+	#if TWEEN_MASKS_ENABLED
+		/// <summary>
+		/// assign a TweenMask to override interface settings.
+		/// </summary>
 		[ConditionalHide("simpleMode", true, true)]
 		public TweenMask settingsMask;
-
+	#else
+		private TweenMask settingsMask; //Keep around for toggling and keeping state.
+	#endif
 		private Coroutine tweenCoroutine;
 		static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
 		static readonly WaitForFixedUpdate fixedWait = new WaitForFixedUpdate();
 		private WaitForSeconds setWait; // new WaitForSeconds(1f/30f);
 		private WaitForSeconds startDelayWait;
+		/// <summary>
+		/// name to label the component. Can be used as random seed if flag enabled so that tweens share randomness.
+		/// </summary>
 		public new string name;
 
+		/// <summary>
+		/// Mark so that any random parameters are seeded by the name on the component
+		/// </summary>
+		public bool useNameAsRandomSeed {
+			get => _useNameAsRandomSeed;
+			set => _useNameAsRandomSeed = value;
+		}
 		[ConditionalHide("simpleMode", true, true)]
-		public bool useNameAsRandomSeed;
+		[UnityEngine.Serialization.FormerlySerializedAs("useNameAsRandomSeed")]
+		[SerializeField]protected bool _useNameAsRandomSeed;
 
 		public enum UpdateType {
 			Update,
@@ -352,9 +368,20 @@ namespace InspectorTween {
 		}
 
 		[UnityEngine.Serialization.FormerlySerializedAs("updateSettings")] [ConditionalHide("simpleMode", true, true)]
-		[SerializeField]public UpdateInterface _updateSettings;
-		public UpdateInterface updateSettings => settingsMask == null ? _updateSettings : settingsMask.updateSettings;
-		
+		[SerializeField]protected UpdateInterface _updateSettings;
+		/// <summary>
+		/// Settings which affect update speed, pausing, and tween end resolution.
+		/// </summary>
+		public UpdateInterface updateSettings {
+			get {
+				#if TWEEN_MASKS_ENABLED
+				return settingsMask == null ? _updateSettings : settingsMask.updateSettings;
+				#else
+				return _updateSettings;
+				#endif
+			}
+		}
+
 		#region updateAccessors
 
 		private UpdateType updateType => settingsMask == null ? updateSettings.updateType : settingsMask.updateSettings.updateType;
@@ -382,7 +409,8 @@ namespace InspectorTween {
 			[Tooltip("Play curve forwards over value in reverse order")] [ConditionalHide("simpleMode", true, true)]
 			public bool reverseValues;
 
-			[Tooltip("Time in seconds to play")] public float time = 1f;
+			[Tooltip("Time in seconds to play")] 
+			public float time = 1f;
 
 			[Tooltip("multiply TIME by amount per instance. random between values specified. Good for multiple objects you want some variation on.")]
 			public Vector2 timeRandomScale = Vector2.one;
@@ -404,37 +432,82 @@ namespace InspectorTween {
 
 			[Header("Tween End")] [Tooltip("Reset to first value at end of playing or script cancel if allowed.")] [ConditionalHide("simpleMode", true, true)]
 			public bool resetToBegining;
+			
 		}
+		/// <summary>
+		/// Tween length adjustments, like delay and time scaling.
+		/// </summary>
 		[UnityEngine.Serialization.FormerlySerializedAs("timeSettings")] 
 		[SerializeField] protected TimeInterface _timeSettings;
-		public TimeInterface timeSettings => settingsMask == null ? _timeSettings : settingsMask.timeSettings;
-		#region timeSettingsAccessors
-
-		public bool reverse {
-			get { return settingsMask == null ? timeSettings.reverse : settingsMask.runtimeTimeReverse; }
-			set {
-				if ( settingsMask == null ) {
-					timeSettings.reverse = value;
-				} else {
-					settingsMask.runtimeTimeReverse = value;
-				}
+		public TimeInterface timeSettings {
+			get {
+				#if TWEEN_MASKS_ENABLED
+				return settingsMask == null ? _timeSettings : settingsMask.timeSettings;
+				#else
+				return _timeSettings;
+				#endif
 			}
 		}
+
+		#region timeSettingsAccessors
+		/// <summary>
+		/// set tween to play from end to start.
+		/// </summary>
+		public bool reverse {
+			get => timeSettings.reverse;
+			set => timeSettings.reverse = value;
+		}
+		/// <summary>
+		/// set tween play direction
+		/// </summary>
+		/// <param name="state">play backwards</param>
+		/// <returns>self</returns>
 		public TweenBase ReverseValues(bool state) {
 			timeSettings.reverseValues = state;
 			return this;
 		}
-		public TweenBase Time(float value) {
-			timeSettings.time = value;
+		/// <summary>
+		/// set tween play length in seconds
+		/// </summary>
+		public float time {
+			set => timeSettings.time = value;
+			get => timeSettings.time;
+		}
+		/// <summary>
+		/// set tween play length in seconds
+		/// </summary>
+		/// <param name="val">time in seconds</param>
+		/// <returns>self</returns>
+		public TweenBase SetTime(float val) {
+			if ( val <= 0 ) {
+				Debug.LogWarning("INSPECTOR TWEEN : play times must be greater than 0");
+				val = 1 / 60f;//lets' assume min play time to be 1/60th of a second instead of 0;
+			}
+			timeSettings.time = val;
 			return this;
 		}
-
-
-		protected Vector2 timeRandomScale => settingsMask == null ? timeSettings.timeRandomScale : settingsMask.timeSettings.timeRandomScale;
-		protected bool initBeforeDelay => settingsMask == null ? timeSettings.initBeforeDelay : settingsMask.timeSettings.initBeforeDelay;
-		protected bool delayEveryLoop => settingsMask == null ? timeSettings.delayEveryLoop : settingsMask.timeSettings.delayEveryLoop;
-		protected Vector2 startAtTime => settingsMask == null ? timeSettings.startAtTime : settingsMask.timeSettings.startAtTime;
-		protected bool resetToBegining => settingsMask == null ? timeSettings.resetToBegining : settingsMask.timeSettings.resetToBegining;
+		/// <summary>
+		/// set tween play length to be randomly within range
+		/// </summary>
+		/// <param name="min">minimum time to play tween</param>
+		/// <param name="max">maximum time to play tween</param>
+		/// <returns></returns>
+		public TweenBase SetTime(float min, float max) {
+			if ( max < min ) { //Assure correct order of parameters.
+				float temp = min;
+				min = max;
+				max = temp;
+			}
+			SetTime( min );
+			timeSettings.timeRandomScale.x = 1;
+			timeSettings.timeRandomScale.y = (max / min);
+			return this;
+		}
+		protected Vector2 timeRandomScale => timeSettings.timeRandomScale;
+		protected bool initBeforeDelay => timeSettings.initBeforeDelay ;
+		protected bool delayEveryLoop => timeSettings.delayEveryLoop ;
+		protected Vector2 startAtTime => timeSettings.startAtTime ;
+		protected bool resetToBegining => timeSettings.resetToBegining ;
 
 		#endregion
 
@@ -444,8 +517,8 @@ namespace InspectorTween {
 		protected int loopItteration = -1; //this number tracks the number of loops run.
 		protected bool initializeCountOnEnable = true; // {get{return timeSettings.initBeforeDelay;}}
 
-		protected float startDelay => Mathf.Max(0, settingsMask == null ? timeSettings.startDelay : settingsMask.timeSettings.startDelay);
-		protected Vector2 randomStartDelay => settingsMask == null ? timeSettings.randomStartDelay : settingsMask.timeSettings.randomStartDelay;
+		protected float startDelay => Mathf.Max(0, timeSettings.startDelay);
+		protected Vector2 randomStartDelay => timeSettings.randomStartDelay;
 
 		#endregion
 
@@ -479,81 +552,57 @@ namespace InspectorTween {
 			[ConditionalHide("useCurve", true, true)]
 			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
 			
-			
-			
-			
 		}
 
 		[UnityEngine.Serialization.FormerlySerializedAs("interpolation")] [SerializeField]
 		protected InterpolationInterface _interpolation;
-
-		public InterpolationInterface interpolation => settingsMask == null ? _interpolation : settingsMask.interpolation;
+		/// <summary>
+		/// specifications of how tween is interpolated
+		/// </summary>
+		public InterpolationInterface interpolation {
+			get {
+				#if TWEEN_MASKS_ENABLED
+				return settingsMask == null ? _interpolation : settingsMask.interpolation;
+				#else
+				return _interpolation;
+				#endif
+			}
+		}
 
 		#region interpolationAccessors
 
 		protected bool loop {
-			get => settingsMask == null ? interpolation.loop : settingsMask.interpolation.loop;
-			set {
-				if ( settingsMask == null ) {
-					interpolation.loop = value;
-				} else {
-					settingsMask.interpolation.loop = value;
-				}
-			}
+			get => interpolation.loop;
+			set => interpolation.loop = value;
 		}
 
 		protected bool timeRandomEveryLoop {
-			get => settingsMask == null ? interpolation.timeRandomEveryLoop : settingsMask.interpolation.timeRandomEveryLoop;
-			set {
-				if ( settingsMask == null ) {
-					interpolation.timeRandomEveryLoop = value;
-				} else {
-					settingsMask.interpolation.timeRandomEveryLoop = value;
-				}
-			}
+			get => interpolation.timeRandomEveryLoop;
+			set => interpolation.timeRandomEveryLoop = value;
 		}
 
 		protected float loopNumberOfTimes {
-			get => settingsMask == null ? interpolation.loopNumberOfTimes : settingsMask.interpolation.loopNumberOfTimes;
-			set {
-				if ( settingsMask == null ) {
-					interpolation.loopNumberOfTimes = value;
-				} else {
-					settingsMask.interpolation.loopNumberOfTimes = value;
-				}
-			}
+			get => interpolation.loopNumberOfTimes;
+			set => interpolation.loopNumberOfTimes = value;
 		}
 
 		protected bool useCurve {
-			get => settingsMask == null ? interpolation.useCurve : settingsMask.interpolation.useCurve;
-			set {
-				if ( settingsMask == null ) {
-					interpolation.useCurve = value;
-				} else {
-					settingsMask.interpolation.useCurve = value;
-				}
-			}
+			get => interpolation.useCurve ;
+			set => interpolation.useCurve = value;
 		}
-
+		/// <summary>
+		/// Animation curve which is evaluated to interpolate between values of tween is useCurve is true.
+		/// </summary>
 		public AnimationCurve interpolationCurve {
-			get => settingsMask == null ? interpolation.interpolation : settingsMask.interpolation.interpolation;
-			set {
-				if ( settingsMask == null ) {
-					interpolation.interpolation = value;
-				} else {
-					settingsMask.interpolation.interpolation = value;
-				}
-			}
+			get => interpolation.interpolation;
+			set => interpolation.interpolation = value;
 		}
 
-		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation =>
-			settingsMask == null ? interpolation.nonCurveInterpolation : settingsMask.interpolation.nonCurveInterpolation;
+		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation => interpolation.nonCurveInterpolation;
 
-		public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut =>
-			settingsMask == null ? interpolation.nonCurveInterpolationOut : settingsMask.interpolation.nonCurveInterpolationOut;
+		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut => interpolation.nonCurveInterpolationOut ;
 
-		public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode =>
-			settingsMask == null ? interpolation.nonCurveLoopMode : settingsMask.interpolation.nonCurveLoopMode;
+		protected ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode => interpolation.nonCurveLoopMode ;
 
 		#endregion
 
@@ -584,11 +633,13 @@ namespace InspectorTween {
 		}
 
 		private bool eventInvoked;
-		
+		/// <summary>
+		/// Events which fire on tween play
+		/// </summary>
 		public EventInterface events;
 		protected float eventTime => events.eventTime;
-		public UnityEvent atTime => events.atTime;
-		public UnityEvent onLoopComplete => events.onLoopComplete;
+		protected UnityEvent atTime => events.atTime;
+		protected UnityEvent onLoopComplete => events.onLoopComplete;
 
 
 		protected virtual void Reset() { //Called Editor only when Component is first added.
@@ -900,9 +951,21 @@ namespace InspectorTween {
 		}
 
 		public enum TweenCancelType {
+			/// <summary>
+			/// same as .enable = false;
+			/// </summary>
 			Finish,
+			/// <summary>
+			/// Stop playback, end tween, fire unfired events
+			/// </summary>
 			SoftStop,
+			/// <summary>
+			/// Cancel playback, reset to start, don't fire events.
+			/// </summary>
 			HardStop,
+			/// <summary>
+			/// play out the rest of the current loop, then quit
+			/// </summary>
 			CancelAtLoopEnd,
 		};
 
@@ -945,6 +1008,9 @@ namespace InspectorTween {
 					if ( resetToBegining ) { //force move back to beginning and reset count 
 						LerpParameters(0f);
 						count = 0f;
+					} else {
+						LerpParameters(1f);
+						count = 1;
 					}
 
 					if ( onLoopComplete.GetPersistentEventCount() > 0 ) { //manually fire end event.
