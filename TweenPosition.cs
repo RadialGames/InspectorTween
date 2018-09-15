@@ -29,7 +29,7 @@ namespace InspectorTween{
 		}
 		protected override void LerpParameters(float lerp) {
 			Vector3[] values = movePositions;
-			if ( reverseValues ) {
+			if ( timeSettings.reverseValues ) {
 				values = reversedValues;
 			}
 			if(rTransform){

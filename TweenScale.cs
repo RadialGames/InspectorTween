@@ -39,7 +39,7 @@ using System.Collections;
 		protected override void LerpParameters(float lerp)
 		{
 			if(!initialScale.HasValue) SetInitial();
-			if ( reverseValues) {
+			if ( timeSettings.reverseValues) {
 				targetTransform.localScale = LerpParameter(reversedValues,lerp);
 			} else {
 				targetTransform.localScale = LerpParameter(this.scales,lerp);

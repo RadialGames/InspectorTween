@@ -88,10 +88,10 @@ namespace InspectorTween{
 				}
 				if(tweenI == null) continue;
 				if(itemQueue[ind].timeLengthOverride != -1){
-					tweenI.time = itemQueue[ind].timeLengthOverride;
+					tweenI.Time( itemQueue[ind].timeLengthOverride );
 				}
 
-				tweenI.reverseValues = itemQueue[ind].reverseValues;
+				tweenI.ReverseValues(itemQueue[ind].reverseValues);
 
 				if(itemQueue[ind].reverse){
 					tweenI.PlayReverse();

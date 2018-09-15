@@ -86,7 +86,7 @@ namespace InspectorTween{
 		protected Quaternion LerpParameter(Quaternion[] tweenArr,float lerp)
 		{
 			if (useRandomOffset){
-                var testLerp = Mathf.FloorToInt(this.count/this.time);
+                var testLerp = Mathf.FloorToInt(this.count/timeSettings.time);
 				if (testLerp != lastRandomTarget) {
 					SetRandom(tweenArr.Length);
 					if (randomRotations==null || randomRotations.Length != randomTargets.Length) {
@@ -117,7 +117,8 @@ namespace InspectorTween{
 				scaleArrayLerp = GetStartRelative(scaleArrayLerp,lerp);//MathS.Vector3Lerp(initial,scaleArrayLerp,lerp);
 			}
 			if (useRandomOffset) {
-				scaleArrayLerp *= Quaternion.Lerp(LerpQuaternionArray(randomRotations, lerp) , LerpQuaternionArray(newRandomRotations, lerp), count / time % 1);
+				scaleArrayLerp *= Quaternion.Lerp(LerpQuaternionArray(randomRotations, lerp) ,
+				                                  LerpQuaternionArray(newRandomRotations, lerp), count / timeSettings.time % 1);
 			}
 			return (scaleArrayLerp);
 		}
@@ -126,7 +127,7 @@ namespace InspectorTween{
         {
 			Transform tform = targetTransform != null? targetTransform : transform;
             if (rotationType == rotationTypes.Euler) {
-	            if ( reverseValues ) {
+	            if ( timeSettings.reverseValues ) {
 		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.reversedValues, lerp));
 	            } else {
 		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.moveRotations, lerp));
@@ -140,7 +141,7 @@ namespace InspectorTween{
 					}
 				}
 #endif
-	            if ( reverseValues ) {
+	            if ( timeSettings.reverseValues ) {
 		            tform.localRotation = LerpParameter(this.reversedQuaternions,lerp);
 	            } else {
 		            tform.localRotation = LerpParameter(this.rotationList,lerp);

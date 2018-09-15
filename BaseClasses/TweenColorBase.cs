@@ -100,7 +100,7 @@ namespace InspectorTween{
             image = target.GetComponent<Graphic>();//Image,Text,RawImage...
             if(image != null){
                 type = objectType.Graphic;
-                this.updateSettings.pauseOffscreen = VisibilityPause.None; //no renderer on these?
+                updateSettings.pauseOffscreen = VisibilityPause.None; //no renderer on these?
                 initialColor = image.color;
                 return;
             }

@@ -351,9 +351,10 @@ namespace InspectorTween {
 			public bool allowInterupt;
 		}
 
-		[ConditionalHide("simpleMode", true, true)]
-		public UpdateInterface updateSettings;
-
+		[UnityEngine.Serialization.FormerlySerializedAs("updateSettings")] [ConditionalHide("simpleMode", true, true)]
+		[SerializeField]public UpdateInterface _updateSettings;
+		public UpdateInterface updateSettings => settingsMask == null ? _updateSettings : settingsMask.updateSettings;
+		
 		#region updateAccessors
 
 		private UpdateType updateType => settingsMask == null ? updateSettings.updateType : settingsMask.updateSettings.updateType;
@@ -404,9 +405,9 @@ namespace InspectorTween {
 			[Header("Tween End")] [Tooltip("Reset to first value at end of playing or script cancel if allowed.")] [ConditionalHide("simpleMode", true, true)]
 			public bool resetToBegining;
 		}
-
-		public TimeInterface timeSettings;
-
+		[UnityEngine.Serialization.FormerlySerializedAs("timeSettings")] 
+		[SerializeField] protected TimeInterface _timeSettings;
+		public TimeInterface timeSettings => settingsMask == null ? _timeSettings : settingsMask.timeSettings;
 		#region timeSettingsAccessors
 
 		public bool reverse {
@@ -419,43 +420,15 @@ namespace InspectorTween {
 				}
 			}
 		}
-
-		public TweenBase SetReverse(bool state) {
-			reverse = state;
+		public TweenBase ReverseValues(bool state) {
+			timeSettings.reverseValues = state;
+			return this;
+		}
+		public TweenBase Time(float value) {
+			timeSettings.time = value;
 			return this;
 		}
 
-		public bool reverseValues {
-			get { return settingsMask == null ? timeSettings.reverseValues : settingsMask.runtimeTimeReverseValues; }
-			set {
-				if ( settingsMask == null ) {
-					timeSettings.reverseValues = value;
-				} else {
-					settingsMask.runtimeTimeReverseValues = value;
-				}
-			}
-		}
-
-		public TweenBase SetReverseValues(bool state) {
-			reverseValues = state;
-			return this;
-		}
-
-		public float time {
-			get { return settingsMask == null ? timeSettings.time : settingsMask.runtimeTime; }
-			set {
-				if ( settingsMask == null ) {
-					timeSettings.time = value;
-				} else {
-					settingsMask.runtimeTime = value;
-				}
-			}
-		}
-
-		public TweenBase SetTime(float value) {
-			time = value;
-			return this;
-		}
 
 		protected Vector2 timeRandomScale => settingsMask == null ? timeSettings.timeRandomScale : settingsMask.timeSettings.timeRandomScale;
 		protected bool initBeforeDelay => settingsMask == null ? timeSettings.initBeforeDelay : settingsMask.timeSettings.initBeforeDelay;
@@ -505,6 +478,10 @@ namespace InspectorTween {
 
 			[ConditionalHide("useCurve", true, true)]
 			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
+			
+			
+			
+			
 		}
 
 		[UnityEngine.Serialization.FormerlySerializedAs("interpolation")] [SerializeField]
@@ -607,6 +584,7 @@ namespace InspectorTween {
 		}
 
 		private bool eventInvoked;
+		
 		public EventInterface events;
 		protected float eventTime => events.eventTime;
 		public UnityEvent atTime => events.atTime;
@@ -625,7 +603,7 @@ namespace InspectorTween {
 			RectTransform rt = GetComponent<RectTransform>();
 			if ( rt != null ) {
 				//Default UI components to have a sane default
-				updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
+				_updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
 			}
 #if UNITY_EDITOR
 			simpleMode = UnityEditor.EditorPrefs.GetBool("SimpleMode", false);
@@ -757,7 +735,7 @@ namespace InspectorTween {
 		/// </summary>
 		/// <returns></returns>
 		private bool TimeCheck() {
-			return (currentlyLooping || (count <= time && count >= 0f));
+			return (currentlyLooping || (count <= timeSettings.time && count >= 0f));
 		}
 
 		protected ProgramaticInterpolation.InterpolationMixer programaticTweenMixer;
@@ -794,7 +772,7 @@ namespace InspectorTween {
 			}
 
 			while ( TimeCheck() && enabled ) {
-				if ( currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount / time >= currentLoopNumberOfTimes )
+				if ( currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount / timeSettings.time >= currentLoopNumberOfTimes )
 					break; //stop loop, not coroutine.
 
 				bool doPause = false;
@@ -814,9 +792,9 @@ namespace InspectorTween {
 
 				float lerp; // =  interpolation.Evaluate(count/time);//getLerp(count/time);
 				if ( useCurve ) {
-					lerp = interpolationCurve.Evaluate(count / time); //getLerp(count/time);
+					lerp = interpolationCurve.Evaluate(count / timeSettings.time); //getLerp(count/time);
 				} else {
-					lerp = getLerp(count / time);
+					lerp = getLerp(count / timeSettings.time);
 				}
 
 				LerpParameters(lerp); //*** DO THE ACTUAL LERP***
@@ -853,7 +831,7 @@ namespace InspectorTween {
 					}
 				}
 
-				if ( currentLoop != Mathf.FloorToInt(count / time) ) { //DetectStart of new loop
+				if ( currentLoop != Mathf.FloorToInt(count / timeSettings.time) ) { //DetectStart of new loop
 					if ( delayEveryLoop && startDelay != 0 ) { //depricate this at some point.
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
 						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
@@ -867,7 +845,7 @@ namespace InspectorTween {
 						timeAtLastUpdate = Time.realtimeSinceStartup;
 					}
 
-					currentLoop = Mathf.FloorToInt(count / time);
+					currentLoop = Mathf.FloorToInt(count / timeSettings.time);
 				}
 
 				if ( updateType == UpdateType.Update ) {
@@ -888,7 +866,7 @@ namespace InspectorTween {
 				end = 0f;
 				count = 0;
 			} else {
-				count = time;
+				count = timeSettings.time;
 			}
 
 			float lerpVal;
@@ -1023,7 +1001,7 @@ namespace InspectorTween {
 				StartCoroutine(RestartPlay());
 			} else {
 				initializeCountOnEnable = !reverse; //in case was reversed previously//set this to respect input start time parameter on enable
-				count = reverse ? time : 0;
+				count = reverse ? timeSettings.time : 0;
 				loopCount = 0;
 				DoTween();
 			}
@@ -1069,7 +1047,7 @@ namespace InspectorTween {
 		/// Play the tween backwards, starting at time length of tween.
 		/// </summary>
 		public void PlayReverse() {
-			PlayReverse(time);
+			PlayReverse(timeSettings.time);
 		}
 
 		/// <summary>
@@ -1094,7 +1072,7 @@ namespace InspectorTween {
 				return;
 			}
 
-			PlayReverse(keepTime ? count : time);
+			PlayReverse(keepTime ? count : timeSettings.time);
 		}
 
 		/// <summary>
@@ -1108,11 +1086,11 @@ namespace InspectorTween {
 		protected void OnEnable() {
 			if ( HasValidParameters() ) {
 				if ( initializeCountOnEnable ) { //may have already set start time...
-					count = (startAtTime.x % time) / time;
+					count = (startAtTime.x % timeSettings.time) / timeSettings.time;
 					if ( startAtTime.y >= 0f && startAtTime.x >= 0f ) {
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
-						float modX = Mathf.Min(startAtTime.x, time);
-						float modY = Mathf.Min(startAtTime.y, time);
+						float modX = Mathf.Min(startAtTime.x, timeSettings.time);
+						float modY = Mathf.Min(startAtTime.y, timeSettings.time);
 						count = MathS.TrulyRandomRange(modX, modY, seed);
 					}
 				}
