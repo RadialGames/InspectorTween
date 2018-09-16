@@ -11,7 +11,7 @@ using System.Collections;
 
 	public class TweenScale : InspectorTween.TweenTransform
 	{
-		public Vector3[] scales = new Vector3[2]{Vector3.zero,Vector3.one};
+		[SerializeField]private Vector3[] scales = new Vector3[2]{Vector3.zero,Vector3.one};
 		public Vector3? initialScale;
 		[Tooltip("Example, 0.2 would make relative end of 1 == 5 (1 divided by 0.2)")]
 		public bool scaleRelativeEndRelativeToStart;
@@ -77,7 +77,7 @@ using System.Collections;
 		/// Set first position in tween values
 		/// </summary>
 		public TweenScale SetStartValue(Vector3 val) {
-			this.values[0] = val;
+			this.scales[0] = val;
 			return this;
 		}
 		public TweenScale SetStartValue(float x,float y,float z) {

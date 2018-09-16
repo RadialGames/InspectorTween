@@ -7,7 +7,7 @@ namespace InspectorTween{
 	[AddComponentMenu("InspectorTween/TweenPosition",1)]
 	public class TweenPosition : TweenTransform
 	{
-		public Vector3[] movePositions = new Vector3[2]{Vector3.zero,Vector3.one};
+		[SerializeField]private Vector3[] movePositions = new Vector3[2]{Vector3.zero,Vector3.one};
 		private Vector3 initialPosition;
 		private Vector3 initialAnchor;
 		private RectTransform rTransform;

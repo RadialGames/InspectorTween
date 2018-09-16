@@ -9,7 +9,7 @@ namespace InspectorTween{
 	{
 		public enum rotationTypes {Euler,Slerp,Lerp};
 		public rotationTypes rotationType;
-		public Vector3[] moveRotations = {new Vector3(0,0,-180),new Vector3(0,0,180)};
+		[SerializeField]private Vector3[] moveRotations = {new Vector3(0,0,-180),new Vector3(0,0,180)};
 		private Quaternion intitalRotation;
 		private Quaternion[] rotationList = new Quaternion[2];
 		private Quaternion[] randomRotations= new Quaternion[2];
@@ -195,7 +195,7 @@ namespace InspectorTween{
 		/// Set first position in tween values
 		/// </summary>
 		public TweenRotation SetStartValue(Vector3 val) {
-			this.values[0] = val;
+			this.moveRotations[0] = val;
 			return this;
 		}
 		public TweenRotation SetStartValue(float x,float y,float z) {

@@ -2,8 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 
-
-
 [CustomEditor(typeof(TweenTransform))]
 [CanEditMultipleObjects]
 public class TweenTransformEditor : TweenBaseEditor {
@@ -43,14 +41,10 @@ public class TweenTransformEditor : TweenBaseEditor {
 [CustomEditor(typeof(TweenPosition))]
 [CanEditMultipleObjects]
 public class TweenPositionEditor : TweenTransformEditor {
-    public override void OnInspectorGUI() {
-        TweenBase item = (TweenBase)target;
-        base.OnInspectorGUI();
 
-    }
     protected override void InsertFrame() {
         var tween = (TweenPosition) target;
-        var keys = tween.movePositions;
+        var keys = tween.values;
         int count = keys.Length;
         var newKeys = new Vector3[count + 1];
         for ( int i = 0; i < count; i++ ) {
@@ -59,22 +53,18 @@ public class TweenPositionEditor : TweenTransformEditor {
         int insertFrame = count - 1;
         newKeys[count] = newKeys[count-1];
         newKeys[insertFrame] = tween.transform.localPosition;
-        tween.movePositions = newKeys;
+        tween.values = newKeys;
     }
 }
 
 [CustomEditor(typeof(TweenScale))]
 [CanEditMultipleObjects]
 public class TweenScaleEditor : TweenTransformEditor {
-    
-    public override void OnInspectorGUI() {
-        TweenBase item = (TweenBase)target;
-        base.OnInspectorGUI();
-    }
+
 
     protected override void InsertFrame() {
         var tween = (TweenScale) target;
-        var keys = tween.scales;
+        var keys = tween.values;
         int count = keys.Length;
         var newKeys = new Vector3[count + 1];
         for ( int i = 0; i < count; i++ ) {
@@ -83,23 +73,18 @@ public class TweenScaleEditor : TweenTransformEditor {
         int insertFrame = count - 1;
         newKeys[count] = newKeys[count-1];
         newKeys[insertFrame] = tween.transform.localScale;
-        tween.scales = newKeys;
+        tween.values = newKeys;
     }
 }
 
 [CustomEditor(typeof(TweenRotation))]
 [CanEditMultipleObjects]
 public class TweenRotationEditor : TweenTransformEditor {
-    public override void OnInspectorGUI() {
-       // base.OnInspectorGUI();
-        TweenBase item = (TweenBase)target;
 
-        base.OnInspectorGUI();	
-    }
 
     protected override void InsertFrame() {
         var tween = (TweenRotation) target;
-        var keys = tween.moveRotations;
+        var keys = tween.values;
         int count = keys.Length;
         var newKeys = new Vector3[count + 1];
         for ( int i = 0; i < count; i++ ) {
@@ -108,18 +93,14 @@ public class TweenRotationEditor : TweenTransformEditor {
         int insertFrame = count - 1;
         newKeys[count] = newKeys[count-1];
         newKeys[insertFrame] = tween.transform.localRotation.eulerAngles;
-        tween.moveRotations = newKeys;
+        tween.values = newKeys;
     }
 }
 
 [CustomEditor(typeof(TweenColor))]
 [CanEditMultipleObjects]
 public class TweenColorEditor : TweenBaseEditor {
-    public override void OnInspectorGUI() {
-        // base.OnInspectorGUI();
-        TweenBase item = (TweenBase)target;
-        base.OnInspectorGUI();
-    }
+
 }
 [CustomEditor(typeof(TweenColorRotation))]
 [CanEditMultipleObjects]
@@ -129,7 +110,7 @@ public class TweenColorRotationEditor : TweenTransformEditor {
         TweenColorRotation item = (TweenColorRotation)target;
         base.OnInspectorGUI();
         if (item.setMatrix) {
-            UnityEditor.EditorGUILayout.HelpBox("use _MatrixYIQ property for supplied shaders or equivalent.", UnityEditor.MessageType.Info);
+            EditorGUILayout.HelpBox("use _MatrixYIQ property for supplied shaders or equivalent.", MessageType.Info);
         }
         if ( GUILayout.Button("SetColor") ) {
             SetColor();
@@ -193,16 +174,10 @@ public class TweenColorRotationEditor : TweenTransformEditor {
 [CustomEditor(typeof(TweenMaterialFloat))]
 [CanEditMultipleObjects]
 public class TweenMaterialFloatEditor : TweenBaseEditor {
-    public override void OnInspectorGUI() {
-        TweenBase item = (TweenBase)target;
-        base.OnInspectorGUI();
-    }
+
 }
 [CustomEditor(typeof(TweenProperty))]
 [CanEditMultipleObjects]
 public class TweenPropertyEditor : TweenBaseEditor {
-    public override void OnInspectorGUI() {
-        TweenBase item = (TweenBase)target;
-        base.OnInspectorGUI();
-    }
+
 }
