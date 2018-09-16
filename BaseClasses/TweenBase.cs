@@ -300,7 +300,31 @@ namespace InspectorTween {
 		}
 	}
 
-	public abstract class TweenBase : MonoBehaviour {
+	//public static class Tween {
+	//	public static T AddTween<T>(GameObject t) where T : TweenBase {
+	//		T newTween = t.AddComponent<T>();
+	//		newTween.AwakeInit();
+	//		return newTween;
+	//	}
+	//}
+	public abstract class TweenBase : MonoBehaviour {		
+		public static T AddTween<T>(GameObject t,bool play = true) where T : TweenBase {
+			T newTween = t.AddComponent<T>();
+			newTween.enabled = false;
+			//These don't get magically init'd like in inspector.
+			newTween._updateSettings = new UpdateInterface();
+			newTween._interpolation=  new InterpolationInterface();
+			newTween._timeSettings = new TimeInterface();
+			newTween.events = new EventInterface();
+			newTween.Reset();//Reset usuallt gets called on add in editor, and adds some sane defaults vs environment.
+			newTween.AwakeInit();//Re-do the awake stuff after initializing the 
+			if ( play ) {
+				newTween.enabled = true;
+			}
+			return newTween;
+		}
+		
+		
 		[SerializeField]protected bool simpleMode;
 	#if TWEEN_MASKS_ENABLED
 		/// <summary>
@@ -628,8 +652,8 @@ namespace InspectorTween {
 		[Serializable]
 		public class EventInterface {
 			public float eventTime;
-			public UnityEvent atTime;
-			public UnityEvent onLoopComplete;
+			public UnityEvent atTime = new UnityEvent();
+			public UnityEvent onLoopComplete= new UnityEvent();
 		}
 
 		private bool eventInvoked;
@@ -661,8 +685,8 @@ namespace InspectorTween {
 #endif
 		}
 
-
-		protected virtual void Awake() {
+		internal TweenBase AwakeInit() {
+			
 			if ( randomStartDelay.x > 0 && randomStartDelay.y > 0 ) {
 				string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
 				float newDelay = MathS.TrulyRandomRange(Mathf.Max(0, randomStartDelay.x), Mathf.Max(0, randomStartDelay.y), seed);
@@ -688,6 +712,14 @@ namespace InspectorTween {
 					renderer = GetComponent<Renderer>();
 					break;
 			}
+
+			return this;
+		}
+		protected virtual void Awake() {
+			if ( _updateSettings == null ) {//if added with Add component, classes like timeSettings will be null.
+				return;
+			}
+			AwakeInit();
 		}
 
 		/// <summary>
@@ -814,7 +846,10 @@ namespace InspectorTween {
 			}
 
 			if ( eventTime == 0 && !eventInvoked ) { //invoke time zero events before lerp.
-				atTime.Invoke();
+				if ( atTime != null ) {
+					atTime.Invoke();
+				}
+
 				eventInvoked = true;
 			}
 
@@ -872,12 +907,18 @@ namespace InspectorTween {
 
 				if ( reverse ) {
 					if ( loopCount <= eventTime && !eventInvoked ) {
-						atTime.Invoke();
+						if ( atTime != null ) {
+							atTime.Invoke();
+						}
+
 						eventInvoked = true;
 					}
 				} else {
 					if ( loopCount >= eventTime && !eventInvoked ) {
-						atTime.Invoke();
+						if ( atTime != null ) {
+							atTime.Invoke();
+						}
+
 						eventInvoked = true;
 					}
 				}
@@ -928,7 +969,7 @@ namespace InspectorTween {
 			}
 
 			LerpParameters(lerpVal);
-			if ( onLoopComplete.GetPersistentEventCount() > 0 ) {
+			if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
 				onLoopComplete.Invoke();
 			}
 
@@ -1013,7 +1054,7 @@ namespace InspectorTween {
 						count = 1;
 					}
 
-					if ( onLoopComplete.GetPersistentEventCount() > 0 ) { //manually fire end event.
+					if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) { //manually fire end event.
 						onLoopComplete.Invoke();
 					}
 
@@ -1150,6 +1191,10 @@ namespace InspectorTween {
 		}
 
 		protected void OnEnable() {
+			if ( _updateSettings == null ) {
+				this.enabled = false;
+				return;//On enable fired on AddComponent before component is initialized
+			}
 			if ( HasValidParameters() ) {
 				if ( initializeCountOnEnable ) { //may have already set start time...
 					count = (startAtTime.x % timeSettings.time) / timeSettings.time;
