@@ -187,5 +187,31 @@ namespace InspectorTween{
 		protected override Vector3 GetEndRelative(Vector3 prelerped,float lerp){
 			return GetStartRelative(prelerped,1-lerp);
 		}
+		/// <summary>
+		/// Set first position in tween values
+		/// </summary>
+		public TweenRotation SetStartValue(Vector3 val) {
+			this.values[0] = val;
+			return this;
+		}
+		public TweenRotation SetStartValue(float x,float y,float z) {
+			moveRotations[0].x =x;
+			moveRotations[0].y =y;
+			moveRotations[0].z =z;
+			return this;
+		}
+		/// <summary>
+		/// Set last position in tween values
+		/// </summary>
+		public TweenRotation SetEndValue(Vector3 val) {
+			moveRotations[moveRotations.Length-1] = val;
+			return this;
+		}
+		public TweenRotation SetEndValue(float x,float y,float z) {
+			moveRotations[moveRotations.Length-1].x =x;
+			moveRotations[moveRotations.Length-1].y =y;
+			moveRotations[moveRotations.Length-1].z =z;
+			return this;
+		}
 	}
 }

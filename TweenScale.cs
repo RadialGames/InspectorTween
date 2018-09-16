@@ -70,5 +70,31 @@ using System.Collections;
 			}
 			return Vector3.Scale( prelerped,MathS.Vector3Lerp(Vector3.one,endRelative,lerp) );
 		}
+		/// <summary>
+		/// Set first position in tween values
+		/// </summary>
+		public TweenScale SetStartValue(Vector3 val) {
+			this.values[0] = val;
+			return this;
+		}
+		public TweenScale SetStartValue(float x,float y,float z) {
+			scales[0].x =x;
+			scales[0].y =y;
+			scales[0].z =z;
+			return this;
+		}
+		/// <summary>
+		/// Set last position in tween values
+		/// </summary>
+		public TweenScale SetEndValue(Vector3 val) {
+			scales[scales.Length-1] = val;
+			return this;
+		}
+		public TweenScale SetEndValue(float x,float y,float z) {
+			scales[scales.Length-1].x =x;
+			scales[scales.Length-1].y =y;
+			scales[scales.Length-1].z =z;
+			return this;
+		}
 	}
 }
