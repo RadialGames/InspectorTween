@@ -70,6 +70,9 @@ using System.Collections;
 			}
 			return Vector3.Scale( prelerped,MathS.Vector3Lerp(Vector3.one,endRelative,lerp) );
 		}
+		public new TweenScale SetTime(float val) {
+			return (TweenScale) base.SetTime(val);
+		}
 		/// <summary>
 		/// Set first position in tween values
 		/// </summary>

@@ -187,6 +187,10 @@ namespace InspectorTween{
 		protected override Vector3 GetEndRelative(Vector3 prelerped,float lerp){
 			return GetStartRelative(prelerped,1-lerp);
 		}
+		
+		public new TweenRotation SetTime(float val) {
+			return (TweenRotation) base.SetTime(val);
+		}
 		/// <summary>
 		/// Set first position in tween values
 		/// </summary>
