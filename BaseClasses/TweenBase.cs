@@ -10,6 +10,7 @@ using System;
 
 
 namespace InspectorTween {
+
 	//RTEase by MattRix : https://gist.github.com/MattRix/feea68fd3dae16c760d6c665fd530d46
 	public static class RTEase {
 		//public static Func<float, float> Linear = (t) => { return t; };
@@ -300,6 +301,45 @@ namespace InspectorTween {
 		}
 	}
 
+	public struct AnimationCurves {//Should this be a static class???
+		public enum AnimationCurveType {
+			Custom = -1,
+			Linear=0,
+			Hermite,
+			EaseIn,
+			EaseOut,
+			Step,
+			BackIn,
+			BackOut,
+			Sin
+		};
+		public static AnimationCurve[] savedCurves = {
+			new AnimationCurve(new Keyframe(0,0,1,1),new Keyframe(1,1,1,1)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Linear
+			,new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Hermite
+			,new AnimationCurve(new Keyframe(0f,0f,2f,2f,0.3333333f,0.3333333f),new Keyframe(1f,1f,0f,0f,0.3333333f,0.3333333f))//EaseIn
+			,new AnimationCurve(new Keyframe(0f,0f,0f,0f,0.3333333f,0.3333333f),new Keyframe(1f,1f,2f,2f,0.3333333f,0.3333333f))//EaseOut
+			,new AnimationCurve(new Keyframe(0f,0f,0f,float.PositiveInfinity),new Keyframe(0.5f,1f,0f,0f),new Keyframe(1f,1f,0f,0f)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Step                       
+			,new AnimationCurve(new Keyframe(0f,0f,0f,0f),new Keyframe(0.5032355f,-0.1706448f,0.1443379f,0.1443379f),new Keyframe(1f,1f,3.219463f,3.219463f))//Back In
+			,new AnimationCurve(new Keyframe(0f,0f,5.243961f,5.243961f),new Keyframe(0.500102f,1.065629f,0.06565601f,0.06565601f),new Keyframe(1f,1f,0f,0f))//BackOut 
+			,new AnimationCurve(new Keyframe(0f,0f),new Keyframe(0.5f,0.5f,1.854149f,1.854149f),new Keyframe(1f,1f)){postWrapMode = WrapMode.PingPong,preWrapMode = WrapMode.PingPong}//Sin
+		 };
+
+		public static void SetAnimationCurve(ref TweenBase.InterpolationInterface interpolationInterface, AnimationCurveType curveType) {
+			if ( curveType == AnimationCurveType.Custom ) {
+				
+				return;
+			}
+
+			int index = (int) curveType;
+			if ( index < 0 || index >= savedCurves.Length ){
+				Debug.LogWarning("Invalid curve specified. index out of bounds");
+				return;
+			}
+			AnimationCurve refCurve = savedCurves[index];
+			interpolationInterface.interpolation = new AnimationCurve(refCurve.keys){postWrapMode = refCurve.postWrapMode,preWrapMode = refCurve.preWrapMode};
+		}
+	}
+	
 	//public static class Tween {
 	//	public static T AddTween<T>(GameObject t) where T : TweenBase {
 	//		T newTween = t.AddComponent<T>();
@@ -307,7 +347,7 @@ namespace InspectorTween {
 	//		return newTween;
 	//	}
 	//}
-	public abstract class TweenBase : MonoBehaviour {		
+	public abstract class TweenBase : MonoBehaviour {
 		public static T AddTween<T>(GameObject t,bool play = true) where T : TweenBase {
 			T newTween = t.AddComponent<T>();
 			newTween.enabled = false;
@@ -322,6 +362,11 @@ namespace InspectorTween {
 				newTween.enabled = true;
 			}
 			return newTween;
+		}
+
+		public TweenBase SetAnimationCurve(AnimationCurves.AnimationCurveType curve) {
+			AnimationCurves.SetAnimationCurve(ref _interpolation,curve);
+			return this;
 		}
 		
 		

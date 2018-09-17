@@ -5,7 +5,7 @@ namespace InspectorTween {
 		private TweenPosition newTween;
 
 		private void Start() {
-			newTween = TweenBase.AddTween<TweenPosition>(this.gameObject).SetTime(0.6f).SetStartValue(Vector3.zero).SetEndValue(0, 5f, 0);
+			newTween =(TweenPosition) TweenBase.AddTween<TweenPosition>(this.gameObject).SetStartValue(Vector3.zero).SetEndValue(0, 5f, 0).SetTime(0.6f).SetAnimationCurve(AnimationCurves.AnimationCurveType.Sin);
 		}
 	}
 }
