@@ -2,7 +2,9 @@
 using UnityEngine;
 
 namespace InspectorTween {
-	[CreateAssetMenu(fileName = "TweenMask", menuName = "", order = 1)]
+	#if TWEEN_MASKS_ENABLED
+		[CreateAssetMenu(fileName = "TweenMask", menuName = "", order = 1)]
+	#endif
 	public class TweenMask : ScriptableObject {
 		public bool simpleMode;
 		[ConditionalHide("simpleMode",true,true)]

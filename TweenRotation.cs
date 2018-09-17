@@ -1,21 +1,21 @@
 ﻿// #Generic
 
+using System;
 using UnityEngine;
-using System.Collections;
 namespace InspectorTween{
 	[AddComponentMenu("InspectorTween/TweenRotation",2)]
 
-	public class TweenRotation : InspectorTween.TweenTransform
+	public class TweenRotation : TweenTransform
 	{
 		public enum rotationTypes {Euler,Slerp,Lerp};
 		public rotationTypes rotationType;
-		public Vector3[] moveRotations = new Vector3[2]{new Vector3(0,0,-180),new Vector3(0,0,180)};
+		[SerializeField]private Vector3[] moveRotations = {new Vector3(0,0,-180),new Vector3(0,0,180)};
 		private Quaternion intitalRotation;
-		private Quaternion[] rotationList;
-		private Quaternion[] randomRotations;
-		private Quaternion[] newRandomRotations;
-		private bool useRandomOffset = false;
-		private Quaternion[] reversedQuaternions;
+		private Quaternion[] rotationList = new Quaternion[2];
+		private Quaternion[] randomRotations= new Quaternion[2];
+		private Quaternion[] newRandomRotations= new Quaternion[2];
+		private bool useRandomOffset;
+		[NonSerialized]private Quaternion[] reversedQuaternions= new Quaternion[2];
 		public override Vector3[] values {
 			get => moveRotations;
 			set => moveRotations = value;
@@ -86,7 +86,7 @@ namespace InspectorTween{
 		protected Quaternion LerpParameter(Quaternion[] tweenArr,float lerp)
 		{
 			if (useRandomOffset){
-                var testLerp = Mathf.FloorToInt(this.count/this.time);
+                var testLerp = Mathf.FloorToInt(this.count/timeSettings.time);
 				if (testLerp != lastRandomTarget) {
 					SetRandom(tweenArr.Length);
 					if (randomRotations==null || randomRotations.Length != randomTargets.Length) {
@@ -117,7 +117,8 @@ namespace InspectorTween{
 				scaleArrayLerp = GetStartRelative(scaleArrayLerp,lerp);//MathS.Vector3Lerp(initial,scaleArrayLerp,lerp);
 			}
 			if (useRandomOffset) {
-				scaleArrayLerp *= Quaternion.Lerp(LerpQuaternionArray(randomRotations, lerp) , LerpQuaternionArray(newRandomRotations, lerp), count / time % 1);
+				scaleArrayLerp *= Quaternion.Lerp(LerpQuaternionArray(randomRotations, lerp) ,
+				                                  LerpQuaternionArray(newRandomRotations, lerp), count / timeSettings.time % 1);
 			}
 			return (scaleArrayLerp);
 		}
@@ -126,7 +127,7 @@ namespace InspectorTween{
         {
 			Transform tform = targetTransform != null? targetTransform : transform;
             if (rotationType == rotationTypes.Euler) {
-	            if ( reverseValues ) {
+	            if ( timeSettings.reverseValues ) {
 		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.reversedValues, lerp));
 	            } else {
 		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.moveRotations, lerp));
@@ -140,7 +141,7 @@ namespace InspectorTween{
 					}
 				}
 #endif
-	            if ( reverseValues ) {
+	            if ( timeSettings.reverseValues ) {
 		            tform.localRotation = LerpParameter(this.reversedQuaternions,lerp);
 	            } else {
 		            tform.localRotation = LerpParameter(this.rotationList,lerp);
@@ -185,6 +186,36 @@ namespace InspectorTween{
 		}
 		protected override Vector3 GetEndRelative(Vector3 prelerped,float lerp){
 			return GetStartRelative(prelerped,1-lerp);
+		}
+		
+		public new TweenRotation SetTime(float val) {
+			return (TweenRotation) base.SetTime(val);
+		}
+		/// <summary>
+		/// Set first position in tween values
+		/// </summary>
+		public TweenRotation SetStartValue(Vector3 val) {
+			this.moveRotations[0] = val;
+			return this;
+		}
+		public TweenRotation SetStartValue(float x,float y,float z) {
+			moveRotations[0].x =x;
+			moveRotations[0].y =y;
+			moveRotations[0].z =z;
+			return this;
+		}
+		/// <summary>
+		/// Set last position in tween values
+		/// </summary>
+		public TweenRotation SetEndValue(Vector3 val) {
+			moveRotations[moveRotations.Length-1] = val;
+			return this;
+		}
+		public TweenRotation SetEndValue(float x,float y,float z) {
+			moveRotations[moveRotations.Length-1].x =x;
+			moveRotations[moveRotations.Length-1].y =y;
+			moveRotations[moveRotations.Length-1].z =z;
+			return this;
 		}
 	}
 }

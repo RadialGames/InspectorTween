@@ -67,7 +67,7 @@ namespace InspectorTween{
 				return;
             }
 			doRandomOffset = true;
-			var testLerp = Mathf.FloorToInt(this.count/this.time);
+			var testLerp = Mathf.FloorToInt(this.count/timeSettings.time);
 			if(testLerp== lastRandomTarget){
 				return;
 			}
@@ -111,11 +111,12 @@ namespace InspectorTween{
 			Vector3 scaleArrayLerp;
 			if(tweenArr.Length == 2){
 				if (doRandomOffset) {
-					randomValue = MathS.Vector3Lerp(MathS.Vector3LerpUnclamped(randomTargets[0], randomTargets[1], lerp), MathS.Vector3LerpUnclamped(newRandomTargets[0], newRandomTargets[1], lerp), count / time % 1);
+					randomValue = MathS.Vector3Lerp(MathS.Vector3LerpUnclamped(randomTargets[0], randomTargets[1], lerp), 
+					                                MathS.Vector3LerpUnclamped(newRandomTargets[0], newRandomTargets[1], lerp), count / timeSettings.time % 1);
 				}
                 scaleArrayLerp = MathS.Vector3LerpUnclamped(tweenArr[0],tweenArr[1],lerp) + randomValue;
 			}else{
-				scaleArrayLerp = TweenTransform.LerpVector3Array(tweenArr,randomTargets,newRandomTargets,lerp, count / time % 1);
+				scaleArrayLerp = TweenTransform.LerpVector3Array(tweenArr,randomTargets,newRandomTargets,lerp, count / timeSettings.time % 1);
 			}
 
 			if(EndIsRelativeOffsetFromStart && startRelative){

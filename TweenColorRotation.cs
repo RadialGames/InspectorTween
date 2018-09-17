@@ -21,7 +21,7 @@ public class TweenColorRotation : TweenColorBase{
 	protected override void Reset() {
 		base.Reset();
 		//Initialize for shader based rendering.
-		updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None};
+		_updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None};
 		useMaterial = true;
 		setMatrix = true;
 		materialProperty = "_MatrixYIQ";

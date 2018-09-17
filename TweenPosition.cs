@@ -3,10 +3,11 @@
 using UnityEngine;
 using System.Collections;
 namespace InspectorTween{
+
 	[AddComponentMenu("InspectorTween/TweenPosition",1)]
-	public class TweenPosition : InspectorTween.TweenTransform 
+	public class TweenPosition : TweenTransform
 	{
-		public Vector3[] movePositions = new Vector3[2]{Vector3.zero,Vector3.one};
+		[SerializeField]private Vector3[] movePositions = new Vector3[2]{Vector3.zero,Vector3.one};
 		private Vector3 initialPosition;
 		private Vector3 initialAnchor;
 		private RectTransform rTransform;
@@ -29,7 +30,7 @@ namespace InspectorTween{
 		}
 		protected override void LerpParameters(float lerp) {
 			Vector3[] values = movePositions;
-			if ( reverseValues ) {
+			if ( timeSettings.reverseValues ) {
 				values = reversedValues;
 			}
 			if(rTransform){
@@ -64,6 +65,36 @@ namespace InspectorTween{
 		protected override Vector3 GetEndRelative(Vector3 prelerped,float lerp)
 		{
 			return GetStartRelative(prelerped,1-lerp);
+		}
+
+		public new TweenPosition SetTime(float val) {
+			return (TweenPosition) base.SetTime(val);
+		}
+		/// <summary>
+		/// Set first position in tween values
+		/// </summary>
+		public TweenPosition SetStartValue(Vector3 val) {
+			movePositions[0] = val;
+			return this;
+		}
+		public TweenPosition SetStartValue(float x,float y,float z) {
+			movePositions[0].x =x;
+			movePositions[0].y =y;
+			movePositions[0].z =z;
+			return this;
+		}
+		/// <summary>
+		/// Set last position in tween values
+		/// </summary>
+		public TweenPosition SetEndValue(Vector3 val) {
+			movePositions[movePositions.Length-1] = val;
+			return this;
+		}
+		public TweenPosition SetEndValue(float x,float y,float z) {
+			movePositions[movePositions.Length-1].x =x;
+			movePositions[movePositions.Length-1].y =y;
+			movePositions[movePositions.Length-1].z =z;
+			return this;
 		}
 	}
 }

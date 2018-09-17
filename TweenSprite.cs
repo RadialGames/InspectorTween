@@ -6,8 +6,13 @@ namespace InspectorTween {
 	[AddComponentMenu("InspectorTween/TweenSprite",10)]
 	public class TweenSprite : TweenBase {
 	
-		
+		/// <summary>
+		/// Component which contains a sprite to be set. Support for SpriteRenderer, Image and ParticleSystem
+		/// </summary>
 		public Component target;
+		/// <summary>
+		/// Array of sprites to tween between
+		/// </summary>
 		public Sprite[] sprites = new Sprite[2];
 
 		private Image image;
