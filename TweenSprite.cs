@@ -38,8 +38,10 @@ namespace InspectorTween {
 					image.sprite = currentSprite;
 					break;
 				case objectType.Particle:
+					#if UNITY_2018_1_OR_NEWER
 					var shapeModule = particleSystem.shape;
 					shapeModule.sprite = currentSprite;
+					#endif
 					//particleSystem.shape = shapeModule;
 					break;
 				case objectType.Material:

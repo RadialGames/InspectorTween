@@ -13,8 +13,9 @@ public class TweenColor : TweenColorBase {
 	public enum colorFunctions{Normal,Add,Multiply,Overlay,MultiplyAdd,Dodge};
 	public colorFunctions colorFunction;
 	public float colorOverTimeMultiplier = 1;
-
+	#if UNITY_2018_1_OR_NEWER
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	#endif
 	protected float Overlay(float a, float b){
 		return a<0.5f?2f*a*b:1-(2f*(1f-a)*(1f-b));
 	}

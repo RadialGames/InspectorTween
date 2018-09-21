@@ -499,11 +499,25 @@ namespace InspectorTween {
 
 		#region updateAccessors
 
-		private UpdateType updateType => settingsMask == null ? updateSettings.updateType : settingsMask.updateSettings.updateType;
-		private VisibilityPause pauseOffscreen => settingsMask == null ? updateSettings.pauseOffscreen : settingsMask.updateSettings.pauseOffscreen;
-		protected bool respectGlobalTimeScale => settingsMask == null ? updateSettings.respectGlobalTimeScale : settingsMask.updateSettings.respectGlobalTimeScale;
-		private UpdateInterface.PlaySpeed playSpeed => settingsMask == null ? updateSettings.playSpeed : settingsMask.updateSettings.playSpeed;
-		protected bool allowInterupt => settingsMask == null ? updateSettings.allowInterupt : settingsMask.updateSettings.allowInterupt;
+		private UpdateType updateType {
+			get { return settingsMask == null ? updateSettings.updateType : settingsMask.updateSettings.updateType; }
+		}
+
+		private VisibilityPause pauseOffscreen {
+			get { return settingsMask == null ? updateSettings.pauseOffscreen : settingsMask.updateSettings.pauseOffscreen; }
+		}
+
+		protected bool respectGlobalTimeScale {
+			get { return settingsMask == null ? updateSettings.respectGlobalTimeScale : settingsMask.updateSettings.respectGlobalTimeScale; }
+		}
+
+		private UpdateInterface.PlaySpeed playSpeed {
+			get { return settingsMask == null ? updateSettings.playSpeed : settingsMask.updateSettings.playSpeed; }
+		}
+
+		protected bool allowInterupt {
+			get { return settingsMask == null ? updateSettings.allowInterupt : settingsMask.updateSettings.allowInterupt; }
+		}
 
 		#endregion
 
@@ -569,9 +583,10 @@ namespace InspectorTween {
 		/// set tween to play from end to start.
 		/// </summary>
 		public bool reverse {
-			get => timeSettings.reverse;
-			set => timeSettings.reverse = value;
+			get { return timeSettings.reverse; }
+			set { timeSettings.reverse = value; }
 		}
+
 		/// <summary>
 		/// set tween play direction
 		/// </summary>
@@ -585,9 +600,10 @@ namespace InspectorTween {
 		/// set tween play length in seconds
 		/// </summary>
 		public float time {
-			set => timeSettings.time = value;
-			get => timeSettings.time;
+			set { timeSettings.time = value; }
+			get { return timeSettings.time; }
 		}
+
 		/// <summary>
 		/// set tween play length in seconds
 		/// </summary>
@@ -618,11 +634,25 @@ namespace InspectorTween {
 			timeSettings.timeRandomScale.y = (max / min);
 			return this;
 		}
-		protected Vector2 timeRandomScale => timeSettings.timeRandomScale;
-		protected bool initBeforeDelay => timeSettings.initBeforeDelay ;
-		protected bool delayEveryLoop => timeSettings.delayEveryLoop ;
-		protected Vector2 startAtTime => timeSettings.startAtTime ;
-		protected bool resetToBegining => timeSettings.resetToBegining ;
+		protected Vector2 timeRandomScale {
+			get { return timeSettings.timeRandomScale; }
+		}
+
+		protected bool initBeforeDelay {
+			get { return timeSettings.initBeforeDelay; }
+		}
+
+		protected bool delayEveryLoop {
+			get { return timeSettings.delayEveryLoop; }
+		}
+
+		protected Vector2 startAtTime {
+			get { return timeSettings.startAtTime; }
+		}
+
+		protected bool resetToBegining {
+			get { return timeSettings.resetToBegining; }
+		}
 
 		#endregion
 
@@ -632,8 +662,13 @@ namespace InspectorTween {
 		protected int loopItteration = -1; //this number tracks the number of loops run.
 		protected bool initializeCountOnEnable = true; // {get{return timeSettings.initBeforeDelay;}}
 
-		protected float startDelay => Mathf.Max(0, timeSettings.startDelay);
-		protected Vector2 randomStartDelay => timeSettings.randomStartDelay;
+		protected float startDelay {
+			get { return Mathf.Max(0, timeSettings.startDelay); }
+		}
+
+		protected Vector2 randomStartDelay {
+			get { return timeSettings.randomStartDelay; }
+		}
 
 		#endregion
 
@@ -687,37 +722,44 @@ namespace InspectorTween {
 		#region interpolationAccessors
 
 		protected bool loop {
-			get => interpolation.loop;
-			set => interpolation.loop = value;
+			get { return interpolation.loop; }
+			set { interpolation.loop = value; }
 		}
 
 		protected bool timeRandomEveryLoop {
-			get => interpolation.timeRandomEveryLoop;
-			set => interpolation.timeRandomEveryLoop = value;
+			get { return interpolation.timeRandomEveryLoop; }
+			set { interpolation.timeRandomEveryLoop = value; }
 		}
 
 		protected float loopNumberOfTimes {
-			get => interpolation.loopNumberOfTimes;
-			set => interpolation.loopNumberOfTimes = value;
+			get { return interpolation.loopNumberOfTimes; }
+			set { interpolation.loopNumberOfTimes = value; }
 		}
 
 		protected bool useCurve {
-			get => interpolation.useCurve ;
-			set => interpolation.useCurve = value;
+			get { return interpolation.useCurve; }
+			set { interpolation.useCurve = value; }
 		}
+
 		/// <summary>
 		/// Animation curve which is evaluated to interpolate between values of tween is useCurve is true.
 		/// </summary>
 		public AnimationCurve interpolationCurve {
-			get => interpolation.interpolation;
-			set => interpolation.interpolation = value;
+			get { return interpolation.interpolation; }
+			set { interpolation.interpolation = value; }
 		}
 
-		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation => interpolation.nonCurveInterpolation;
+		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolation {
+			get { return interpolation.nonCurveInterpolation; }
+		}
 
-		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut => interpolation.nonCurveInterpolationOut ;
+		protected ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut {
+			get { return interpolation.nonCurveInterpolationOut; }
+		}
 
-		protected ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode => interpolation.nonCurveLoopMode ;
+		protected ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode {
+			get { return interpolation.nonCurveLoopMode; }
+		}
 
 		#endregion
 

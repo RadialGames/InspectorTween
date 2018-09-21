@@ -36,7 +36,11 @@ public class InterpolationInterfaceInspector : PropertyDrawer {
 		string pStr = "new AnimationCurve(";
 		for ( int i = 0; i < curve.keys.Length; i++ ) {
 			var key = curve.keys[i];
-			pStr += $"new Keyframe({key.time}f,{key.value}f,{key.inTangent}f,{key.outTangent}f,{key.inWeight}f,{key.outWeight}f)";
+			#if UNITY_2018_1_OR_NEWER
+				pStr += $"new Keyframe({key.time}f,{key.value}f,{key.inTangent}f,{key.outTangent}f,{key.inWeight}f,{key.outWeight}f)";
+			#else
+				pStr += $"new Keyframe({key.time}f,{key.value}f,{key.inTangent}f,{key.outTangent}f)";
+			#endif
 			if ( i != curve.keys.Length - 1 ) {
 				pStr += ",";
 			}
