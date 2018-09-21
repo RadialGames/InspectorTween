@@ -9,7 +9,7 @@ using System.Collections;
 	namespace InspectorTween{
 	[AddComponentMenu("InspectorTween/TweenScale",3)]
 
-	public class TweenScale : InspectorTween.TweenTransform
+	public class TweenScale : TweenTransform
 	{
 		[SerializeField]private Vector3[] scales = new Vector3[2]{Vector3.zero,Vector3.one};
 		public Vector3? initialScale;
@@ -21,9 +21,10 @@ using System.Collections;
 			CacheReversedTweenValues(scales);
 		}
 		public override Vector3[] values {
-			get => scales;
-			set => scales = value;
+			get { return scales; }
+			set { scales = value; }
 		}
+
 		void MatchStartToCurrent() {
 			scales[0] = targetTransform.localScale;
 		}

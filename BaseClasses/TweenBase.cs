@@ -14,25 +14,63 @@ namespace InspectorTween {
 	//RTEase by MattRix : https://gist.github.com/MattRix/feea68fd3dae16c760d6c665fd530d46
 	public static class RTEase {
 		//public static Func<float, float> Linear = (t) => { return t; };
-		public static Func<float, float> Instant = (t) => t < 1f ? 0f : 1f;
-		public static Func<float, float> QuadIn = (t) => t * t;
-		public static Func<float, float> QuadOut = (t) => 2f * t - t * t;
-		public static Func<float, float> QuadInOut = (t) => (t <= 0.5f) ? (t * t * 2f) : (-1.0f + 4f * t + -2f * t * t);
-		public static Func<float, float> CubeIn = (t) => t * t * t;
-		public static Func<float, float> CubeOut = (t) => 1f - CubeIn(1f - t);
-		public static Func<float, float> CubeInOut = (t) => (t <= 0.5f) ? CubeIn(t * 2f) * 0.5f : CubeOut(t * 2f - 1f) * 0.5f + 0.5f;
-		public static Func<float, float> BackIn = (t) => t * t * (2.70158f * t - 1.70158f);
-		public static Func<float, float> BackOut = (t) => 1f - BackIn(1f - t);
-		public static Func<float, float> BackInOut = (t) => (t <= 0.5f) ? BackIn(t * 2f) * 0.5f : BackOut(t * 2f - 1f) * 0.5f + 0.5f;
-		public static Func<float, float> ExpoIn = (t) => Mathf.Pow(2f, 10f * (t - 1.0f));
-		public static Func<float, float> ExpoOut = (t) => 1f - Mathf.Pow(2f, -10f * t);
-		public static Func<float, float> ExpoInOut = (t) => t < .5f ? ExpoIn(t * 2f) * 0.5f : ExpoOut(t * 2f - 1f) * 0.5f + 0.5f;
-		public static Func<float, float> SineIn = (t) => -Mathf.Cos(Mathf.PI * 0.5f * t) + 1f;
-		public static Func<float, float> SineOut = (t) => Mathf.Sin(Mathf.PI * 0.5f * t);
-		public static Func<float, float> SineInOut = (t) => -Mathf.Cos(Mathf.PI * t) * 0.5f + .5f;
-		public static Func<float, float> ElasticIn = (t) => 1f - ElasticOut(1f - t);
-		public static Func<float, float> ElasticOut = (t) => Mathf.Pow(2f, -10f * t) * Mathf.Sin((t - 0.075f) * (2f * Mathf.PI) / 0.3f) + 1f;
-		public static Func<float, float> ElasticInOut = (t) => (t <= 0.5f) ? ElasticIn(t * 2f) : ElasticOut(t * 2f - 1f);
+		public static Func<float, float> Instant = (t) => {
+			return t < 1f ? 0f : 1f;
+		};
+		public static Func<float, float> QuadIn = (t) => {
+			return t * t;
+		};
+		public static Func<float, float> QuadOut = (t) => {
+			return 2f * t - t * t;
+		};
+		public static Func<float, float> QuadInOut = (t) => {
+			return (t <= 0.5f) ? (t * t * 2f) : (-1.0f + 4f * t + -2f * t * t);
+		};
+		public static Func<float, float> CubeIn = (t) => {
+			return t * t * t;
+		};
+		public static Func<float, float> CubeOut = (t) => {
+			return 1f - CubeIn(1f - t);
+		};
+		public static Func<float, float> CubeInOut = (t) => {
+			return (t <= 0.5f) ? CubeIn(t * 2f) * 0.5f : CubeOut(t * 2f - 1f) * 0.5f + 0.5f;
+		};
+		public static Func<float, float> BackIn = (t) => {
+			return t * t * (2.70158f * t - 1.70158f);
+		};
+		public static Func<float, float> BackOut = (t) => {
+			return 1f - BackIn(1f - t);
+		};
+		public static Func<float, float> BackInOut = (t) => {
+			return (t <= 0.5f) ? BackIn(t * 2f) * 0.5f : BackOut(t * 2f - 1f) * 0.5f + 0.5f;
+		};
+		public static Func<float, float> ExpoIn = (t) => {
+			return Mathf.Pow(2f, 10f * (t - 1.0f));
+		};
+		public static Func<float, float> ExpoOut = (t) => {
+			return 1f - Mathf.Pow(2f, -10f * t);
+		};
+		public static Func<float, float> ExpoInOut = (t) => {
+			return t < .5f ? ExpoIn(t * 2f) * 0.5f : ExpoOut(t * 2f - 1f) * 0.5f + 0.5f;
+		};
+		public static Func<float, float> SineIn = (t) => {
+			return -Mathf.Cos(Mathf.PI * 0.5f * t) + 1f;
+		};
+		public static Func<float, float> SineOut = (t) => {
+			return Mathf.Sin(Mathf.PI * 0.5f * t);
+		};
+		public static Func<float, float> SineInOut = (t) => {
+			return -Mathf.Cos(Mathf.PI * t) * 0.5f + .5f;
+		};
+		public static Func<float, float> ElasticIn = (t) => {
+			return 1f - ElasticOut(1f - t);
+		};
+		public static Func<float, float> ElasticOut = (t) => {
+			return Mathf.Pow(2f, -10f * t) * Mathf.Sin((t - 0.075f) * (2f * Mathf.PI) / 0.3f) + 1f;
+		};
+		public static Func<float, float> ElasticInOut = (t) => {
+			return (t <= 0.5f) ? ElasticIn(t * 2f) : ElasticOut(t * 2f - 1f);
+		};
 	}
 
 	public static class ProgramaticInterpolation {
@@ -305,10 +343,12 @@ namespace InspectorTween {
 		public enum AnimationCurveType {
 			Custom = -1,
 			Linear=0,
-			Hermite,
+			Hermite=1,
+
 			EaseIn,
 			EaseOut,
-			Step,
+
+			Step=4,
 			BackIn,
 			BackOut,
 			Sin
@@ -316,8 +356,13 @@ namespace InspectorTween {
 		public static AnimationCurve[] savedCurves = {
 			new AnimationCurve(new Keyframe(0,0,1,1),new Keyframe(1,1,1,1)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Linear
 			,new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Hermite
+			 #if UNITY_2018_1_OR_NEWER                         
 			,new AnimationCurve(new Keyframe(0f,0f,2f,2f,0.3333333f,0.3333333f),new Keyframe(1f,1f,0f,0f,0.3333333f,0.3333333f))//EaseIn
 			,new AnimationCurve(new Keyframe(0f,0f,0f,0f,0.3333333f,0.3333333f),new Keyframe(1f,1f,2f,2f,0.3333333f,0.3333333f))//EaseOut
+			 #else
+			,new AnimationCurve(new Keyframe(0f,0f,2f,2f),new Keyframe(1f,1f,0f,0f))//EaseIn
+			,new AnimationCurve(new Keyframe(0f,0f,0f,0f),new Keyframe(1f,1f,2f,2f))//EaseOut
+			#endif
 			,new AnimationCurve(new Keyframe(0f,0f,0f,float.PositiveInfinity),new Keyframe(0.5f,1f,0f,0f),new Keyframe(1f,1f,0f,0f)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Step                       
 			,new AnimationCurve(new Keyframe(0f,0f,0f,0f),new Keyframe(0.5032355f,-0.1706448f,0.1443379f,0.1443379f),new Keyframe(1f,1f,3.219463f,3.219463f))//Back In
 			,new AnimationCurve(new Keyframe(0f,0f,5.243961f,5.243961f),new Keyframe(0.500102f,1.065629f,0.06565601f,0.06565601f),new Keyframe(1f,1f,0f,0f))//BackOut 
@@ -394,9 +439,10 @@ namespace InspectorTween {
 		/// Mark so that any random parameters are seeded by the name on the component
 		/// </summary>
 		public bool useNameAsRandomSeed {
-			get => _useNameAsRandomSeed;
-			set => _useNameAsRandomSeed = value;
+			get { return _useNameAsRandomSeed; }
+			set { _useNameAsRandomSeed = value; }
 		}
+
 		[ConditionalHide("simpleMode", true, true)]
 		[UnityEngine.Serialization.FormerlySerializedAs("useNameAsRandomSeed")]
 		[SerializeField]protected bool _useNameAsRandomSeed;
@@ -706,9 +752,17 @@ namespace InspectorTween {
 		/// Events which fire on tween play
 		/// </summary>
 		public EventInterface events;
-		protected float eventTime => events.eventTime;
-		protected UnityEvent atTime => events.atTime;
-		protected UnityEvent onLoopComplete => events.onLoopComplete;
+		protected float eventTime {
+			get { return events.eventTime; }
+		}
+
+		protected UnityEvent atTime {
+			get { return events.atTime; }
+		}
+
+		protected UnityEvent onLoopComplete {
+			get { return events.onLoopComplete; }
+		}
 
 
 		protected virtual void Reset() { //Called Editor only when Component is first added.
