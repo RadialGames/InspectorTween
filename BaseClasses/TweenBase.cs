@@ -678,10 +678,10 @@ namespace InspectorTween {
 			[Tooltip("Loops using curve loop settings if using curve")]
 			public bool loop = true;
 
-			[Tooltip("Randomizes time scaling every loop instead of once at start")] [ConditionalHide("interpolation.loop", true, false)]
+			[Tooltip("Randomizes time scaling every loop instead of once at start")] [ConditionalHide("_interpolation.loop", true, false)]
 			public bool timeRandomEveryLoop;
 
-			[Tooltip("Number of times to loop. -1 for infinite.")] [ConditionalHide("interpolation.loop", true, false)]
+			[Tooltip("Number of times to loop. -1 for infinite.")] [ConditionalHide("_interpolation.loop", true, false)]
 			public float loopNumberOfTimes = -1;
 
 			//[Header("Curve")]
@@ -689,17 +689,17 @@ namespace InspectorTween {
 			public bool useCurve = true;
 
 			//[WarningHeader("!!! Wrap Mode set on curve ends","yellow")]
-			[Tooltip("Check set wrap settings for looping.")] [ConditionalHide("useCurve", false, false)]
+			[Tooltip("Check set wrap settings for looping.")] [ConditionalHide("_interpolation.useCurve", true, false)]
 			public AnimationCurve interpolation = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
 
 			//[Header("Programatic")]
-			[Tooltip("Install GoTween for best results. Uses set function if useCurve is false.")] [ConditionalHide("useCurve", true, true)]
+			[Tooltip("Install GoTween for best results. Uses set function if useCurve is false.")] [ConditionalHide("_interpolation.useCurve", true, true)]
 			public ProgramaticInterpolation.TweenTypes nonCurveInterpolation = ProgramaticInterpolation.TweenTypes.Linear;
 
-			[ConditionalHide("useCurve", true, true)]
+			[ConditionalHide("_interpolation.useCurve", true, true)]
 			public ProgramaticInterpolation.TweenTypes nonCurveInterpolationOut = ProgramaticInterpolation.TweenTypes.Linear;
 
-			[ConditionalHide("useCurve", true, true)]
+			[ConditionalHide("_interpolation.useCurve", true, true)]
 			public ProgramaticInterpolation.TweenLoopMode nonCurveLoopMode = ProgramaticInterpolation.TweenLoopMode.Loop;
 			
 		}
@@ -784,8 +784,11 @@ namespace InspectorTween {
 
 		[Serializable]
 		public class EventInterface {
+			public enum EventFireCondition{Always,ForwardOnly,ReverseOnly,AtReverseTime}
 			public float eventTime;
+			public EventFireCondition atTimeCondition;
 			public UnityEvent atTime = new UnityEvent();
+			public EventFireCondition onCompleteCondition;
 			public UnityEvent onLoopComplete= new UnityEvent();
 		}
 
@@ -986,14 +989,24 @@ namespace InspectorTween {
 				yield return startDelayWait;
 			}
 
-			if ( eventTime == 0 && !eventInvoked ) { //invoke time zero events before lerp.
+			float eventAtTime = eventTime;
+			if ( events.atTimeCondition == EventInterface.EventFireCondition.AtReverseTime ) {
+				eventAtTime = time - eventTime;
+			}
+			if ( eventAtTime == 0 && !eventInvoked ) { //invoke time zero events before lerp.
 				if ( atTime != null ) {
 					atTime.Invoke();
 				}
-
 				eventInvoked = true;
 			}
-
+			
+			if(reverse && events.onCompleteCondition == EventInterface.EventFireCondition.AtReverseTime ) {
+				//At reverse time onComplete becomes on Start
+				if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
+					onLoopComplete.Invoke();
+				}
+			}
+			
 			if ( !initBeforeDelay ) {
 				LerpParameters(getLerp(count)); //set to start values.
 			}
@@ -1045,24 +1058,24 @@ namespace InspectorTween {
 				}
 
 				loopCount += loopIncrement;
-
-				if ( reverse ) {
-					if ( loopCount <= eventTime && !eventInvoked ) {
-						if ( atTime != null ) {
-							atTime.Invoke();
+				if ( isOkToFireEvent(events.atTimeCondition, reverse) ) {
+					if ( reverse ) {
+						if ( loopCount <= eventAtTime && !eventInvoked ) {
+							if ( atTime != null ) {
+								atTime.Invoke();
+							}
+							eventInvoked = true;
 						}
-
-						eventInvoked = true;
-					}
-				} else {
-					if ( loopCount >= eventTime && !eventInvoked ) {
-						if ( atTime != null ) {
-							atTime.Invoke();
+					} else {
+						if ( loopCount >= eventAtTime && !eventInvoked ) {
+							if ( atTime != null ) {
+								atTime.Invoke();
+							}
+							eventInvoked = true;
 						}
-
-						eventInvoked = true;
 					}
 				}
+
 
 				if ( currentLoop != Mathf.FloorToInt(count / timeSettings.time) ) { //DetectStart of new loop
 					if ( delayEveryLoop && startDelay != 0 ) { //depricate this at some point.
@@ -1110,13 +1123,34 @@ namespace InspectorTween {
 			}
 
 			LerpParameters(lerpVal);
-			if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
-				onLoopComplete.Invoke();
+			if(isOkToFireEvent(events.onCompleteCondition,reverse) ) {
+				if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
+					onLoopComplete.Invoke();
+				}
 			}
 
 			enabled = false;
 		}
 
+		public static bool isOkToFireEvent(EventInterface.EventFireCondition condition, bool reverseState) {
+			switch ( condition ) {
+				case EventInterface.EventFireCondition.Always:
+					return true;
+					break;
+				case EventInterface.EventFireCondition.ForwardOnly:
+					return !reverseState;
+					break;
+				case EventInterface.EventFireCondition.ReverseOnly:
+					return reverseState;
+					break;
+				case EventInterface.EventFireCondition.AtReverseTime:
+					return reverseState;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
+			}	
+		}
+		
 		private IEnumerator RestartCoroutine() {
 			enabled = false;
 			yield return fixedWait;
@@ -1196,7 +1230,9 @@ namespace InspectorTween {
 					}
 
 					if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) { //manually fire end event.
-						onLoopComplete.Invoke();
+						if(isOkToFireEvent(events.onCompleteCondition,reverse) ) {
+							onLoopComplete.Invoke();
+						}
 					}
 
 					break;
