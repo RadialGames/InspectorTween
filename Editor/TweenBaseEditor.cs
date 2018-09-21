@@ -7,19 +7,29 @@ public class InterpolationInterfaceInspector : PropertyDrawer {
 	private AnimationCurves.AnimationCurveType setCurve = AnimationCurves.AnimationCurveType.Custom;
 	private AnimationCurves.AnimationCurveType lastCurve;
 	public override void OnGUI(Rect rect, SerializedProperty prop, GUIContent label) {
+		
 		EditorGUILayout.PropertyField(prop, true);//This draws default inspector elements
+		bool curvesVisible = prop.FindPropertyRelative("useCurve").boolValue;
+		if ( curvesVisible && prop.isExpanded ) {
+			
+			
+			EditorGUI.indentLevel += 1;
+			setCurve = (AnimationCurves.AnimationCurveType)EditorGUILayout.EnumPopup("Set PredefinedCurve",setCurve);
 		
-		setCurve = (AnimationCurves.AnimationCurveType)EditorGUILayout.EnumPopup("Set PredefinedCurve",setCurve);
-		
-		if (Application.isPlaying == false && setCurve != lastCurve ) {
-			lastCurve = setCurve;
-			SetAnimationCurve(prop,(int)setCurve);
-		}
-		if ( EditorPrefs.GetBool("IsDeveloper", false) ) {
-			if (GUILayout.Button("Debug : Log Curve")) {
-				LogCurve(prop);
+			if (Application.isPlaying == false && setCurve != lastCurve ) {
+				lastCurve = setCurve;
+				SetAnimationCurve(prop,(int)setCurve);
 			}
+			if ( EditorPrefs.GetBool("IsDeveloper", false) ) {
+				
+				if (GUILayout.Button("Debug : Log Curve")) {
+					LogCurve(prop);
+				}
+				
+			}
+			EditorGUI.indentLevel -= 1;
 		}
+		
 	}
 
 	private static void SetAnimationCurve(SerializedProperty prop,int index) {
