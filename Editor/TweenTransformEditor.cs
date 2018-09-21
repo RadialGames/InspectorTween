@@ -6,8 +6,24 @@ using UnityEngine;
 [CanEditMultipleObjects]
 public class TweenTransformEditor : TweenBaseEditor {
     public override void OnInspectorGUI() {
+        
         base.OnInspectorGUI();
+        EditorGUI.BeginChangeCheck();
+        this.serializedObject.Update();
+        
         Rect buttonSize = EditorGUILayout.GetControlRect(false, 19);
+        buttonSize.width = buttonSize.width * 0.5f;
+        
+        if ( GUI.Button(buttonSize,"Current to Start") ) {
+            ((TweenTransform) target).MatchStartToCurrent();
+        }
+
+        buttonSize.x += buttonSize.width;
+        if ( GUI.Button(buttonSize,"Current to End") ) {
+            ((TweenTransform) target).MatchEndToCurrent();
+        }
+        
+        buttonSize = EditorGUILayout.GetControlRect(false, 19);
         buttonSize.width = buttonSize.width * 0.5f;
         
         if ( GUI.Button(buttonSize,"Set to Start") ) {
@@ -21,6 +37,8 @@ public class TweenTransformEditor : TweenBaseEditor {
         if ( GUILayout.Button("InsertFrame") ) {
             InsertFrame();
         }
+        serializedObject.ApplyModifiedProperties();
+        EditorGUI.EndChangeCheck();
     }
     public virtual void SetToStart() {
         TweenTransform tween = ((TweenTransform) target);

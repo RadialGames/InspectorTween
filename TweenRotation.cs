@@ -43,10 +43,10 @@ namespace InspectorTween{
 			}
 		}
 		
-		public void MatchStartToCurrent() {//Used by Context menu
+		public override void MatchStartToCurrent() {//Used by Context menu
 			moveRotations[0] = this.transform.localRotation.eulerAngles;
 		}
-		public void MatchEndToCurrent() {//Used by Context menu
+		public override void MatchEndToCurrent() {//Used by Context menu
 			moveRotations[moveRotations.Length-1] = this.transform.localRotation.eulerAngles;
 		}
 

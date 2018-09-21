@@ -2,8 +2,12 @@
 /**
 * Base for Radial Games Tween scripts.
 */
+
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
+
 namespace InspectorTween{
 	public abstract class TweenTransform : TweenBase 
 	{
@@ -11,18 +15,26 @@ namespace InspectorTween{
 		[Tooltip("Leave this as null for current object.")]
 		[ConditionalHide("simpleMode",true,true)]
 		public Transform targetTransform;
-		[Space(10)]
-		[Tooltip("Start is relative from initial transform")]
-	
-		[SerializeField]
-		[ContextMenuItem("Set Array 0  to current","MatchStartToCurrent")]
-		[ConditionalHide("simpleMode",true,true)]
-		public bool startRelative = false;
+
+		[Space(10)] [Tooltip("Start is relative from initial transform")]
+
+		private const bool hideElements = true;//Ugh. Just slap this here so that I don't have to make another property drawer.
+		//[ContextMenuItem("Set Array 0  to current","MatchStartToCurrent")]
+		[ConditionalHide("hideElements",true,true)]
+		public bool startRelative;
 		[Tooltip("End is relative from initial transform")]
-		[SerializeField]
-		[ContextMenuItem("Set Array End  to current", "MatchEndToCurrent")]
-		[ConditionalHide("simpleMode",true,true)]
-		public bool EndIsRelativeOffsetFromStart = false;
+	
+		//[ContextMenuItem("Set Array End  to current", "MatchEndToCurrent")]
+		[ConditionalHide("hideElements",true,true)]
+		public bool EndIsRelativeOffsetFromStart;
+		
+		public enum TransformValueMode{AbsoluteLocal=0,RelativeToStart=1,ManualDebugSet=1000}
+
+		public TransformValueMode tranformMode = TransformValueMode.AbsoluteLocal;
+		
+		
+		
+		
 		[ConditionalHide("simpleMode",true,true)]
 		public Vector3 addRandomToTargets = new Vector3(-1,-1,-1);
 		protected int lastRandomTarget = -1;
@@ -37,6 +49,22 @@ namespace InspectorTween{
 		public abstract void SetInitial();
 
 		protected override void Awake() {
+			switch ( tranformMode ) {
+				case TransformValueMode.AbsoluteLocal:
+					EndIsRelativeOffsetFromStart = false;
+					startRelative = false;
+					break;
+				case TransformValueMode.RelativeToStart:
+					EndIsRelativeOffsetFromStart = true;
+					startRelative = true;
+					break;
+
+				case TransformValueMode.ManualDebugSet:
+					//Do nothing, respecting manually set paramters.
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 			base.Awake();
 			if (targetTransform == null) {
 				targetTransform = this.transform;
@@ -142,6 +170,8 @@ namespace InspectorTween{
 			lastLerpPoint = lerp;
 			this.LerpParameters(lerp);
 		}
-		
+
+		public abstract void MatchStartToCurrent();
+		public abstract void MatchEndToCurrent();
 	}
 }

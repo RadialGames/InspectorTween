@@ -8,6 +8,7 @@ namespace InspectorTween{
 	public class TweenPosition : TweenTransform
 	{
 		[SerializeField]private Vector3[] movePositions = new Vector3[2]{Vector3.zero,Vector3.one};
+
 		private Vector3 initialPosition;
 		private Vector3 initialAnchor;
 		private RectTransform rTransform;
@@ -23,10 +24,10 @@ namespace InspectorTween{
 			set { movePositions = value; }
 		}
 
-		void MatchStartToCurrent() {
+		public override void MatchStartToCurrent() {
 			movePositions[0] = this.transform.localPosition;
 		}
-		void MatchEndToCurrent() {
+		public override void MatchEndToCurrent() {
 			movePositions[movePositions.Length-1] = this.transform.localPosition;
 		}
 		protected override void LerpParameters(float lerp) {
@@ -55,17 +56,17 @@ namespace InspectorTween{
 			return movePositions.Length > 0;
 		} 
 
-		protected override Vector3 GetRelative (Vector3 endVal, float lerp)
+		protected override Vector3 GetRelative (Vector3 lerpedVal, float lerp)
 		{
-			return endVal + (rTransform!= null?initialAnchor:initialPosition);
+			return lerpedVal + (rTransform!= null?initialAnchor:initialPosition); //Add offset
 		}
-		protected override Vector3 GetStartRelative(Vector3 prelerped,float lerp)
+		protected override Vector3 GetStartRelative(Vector3 lerpedVal,float lerp)
 		{
-			return (prelerped + ((rTransform!= null?initialAnchor:initialPosition)*lerp));
+			return (lerpedVal + ((rTransform!= null?initialAnchor:initialPosition)*lerp));//Fade Add of offset.... is this useful?
 		}
-		protected override Vector3 GetEndRelative(Vector3 prelerped,float lerp)
+		protected override Vector3 GetEndRelative(Vector3 lerpedVal,float lerp)//ditto on uselessness?
 		{
-			return GetStartRelative(prelerped,1-lerp);
+			return GetStartRelative(lerpedVal,1-lerp);
 		}
 
 		public new TweenPosition SetTime(float val) {
