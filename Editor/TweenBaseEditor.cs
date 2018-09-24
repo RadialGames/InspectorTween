@@ -1,4 +1,4 @@
-﻿using InspectorTween;
+using InspectorTween;
 using UnityEditor;
 using UnityEngine;
 
@@ -74,34 +74,22 @@ public class TweenBaseEditor : Editor {
 	    if ( item.WarningRendererVisibilityCheck(item) ) {
 		    EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", MessageType.Warning);
 	    }
-	    
 	    //DoDrawDefaultInspector(this.serializedObject);
         base.OnInspectorGUI();
-
     }
-	bool DoDrawDefaultInspector(SerializedObject obj)
-	{
-		EditorGUI.BeginChangeCheck();
-		obj.Update();
+	//bool DoDrawDefaultInspector(SerializedObject obj) {
+	//	return DoDrawDefaultInspector(obj);
+		//EditorGUI.BeginChangeCheck();
+/*		obj.Update();
 		SerializedProperty iterator = obj.GetIterator();
 		for (bool enterChildren = true; iterator.NextVisible(enterChildren); enterChildren = false)
 		{
-
-			
 			using (new EditorGUI.DisabledScope("m_Script" == iterator.propertyPath)) {
 				EditorGUILayout.PropertyField(iterator, true, new GUILayoutOption[0]);
 			}
-			
-
 		}
-		obj.ApplyModifiedProperties();
-		return EditorGUI.EndChangeCheck();
-	}
-
-
-	
-
-
-
+		obj.ApplyModifiedProperties();*/
+		//return EditorGUI.EndChangeCheck();
+	//}
 	
 }

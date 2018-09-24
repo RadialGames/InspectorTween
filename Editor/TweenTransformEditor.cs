@@ -78,8 +78,6 @@ public class TweenPositionEditor : TweenTransformEditor {
 [CustomEditor(typeof(TweenScale))]
 [CanEditMultipleObjects]
 public class TweenScaleEditor : TweenTransformEditor {
-
-
     protected override void InsertFrame() {
         var tween = (TweenScale) target;
         var keys = tween.values;
@@ -98,8 +96,6 @@ public class TweenScaleEditor : TweenTransformEditor {
 [CustomEditor(typeof(TweenRotation))]
 [CanEditMultipleObjects]
 public class TweenRotationEditor : TweenTransformEditor {
-
-
     protected override void InsertFrame() {
         var tween = (TweenRotation) target;
         var keys = tween.values;
@@ -115,11 +111,8 @@ public class TweenRotationEditor : TweenTransformEditor {
     }
 }
 
-[CustomEditor(typeof(TweenColor))]
-[CanEditMultipleObjects]
-public class TweenColorEditor : TweenBaseEditor {
 
-}
+
 [CustomEditor(typeof(TweenColorRotation))]
 [CanEditMultipleObjects]
 public class TweenColorRotationEditor : TweenTransformEditor {
@@ -198,4 +191,14 @@ public class TweenMaterialFloatEditor : TweenBaseEditor {
 [CanEditMultipleObjects]
 public class TweenPropertyEditor : TweenBaseEditor {
 
+}
+
+[CustomEditor(typeof(TweenColor))]
+[CanEditMultipleObjects]
+public class TweenColorEditor : TweenBaseEditor {
+}
+
+[CustomEditor(typeof(TweenSprite))]
+[CanEditMultipleObjects]
+public class TweenSpriteEditor : TweenBaseEditor {
 }
