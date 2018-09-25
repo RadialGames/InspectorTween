@@ -178,6 +178,9 @@ public class TweenColorRotation : TweenColorBase{
 		if(useMaterial){
 			Color val = LerpColor(lerp,initialColor);
 			if ( setMatrix ) {
+				if ( mat == null ) {
+					return;
+				}
 				Vector3 lerpedVector = LerpArray(hsvValues,lerp,Vector3.Lerp);
 				Matrix4x4 matrix = YIQ(lerpedVector);
 				//Debug.Log(matrix);

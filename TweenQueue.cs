@@ -83,7 +83,7 @@ namespace InspectorTween{
 			foreach(var tweenI in itemQueue[ind].tweens){
 				if(itemQueue[ind].setInitialTransforms){
 					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
-						((InspectorTween.TweenTransform)tweenI).SetInitial();
+						((TweenTransform)tweenI).SetInitial();
 					}
 				}
 				if(tweenI == null) continue;
@@ -94,10 +94,10 @@ namespace InspectorTween{
 				tweenI.ReverseValues(itemQueue[ind].reverseValues);
 
 				if(itemQueue[ind].reverse){
-					tweenI.PlayReverse();
+					tweenI.PlayReverse(true);
 				}
 				else{
-					tweenI.PlayForwards();
+					tweenI.PlayForwards(true);
 				}
 			}
 		}

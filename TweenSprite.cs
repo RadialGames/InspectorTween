@@ -32,10 +32,14 @@ namespace InspectorTween {
 				case objectType.None:
 					break;
 				case objectType.Sprite:
-					spriteRenderer.sprite = currentSprite;
+					if(spriteRenderer.enabled) {
+						spriteRenderer.sprite = currentSprite;
+					}
 					break;
 				case objectType.Image:
-					image.sprite = currentSprite;
+					if(image.enabled) {
+						image.sprite = currentSprite;
+					}
 					break;
 				case objectType.Particle:
 					#if UNITY_2018_1_OR_NEWER
