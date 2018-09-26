@@ -45,7 +45,7 @@ public class InspectorTweenPreferences : MonoBehaviour {
 
     public static void EnableMasks(bool state) {
         BuildTarget x  = EditorUserBuildSettings.activeBuildTarget;
-        int[] possibleBuildTargetGroups = {1, 4, 7, 13, 14, 19, 21, 25, 26, 27, 28};
+        //int[] possibleBuildTargetGroups = {1, 4, 7, 13, 14, 19, 21, 25, 26, 27, 28};
         int[] realisticBuildTargetGroups = {1, 4, 7, 19, 21, 27};
         foreach ( int targetGroup in realisticBuildTargetGroups ) {
             string existingDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);

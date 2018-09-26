@@ -85,10 +85,6 @@ public class TweenQueueEditor : Editor {
 
 
 	public void DoGUI(Rect rect, SerializedProperty prop, GUIContent label) {
-
-		
-
-		Rect bRect = rect;
 		rect = EditorGUILayout.GetControlRect();
 		rect.size = new Vector2(16,16); 
 		EditorGUI.PropertyField(rect, prop, GUIContent.none, false); //Draw 'Element' / collapser thing

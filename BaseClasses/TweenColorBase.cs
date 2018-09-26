@@ -113,7 +113,7 @@ namespace InspectorTween{
             psys = target.GetComponent<ParticleSystem>();
             if(psys != null){
                 type = objectType.Particle;
-#if UNITY_5_6_OR_NEWER
+#if UNITY_5_5_OR_NEWER
                 initialColor = psys.main.startColor.color;
 #else
 				initialColor = psys.startColor;
@@ -192,7 +192,7 @@ namespace InspectorTween{
                     break;
                 case objectType.Particle:
                     if ( psys != null ) {
-#if UNITY_5_6_OR_NEWER
+#if UNITY_5_5_OR_NEWER
                         initialColor = psys.main.startColor.color;
 #else
 				        initialColor = psys.startColor;
@@ -255,7 +255,7 @@ namespace InspectorTween{
                     sprite.color = val; 
                     break;
                 case objectType.Particle :
-#if UNITY_5_6_OR_NEWER
+#if UNITY_5_5_OR_NEWER
                     ParticleSystem.MinMaxGradient pMain = psys.main.startColor;
                     pMain.color = val;
 #else

@@ -31,7 +31,7 @@ public class EnableComponent : MonoBehaviour {
 				var obj = component[i];
 				if(obj.GetType().IsSubclassOf(typeof(ParticleSystem))){
 					ParticleSystem ps = (ParticleSystem)obj;
-#if UNITY_5_6_OR_NEWER
+#if UNITY_5_5_OR_NEWER
 						eRate[i] = ps.emission.rateOverDistance.constantMax;
 #else
 				eRate[i] = ps.emission.rate.constantMax;
@@ -71,7 +71,7 @@ public class EnableComponent : MonoBehaviour {
 					return ps.isPlaying && ps.IsAlive(true);
 				}
 				else{
-#if UNITY_5_6_OR_NEWER
+#if UNITY_5_5_OR_NEWER
 						return ps.emission.rateOverDistance.constantMax > 0f;
 #else
 						return ps.emission.rate.constantMax > 0f;
@@ -124,7 +124,7 @@ public class EnableComponent : MonoBehaviour {
 						}
 						if(_i>=0){//this should always be valid.
 							var emm = ps.emission;
-#if UNITY_5_6_OR_NEWER
+#if UNITY_5_5_OR_NEWER
 								emm.rateOverDistance = new ParticleSystem.MinMaxCurve(this.eRate[_i]);
 #else
 						emm.rate = new ParticleSystem.MinMaxCurve(this.eRate[_i]);
@@ -136,7 +136,7 @@ public class EnableComponent : MonoBehaviour {
 					}
 					else{
 						var emm = ps.emission;
-#if UNITY_5_6_OR_NEWER
+#if UNITY_5_5_OR_NEWER
 							emm.rateOverDistance = new ParticleSystem.MinMaxCurve(0f);
 #else
 							emm.rate = new ParticleSystem.MinMaxCurve( 0f);

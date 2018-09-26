@@ -2,7 +2,6 @@
 /**
 * Base for Radial Games Tween scripts.
 */
-
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
@@ -423,7 +422,7 @@ namespace InspectorTween {
 		[ConditionalHide("simpleMode", true, true)]
 		public TweenMask settingsMask;
 	#else
-		private TweenMask settingsMask; //Keep around for toggling and keeping state.
+		[HideInInspector][SerializeField]private TweenMask settingsMask; //Keep around for toggling and keeping state.
 	#endif
 		private Coroutine tweenCoroutine;
 		static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
@@ -1136,19 +1135,18 @@ namespace InspectorTween {
 			switch ( condition ) {
 				case EventInterface.EventFireCondition.Always:
 					return true;
-					break;
 				case EventInterface.EventFireCondition.ForwardOnly:
 					return !reverseState;
-					break;
 				case EventInterface.EventFireCondition.ReverseOnly:
 					return reverseState;
-					break;
 				case EventInterface.EventFireCondition.AtReverseTime:
 					return reverseState;
-					break;
+#if UNITY_2018_1_OR_NEWER
 				default:
 					throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
-			}	
+#endif
+			}
+			return true;
 		}
 		
 		private IEnumerator RestartCoroutine() {
