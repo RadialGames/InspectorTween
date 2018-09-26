@@ -6,32 +6,48 @@ using UnityEngine;
 public class InterpolationInterfaceInspector : PropertyDrawer {
 	private AnimationCurves.AnimationCurveType setCurve = AnimationCurves.AnimationCurveType.Custom;
 	private AnimationCurves.AnimationCurveType lastCurve;
-	public override void OnGUI(Rect rect, SerializedProperty prop, GUIContent label) {
-		
-		EditorGUILayout.PropertyField(prop, true);//This draws default inspector elements
-		bool curvesVisible = prop.FindPropertyRelative("useCurve").boolValue;
-		if ( curvesVisible && prop.isExpanded ) {
+	public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label) {
+		//NB!!! Defauly unity GUI doesn't like GUILayout usage??
+		//EditorGUILayout.PropertyField(prop, true);
+		EditorGUI.PropertyField(rect, property, label, true);//This draws default inspector elements
+		bool curvesVisible = property.FindPropertyRelative("useCurve").boolValue;
+		if ( curvesVisible && property.isExpanded ) {
 			
-			
-			EditorGUI.indentLevel += 1;
-			setCurve = (AnimationCurves.AnimationCurveType)EditorGUILayout.EnumPopup("Set PredefinedCurve",setCurve);
-		
-			if (Application.isPlaying == false && setCurve != lastCurve ) {
-				lastCurve = setCurve;
-				SetAnimationCurve(prop,(int)setCurve);
-			}
-			if ( EditorPrefs.GetBool("IsDeveloper", false) ) {
-				
-				if (GUILayout.Button("Debug : Log Curve")) {
-					LogCurve(prop);
-				}
-				
-			}
-			EditorGUI.indentLevel -= 1;
-		}
-		
-	}
+			//EditorGUI.indentLevel += 1;
+			//Rect propREct = GUILayoutUtility.GetRect(300, 16);
+			int addPosition = 16;
 
+
+			if ( EditorPrefs.GetBool("IsDeveloper", false) ) {
+				Rect buttonRect = new Rect(rect.position.x + 60, rect.position.y + rect.height - addPosition, 120, 16);
+				addPosition *= 2;
+				if ( GUI.Button(buttonRect, new GUIContent("Debug : Log Curve")) ) {
+					LogCurve(property);
+				}
+			}
+			Rect enumRect = new Rect(rect.position.x + 30, rect.position.y + rect.height - addPosition, rect.width - 30, 16);
+			setCurve = (AnimationCurves.AnimationCurveType) EditorGUI.EnumPopup(enumRect, new GUIContent("Set PredefinedCurve"), setCurve);
+
+			if ( Application.isPlaying == false && setCurve != lastCurve ) {
+				lastCurve = setCurve;
+				SetAnimationCurve(property, (int) setCurve);
+			}
+			
+
+		}
+	}
+	public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+	{
+		bool curvesVisible = property.FindPropertyRelative("useCurve").boolValue;
+		if ( curvesVisible && property.isExpanded ) {
+			int add = 16;
+			if ( EditorPrefs.GetBool("IsDeveloper", false) ) {
+				add = 32;
+			}
+			return EditorGUI.GetPropertyHeight(property) + add;
+		}
+		return EditorGUI.GetPropertyHeight(property);
+	}
 	private static void SetAnimationCurve(SerializedProperty prop,int index) {
 		if ( index < 0 || index >= AnimationCurves.savedCurves.Length ) {
 			return;
