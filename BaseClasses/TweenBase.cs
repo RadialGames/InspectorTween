@@ -405,7 +405,12 @@ namespace InspectorTween {
 			if ( play ) {
 				newTween.enabled = true;
 			}
-			return newTween;
+
+			var renderers = t.GetComponentsInChildren<Renderer>();
+			if ( renderers.Length == 0 ) {
+				newTween.updateSettings.pauseOffscreen = VisibilityPause.None;
+			}
+;			return newTween;
 		}
 
 		public TweenBase SetAnimationCurve(AnimationCurves.AnimationCurveType curve) {
