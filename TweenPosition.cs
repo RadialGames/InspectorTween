@@ -48,8 +48,9 @@ namespace InspectorTween{
 			}
 			initialPosition = targetTransform.localPosition;
 			rTransform= GetComponent<RectTransform>();
-			if(rTransform)
+			if(rTransform) {
 				initialAnchor = rTransform.anchoredPosition3D;
+			}
 		}
 		protected override bool HasValidParameters()
 		{

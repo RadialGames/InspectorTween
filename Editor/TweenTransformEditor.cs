@@ -42,14 +42,28 @@ public class TweenTransformEditor : TweenBaseEditor {
     }
     public virtual void SetToStart() {
         TweenTransform tween = ((TweenTransform) target);
-        tween.targetTransform = tween.transform;
+        bool reset = false;
+        if(tween.targetTransform == null) {
+            tween.targetTransform = tween.transform;
+            reset = true;
+        }
         tween.SetToLerpPoint(0f);
+        if ( reset ) {
+            tween.targetTransform = null;
+        }
     }
 
     public virtual void SetToEnd() {
         TweenTransform tween = ((TweenTransform) target);
-        tween.targetTransform = tween.transform;
+        bool reset = false;
+        if ( tween.targetTransform == null ) {
+            tween.targetTransform = tween.transform;
+            reset = true;
+        }
         tween.SetToLerpPoint(1f);
+        if ( reset ) {
+            tween.targetTransform = null;
+        }
     }
 
     protected virtual void InsertFrame() {

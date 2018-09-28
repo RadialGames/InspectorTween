@@ -31,15 +31,34 @@ public class CameraToActive : MonoBehaviour {
 			return;
 		}
 
+		int currentIndex = -1;
+		if ( currentSelected != null ) {
+		  //Find queue where we are and deselect that
+		  currentIndex = Selectable.allSelectables.IndexOf( currentSelected.GetComponent<Selectable>());
+		  if(currentIndex > 0 && currentIndex < becameSelectedTween.Length) {
+			  if ( becameSelectedTween[currentIndex] != null ) {
+				  int qInd = becameSelectedTween[currentIndex].GetNamedIndex("OnSelected");
+				  if ( qInd >= 0 ) {
+					  becameSelectedTween[currentIndex].itemQueue[qInd].reverseValues = true;
+					  becameSelectedTween[currentIndex].Play(qInd);
+				  }
+
+			  }
+		  }
+		}
 		currentSelected = eventSystem.currentSelectedGameObject;
 		if ( currentSelected == null ) {
 			return;
 		}
 
-		int currentIndex = Selectable.allSelectables.IndexOf( currentSelected.GetComponent<Selectable>());
+		currentIndex = Selectable.allSelectables.IndexOf( currentSelected.GetComponent<Selectable>());
 		if(currentIndex > 0 && currentIndex < becameSelectedTween.Length) {
 			if ( becameSelectedTween[currentIndex] != null ) {
-				becameSelectedTween[currentIndex].Play("OnSelected");
+				int qInd = becameSelectedTween[currentIndex].GetNamedIndex("OnSelected");
+				if ( qInd >= 0 ) {
+					becameSelectedTween[currentIndex].itemQueue[qInd].reverseValues = false;
+					becameSelectedTween[currentIndex].Play(qInd);
+				}
 			}
 		}
 		SetCameraDestination();
