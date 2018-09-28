@@ -88,15 +88,15 @@ namespace InspectorTween{
 		{
 			if (useRandomOffset){
                 var testLerp = Mathf.FloorToInt(this.count/timeSettings.time);
-				if (testLerp != lastRandomTarget) {
+				if (testLerp != randomSetAtLoop) {
 					SetRandom(tweenArr.Length);
-					if (randomRotations==null || randomRotations.Length != randomTargets.Length) {
-						randomRotations = new Quaternion[randomTargets.Length];
-						newRandomRotations = new Quaternion[randomTargets.Length];
+					if (randomRotations==null || randomRotations.Length != oldRandomOffsets.Length) {
+						randomRotations = new Quaternion[oldRandomOffsets.Length];
+						newRandomRotations = new Quaternion[oldRandomOffsets.Length];
 					}
-					for(int i=0;i<randomTargets.Length;i++){
-						randomRotations[i] = Quaternion.Euler(randomTargets[i]);
-						newRandomRotations[i] = Quaternion.Euler(newRandomTargets[i]);
+					for(int i=0;i<oldRandomOffsets.Length;i++){
+						randomRotations[i] = Quaternion.Euler(oldRandomOffsets[i]);
+						newRandomRotations[i] = Quaternion.Euler(newRandomOffsets[i]);
 					}
 				}
 			}
