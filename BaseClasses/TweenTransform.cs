@@ -37,11 +37,11 @@ namespace InspectorTween{
 		
 		[ConditionalHide("simpleMode",true,true)]
 		public Vector3 addRandomToTargets = new Vector3(-1,-1,-1);
-		protected int lastRandomTarget = -1;
+		protected int randomSetAtLoop = -1;
 
 		protected bool doRandomOffset;
-		protected Vector3[] randomTargets;
-		protected Vector3[] newRandomTargets;
+		protected Vector3[] oldRandomOffsets;
+		protected Vector3[] newRandomOffsets;
 		protected Vector3 randomValue = Vector3.zero;
 		protected Vector3[] reversedValues;
 		//private Vector3[] tweenValues;
@@ -90,31 +90,35 @@ namespace InspectorTween{
 			SetInitial();//make sure initial position is reset correctly to match the new target
 		}
 		protected void SetRandom(int tweenArrLength){
+			//Determine if randomness is needed
 			if (addRandomToTargets.x < 0 && addRandomToTargets.y < 0f && addRandomToTargets.z < 0f) {
-				doRandomOffset = false;
+				doRandomOffset = false;//nope.
 				return;
             }
-			doRandomOffset = true;
-			var testLerp = Mathf.FloorToInt(this.count/timeSettings.time);
-			if(testLerp== lastRandomTarget){
+			doRandomOffset = true;//it is!
+			
+			if(currentLoop == randomSetAtLoop){//we've already set up for this loop.
 				return;
 			}
-			lastRandomTarget = testLerp;
+			randomSetAtLoop = currentLoop;
 
-			if (newRandomTargets == null || newRandomTargets.Length != tweenArrLength) {//Initialize
-				newRandomTargets = new Vector3[tweenArrLength];
-				randomTargets = new Vector3[tweenArrLength];
+			if (newRandomOffsets == null || newRandomOffsets.Length != tweenArrLength) {//Initialize
+				newRandomOffsets = new Vector3[tweenArrLength];
+				oldRandomOffsets = new Vector3[tweenArrLength];
 				for (int i = 0; i < tweenArrLength; i++) {//Starting points are base
-					randomTargets[i] = Vector3.zero;
+					oldRandomOffsets[i] = Vector3.zero;
 				}
 			} else {
-				randomTargets = (Vector3[])newRandomTargets.Clone();
+				for ( int i = 0; i < oldRandomOffsets.Length; i++ ) {
+					oldRandomOffsets[i] = new Vector3(newRandomOffsets[i].x,newRandomOffsets[i].y,newRandomOffsets[i].z);
+				}
 			}
-			for (int i=0;i<tweenArrLength;i++){ //New random targets to move to.
+			
+			for (int i=0;i<tweenArrLength;i++){ //New random targets to move to for each 'keyframe'/array value
 				var xrand=	addRandomToTargets.x>=0?Random.Range(-addRandomToTargets.x,addRandomToTargets.x):0;
 				var yrand = addRandomToTargets.y>=0?Random.Range(-addRandomToTargets.y,addRandomToTargets.y):0;
 				var zrand = addRandomToTargets.z>=0?Random.Range(-addRandomToTargets.z,addRandomToTargets.z):0;
-				newRandomTargets[i] = new Vector3(xrand,yrand,zrand);
+				newRandomOffsets[i] = new Vector3(xrand,yrand,zrand);
 			}
 			
 		}
@@ -133,18 +137,55 @@ namespace InspectorTween{
 		protected abstract Vector3 GetStartRelative(Vector3 startVal,float lerp);
 		protected abstract Vector3 GetEndRelative(Vector3 endVal,float lerp);
 		protected abstract Vector3 GetRelative(Vector3 endVal,float lerp);
+		/// <summary>
+		/// Interpolate an array of Vector3 values
+		/// </summary>
+		/// <param name="tweenArr">Array of values</param>
+		/// <param name="lerp"> lerp will likely be a ~0-1 value from AnimationCurve.Evaluate</param>
+		/// <returns></returns>
 		protected Vector3 LerpParameter(Vector3[] tweenArr,float lerp)
 		{
-			SetRandom(tweenArr.Length);
+			if (( useCurve && interpolationCurve.postWrapMode == WrapMode.Clamp )|| (!useCurve && interpolation.nonCurveLoopMode == ProgramaticInterpolation.TweenLoopMode.Clamp)){
+				//We don't want random changing ever in this case
+				if ( currentLoop == 0 ) {
+					SetRandom(tweenArr.Length);
+				}
+			} else {
+				SetRandom(tweenArr.Length);
+			}
+			
 			Vector3 scaleArrayLerp;
 			if(tweenArr.Length == 2){
 				if (doRandomOffset) {
-					randomValue = MathS.Vector3Lerp(MathS.Vector3LerpUnclamped(randomTargets[0], randomTargets[1], lerp), 
-					                                MathS.Vector3LerpUnclamped(newRandomTargets[0], newRandomTargets[1], lerp), count / timeSettings.time % 1);
+					if ((useCurve && interpolation.interpolation.postWrapMode == WrapMode.PingPong )||(!useCurve && interpolation.nonCurveLoopMode == ProgramaticInterpolation.TweenLoopMode.PingPong)) {
+						if(currentLoop == 0){
+							randomValue = MathS.Vector3LerpUnclamped(newRandomOffsets[0], newRandomOffsets[1],lerp);
+						} else if ( currentLoop % 2 == 1 ) {
+							randomValue = MathS.Vector3LerpUnclamped(newRandomOffsets[0], oldRandomOffsets[1],lerp);
+						} else {
+							randomValue = MathS.Vector3LerpUnclamped(oldRandomOffsets[0], newRandomOffsets[1],lerp);
+						}
+					} 
+					else{
+						// if (!useCurve && interpolation.nonCurveLoopMode == ProgramaticInterpolation.TweenLoopMode.Continuous) {
+						if(currentLoop == 0){
+							randomValue = MathS.Vector3LerpUnclamped(newRandomOffsets[0], newRandomOffsets[1],lerp);
+						} else {
+							randomValue = MathS.Vector3LerpUnclamped(oldRandomOffsets[0], newRandomOffsets[1],lerp%1);
+						}
+					}
+					//else {
+					//	randomValue = MathS.Vector3LerpUnclamped(oldRandomOffsets[0], newRandomOffsets[1],lerp);
+					//}
+
+					//randomValue = MathS.Vector3LerpUnclamped(newRandomOffsets[0], newRandomOffsets[1], lerp);
+					//
+					//MathS.Vector3Lerp(MathS.Vector3LerpUnclamped(randomOffsets[0], randomOffsets[1], lerp), 
+					//MathS.Vector3LerpUnclamped(newRandomOffsets[0], newRandomOffsets[1], lerp), count / timeSettings.time % 1);
 				}
                 scaleArrayLerp = MathS.Vector3LerpUnclamped(tweenArr[0],tweenArr[1],lerp) + randomValue;
 			}else{
-				scaleArrayLerp = TweenTransform.LerpVector3Array(tweenArr,randomTargets,newRandomTargets,lerp, count / timeSettings.time % 1);
+				scaleArrayLerp = LerpVector3Array(tweenArr,oldRandomOffsets,newRandomOffsets,lerp, count / timeSettings.time % 1);
 			}
 
 			if(EndIsRelativeOffsetFromStart && startRelative){
