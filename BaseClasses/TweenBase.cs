@@ -1076,7 +1076,6 @@ namespace InspectorTween {
 						//if ( !reverse && checkTime <= eventAtTime && eventInvoked ) {
 						if(eventFireLoopCount != currentLoop){
 							eventInvoked = false; //reset invoked.
-							Debug.Log(checkTime);
 						}
 					}
 					if ( reverse ) {
@@ -1102,6 +1101,12 @@ namespace InspectorTween {
 
 
 				if ( currentLoop != Mathf.FloorToInt(count / timeSettings.time) ) { //DetectStart of new loop
+					//this is technically the 'start' of a new loop, but can be considered the end for the sake of loop complete.
+					if ( events.onCompleteCondition == EventInterface.EventFireCondition.EveryLoop && events.onLoopComplete != null ) {
+						if (loopCount==-1 || (int)loopCount != currentLoop + 1 ) {//try and avoid double invoke on limited count loops.
+							events.onLoopComplete.Invoke();
+						}
+					}
 					if ( delayEveryLoop && startDelay != 0 ) { //depricate this at some point.
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
 						float newDelay = MathS.TrulyRandomRange(0, startDelay, seed);
@@ -1116,6 +1121,7 @@ namespace InspectorTween {
 					}
 
 					currentLoop = Mathf.FloorToInt(count / timeSettings.time);
+					
 				}
 
 				if ( updateType == UpdateType.Update ) {
