@@ -789,7 +789,7 @@ namespace InspectorTween {
 
 		[Serializable]
 		public class EventInterface {
-			public enum EventFireCondition{Always,ForwardOnly,ReverseOnly,AtReverseTime}
+			public enum EventFireCondition{Always,ForwardOnly,ReverseOnly,AtReverseTime,EveryLoop}
 			public float eventTime;
 			public EventFireCondition atTimeCondition;
 			public UnityEvent atTime = new UnityEvent();
@@ -993,7 +993,7 @@ namespace InspectorTween {
 			if ( startDelayWait != null ) {
 				yield return startDelayWait;
 			}
-
+			int eventFireLoopCount = -1;
 			float eventAtTime = eventTime;
 			if ( events.atTimeCondition == EventInterface.EventFireCondition.AtReverseTime ) {
 				eventAtTime = time - eventTime;
@@ -1003,6 +1003,7 @@ namespace InspectorTween {
 					atTime.Invoke();
 				}
 				eventInvoked = true;
+				eventFireLoopCount = 0;
 			}
 			
 			if(reverse && events.onCompleteCondition == EventInterface.EventFireCondition.AtReverseTime ) {
@@ -1016,9 +1017,11 @@ namespace InspectorTween {
 				LerpParameters(getLerp(count)); //set to start values.
 			}
 
+
 			while ( TimeCheck() && enabled ) {
-				if ( currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount / timeSettings.time >= currentLoopNumberOfTimes )
+				if ( currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount / timeSettings.time >= currentLoopNumberOfTimes ) {
 					break; //stop loop, not coroutine.
+				}
 
 				bool doPause = false;
 				if ( pauseOffscreen == VisibilityPause.AllChildren && !AnyChildVisible() ) {
@@ -1064,19 +1067,35 @@ namespace InspectorTween {
 
 				loopCount += loopIncrement;
 				if ( isOkToFireEvent(events.atTimeCondition, reverse) ) {
+					float checkTime = loopCount;
+					if ( events.atTimeCondition == EventInterface.EventFireCondition.EveryLoop ) {
+						checkTime = loopCount % time;
+						//if ( reverse && checkTime >= eventAtTime && eventInvoked ) {
+						//	eventInvoked = false; //reset invoked.
+						//}
+						//if ( !reverse && checkTime <= eventAtTime && eventInvoked ) {
+						if(eventFireLoopCount != currentLoop){
+							eventInvoked = false; //reset invoked.
+							Debug.Log(checkTime);
+						}
+					}
 					if ( reverse ) {
-						if ( loopCount <= eventAtTime && !eventInvoked ) {
+						if ( checkTime <= eventAtTime && !eventInvoked ) {
 							if ( atTime != null ) {
 								atTime.Invoke();
 							}
+
+							eventFireLoopCount = currentLoop;
 							eventInvoked = true;
 						}
+						
 					} else {
-						if ( loopCount >= eventAtTime && !eventInvoked ) {
+						if ( checkTime >= eventAtTime && !eventInvoked ) {
 							if ( atTime != null ) {
 								atTime.Invoke();
 							}
 							eventInvoked = true;
+							eventFireLoopCount = currentLoop;
 						}
 					}
 				}
@@ -1147,6 +1166,8 @@ namespace InspectorTween {
 					return reverseState;
 				case EventInterface.EventFireCondition.AtReverseTime:
 					return reverseState;
+				case EventInterface.EventFireCondition.EveryLoop:
+					return true;
 #if UNITY_2018_1_OR_NEWER
 				default:
 					throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
