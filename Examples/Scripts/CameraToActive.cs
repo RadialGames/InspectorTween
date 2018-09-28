@@ -27,8 +27,7 @@ namespace InspectorTween.InspectorTweenExamples {
 				}
 			}
 
-			moveTween = (TweenPosition) TweenBase.AddTween<TweenPosition>(gameObject, false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
-			moveTween.interpolation.loop = false;
+			moveTween = (TweenPosition) TweenBase.AddTween<TweenPosition>(gameObject, play:false,loop:false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
 		}
 
 		private void FixedUpdate() {

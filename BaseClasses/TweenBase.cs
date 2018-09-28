@@ -392,7 +392,7 @@ namespace InspectorTween {
 	//	}
 	//}
 	public abstract class TweenBase : MonoBehaviour {
-		public static T AddTween<T>(GameObject t,bool play = true) where T : TweenBase {
+		public static T AddTween<T>(GameObject t,bool play = true,bool loop = true) where T : TweenBase {
 			T newTween = t.AddComponent<T>();
 			newTween.enabled = false;
 			//These don't get magically init'd like in inspector.
@@ -402,6 +402,7 @@ namespace InspectorTween {
 			newTween.events = new EventInterface();
 			newTween.Reset();//Reset usuallt gets called on add in editor, and adds some sane defaults vs environment.
 			newTween.AwakeInit();//Re-do the awake stuff after initializing the 
+			newTween.loop = loop;
 			if ( play ) {
 				newTween.enabled = true;
 			}
