@@ -185,7 +185,7 @@ namespace InspectorTween{
 				}
                 scaleArrayLerp = MathS.Vector3LerpUnclamped(tweenArr[0],tweenArr[1],lerp) + randomValue;
 			}else{
-				scaleArrayLerp = LerpVector3Array(tweenArr,oldRandomOffsets,newRandomOffsets,lerp, count / timeSettings.time % 1);
+				scaleArrayLerp = LerpVector3Array(tweenArr,oldRandomOffsets,newRandomOffsets,lerp, count / time % 1);
 			}
 
 			if(EndIsRelativeOffsetFromStart && startRelative){

@@ -565,6 +565,48 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   colorFunction: 0
   colorOverTimeMultiplier: 1
+--- !u!1001 &69302243
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 19.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -14.546407
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0.025253482
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0.06403263
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.029452574
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.9971934
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: c8f12f0d6ee37d647a3d436b57979b1d, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &79306499
 GameObject:
   m_ObjectHideFlags: 0
@@ -2761,131 +2803,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 394768586}
---- !u!1 &410046329
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1143176390105040, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 410046330}
-  - component: {fileID: 410046331}
-  m_Layer: 0
-  m_Name: Shaker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &410046330
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4049261717313982, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 410046329}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1063905480}
-  m_Father: {fileID: 981490574}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &410046331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114604207855127264, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 410046329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 975d566b77ece8c43ab3a52912f9cdef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleMode: 0
-  settingsMask: {fileID: 0}
-  name: 
-  _useNameAsRandomSeed: 0
-  _updateSettings:
-    updateType: 0
-    pauseOffscreen: 0
-    respectGlobalTimeScale: 1
-    playSpeed: 0
-    allowInterupt: 0
-  _timeSettings:
-    reverse: 0
-    reverseValues: 0
-    time: 0.4
-    timeRandomScale: {x: 1, y: 1}
-    initBeforeDelay: 0
-    startDelay: 0
-    randomStartDelay: {x: 0, y: 0}
-    delayEveryLoop: 0
-    startAtTime: {x: 0, y: -1}
-    resetToBegining: 0
-  _interpolation:
-    loop: 1
-    timeRandomEveryLoop: 0
-    loopNumberOfTimes: 3
-    useCurve: 1
-    interpolation:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.20649084
-        value: 0.056953467
-        inSlope: 0.7515587
-        outSlope: 0.7515587
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.68500817
-        value: 0.81403196
-        inSlope: 1.3005733
-        outSlope: 1.3005733
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 0
-      m_RotationOrder: 0
-    nonCurveInterpolation: 0
-    nonCurveInterpolationOut: 0
-    nonCurveLoopMode: 0
-  events:
-    eventTime: 0
-    atTimeCondition: 0
-    atTime:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onCompleteCondition: 0
-    onLoopComplete:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  targetTransform: {fileID: 0}
-  startRelative: 0
-  EndIsRelativeOffsetFromStart: 0
-  tranformMode: 0
-  addRandomToTargets: {x: 0.002, y: -1, z: -1}
-  movePositions:
-  - {x: -0.007, y: 0, z: 0}
-  - {x: 0.007, y: 0, z: 0}
 --- !u!1 &416880833
 GameObject:
   m_ObjectHideFlags: 0
@@ -7185,119 +7102,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   colorFunction: 1
   colorOverTimeMultiplier: 5
---- !u!1 &981490573
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1306994275548704, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 981490574}
-  - component: {fileID: 981490575}
-  m_Layer: 0
-  m_Name: Mover
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &981490574
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4861174144899928, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 981490573}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 410046330}
-  m_Father: {fileID: 2130034307}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &981490575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114761181912594668, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 981490573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 975d566b77ece8c43ab3a52912f9cdef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleMode: 0
-  settingsMask: {fileID: 0}
-  name: 
-  _useNameAsRandomSeed: 0
-  _updateSettings:
-    updateType: 0
-    pauseOffscreen: 0
-    respectGlobalTimeScale: 1
-    playSpeed: 0
-    allowInterupt: 0
-  _timeSettings:
-    reverse: 0
-    reverseValues: 0
-    time: 1.2
-    timeRandomScale: {x: 1, y: 1}
-    initBeforeDelay: 0
-    startDelay: 0
-    randomStartDelay: {x: 0, y: 0}
-    delayEveryLoop: 0
-    startAtTime: {x: 0, y: -1}
-    resetToBegining: 0
-  _interpolation:
-    loop: 0
-    timeRandomEveryLoop: 0
-    loopNumberOfTimes: 4
-    useCurve: 0
-    interpolation:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: 0.79680276
-        outSlope: 0.79680276
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1.0008545
-        value: 1
-        inSlope: 0.94402456
-        outSlope: 0.94402456
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-    nonCurveInterpolation: 0
-    nonCurveInterpolationOut: 0
-    nonCurveLoopMode: 3
-  events:
-    eventTime: 0
-    atTimeCondition: 0
-    atTime:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onCompleteCondition: 0
-    onLoopComplete:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  targetTransform: {fileID: 0}
-  startRelative: 0
-  EndIsRelativeOffsetFromStart: 0
-  tranformMode: 0
-  addRandomToTargets: {x: -1, y: 0.05, z: -1}
-  movePositions:
-  - {x: 0, y: 0.05, z: 0}
-  - {x: 0, y: 0.15, z: 0}
 --- !u!1 &1013342153
 GameObject:
   m_ObjectHideFlags: 0
@@ -7698,327 +7502,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1043566701}
---- !u!1 &1063905476
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1171735105961064, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1063905480}
-  - component: {fileID: 1063905479}
-  - component: {fileID: 1063905477}
-  - component: {fileID: 1063905478}
-  m_Layer: 0
-  m_Name: Canvas
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1063905477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114434367211235236, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1063905476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ab4fdd85591a4bc3997123ce4f5f281, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleMode: 0
-  settingsMask: {fileID: 0}
-  name: TextMeshPro
-  _useNameAsRandomSeed: 0
-  _updateSettings:
-    updateType: 0
-    pauseOffscreen: 0
-    respectGlobalTimeScale: 1
-    playSpeed: 0
-    allowInterupt: 0
-  _timeSettings:
-    reverse: 0
-    reverseValues: 0
-    time: 1.2
-    timeRandomScale: {x: 1, y: 1}
-    initBeforeDelay: 0
-    startDelay: 0
-    randomStartDelay: {x: 0, y: 0}
-    delayEveryLoop: 0
-    startAtTime: {x: 0, y: -1}
-    resetToBegining: 0
-  _interpolation:
-    loop: 0
-    timeRandomEveryLoop: 0
-    loopNumberOfTimes: -1
-    useCurve: 1
-    interpolation:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: -0.1350138
-        outSlope: -0.1350138
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.8627048
-        value: 0.69951606
-        inSlope: 0.9942055
-        outSlope: 0.9942055
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1
-        value: 1
-        inSlope: 4.050413
-        outSlope: 4.050413
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-    nonCurveInterpolation: 0
-    nonCurveInterpolationOut: 0
-    nonCurveLoopMode: 3
-  events:
-    eventTime: 0
-    atTimeCondition: 0
-    atTime:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onCompleteCondition: 0
-    onLoopComplete:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  target: {fileID: 0}
-  useMaterial: 0
-  materialProperty: 
-  dontInstanceMaterial: 0
-  forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
-  colorOverTime:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  colorFunction: 2
-  colorOverTimeMultiplier: 1
---- !u!114 &1063905478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114773144062087998, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1063905476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ab4fdd85591a4bc3997123ce4f5f281, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleMode: 0
-  settingsMask: {fileID: 0}
-  name: TextMeshUnity
-  _useNameAsRandomSeed: 0
-  _updateSettings:
-    updateType: 0
-    pauseOffscreen: 0
-    respectGlobalTimeScale: 1
-    playSpeed: 0
-    allowInterupt: 0
-  _timeSettings:
-    reverse: 0
-    reverseValues: 0
-    time: 1.2
-    timeRandomScale: {x: 1, y: 1}
-    initBeforeDelay: 0
-    startDelay: 0
-    randomStartDelay: {x: 0, y: 0}
-    delayEveryLoop: 0
-    startAtTime: {x: 0, y: -1}
-    resetToBegining: 0
-  _interpolation:
-    loop: 0
-    timeRandomEveryLoop: 0
-    loopNumberOfTimes: -1
-    useCurve: 1
-    interpolation:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: -0.1350138
-        outSlope: -0.1350138
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0.8627048
-        value: 0.69951606
-        inSlope: 0.9942055
-        outSlope: 0.9942055
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1
-        value: 1
-        inSlope: 4.050413
-        outSlope: 4.050413
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-    nonCurveInterpolation: 0
-    nonCurveInterpolationOut: 0
-    nonCurveLoopMode: 3
-  events:
-    eventTime: 0
-    atTimeCondition: 0
-    atTime:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onCompleteCondition: 0
-    onLoopComplete:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  target: {fileID: 0}
-  useMaterial: 0
-  materialProperty: 
-  dontInstanceMaterial: 0
-  forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
-  colorOverTime:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  colorFunction: 2
-  colorOverTimeMultiplier: 1
---- !u!223 &1063905479
-Canvas:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 223276581591209834, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1063905476}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!224 &1063905480
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 224775400254689522, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1063905476}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1260550977}
-  m_Father: {fileID: 410046330}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.05, y: 0.05}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1076995439
 GameObject:
   m_ObjectHideFlags: 0
@@ -8848,217 +8331,6 @@ Transform:
   m_Father: {fileID: 815964490}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 69, y: 0, z: 0}
---- !u!1 &1260550976
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1289252456708596, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1260550977}
-  - component: {fileID: 1260550979}
-  - component: {fileID: 1260550978}
-  - component: {fileID: 1260550980}
-  m_Layer: 0
-  m_Name: New Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1260550977
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4251608680143846, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1260550976}
-  m_LocalRotation: {x: 0.32478747, y: 0.01820852, z: -0.04238144, w: 0.94466156}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.17571579, y: 0.17571579, z: 0.17571579}
-  m_Children: []
-  m_Father: {fileID: 1063905480}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 37.964, y: 0.499, z: -4.966}
---- !u!102 &1260550978
-TextMesh:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 102561632650415358, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1260550976}
-  m_Text: 2
-  m_OffsetZ: 0
-  m_CharacterSize: 0.05
-  m_LineSpacing: 1
-  m_Anchor: 4
-  m_Alignment: 0
-  m_TabSize: 4
-  m_FontSize: 64
-  m_FontStyle: 0
-  m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
---- !u!23 &1260550979
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 23114321305281120, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1260550976}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!114 &1260550980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1260550976}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ab4fdd85591a4bc3997123ce4f5f281, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleMode: 1
-  settingsMask: {fileID: 0}
-  name: 
-  _useNameAsRandomSeed: 0
-  _updateSettings:
-    updateType: 0
-    pauseOffscreen: 2
-    respectGlobalTimeScale: 1
-    playSpeed: 0
-    allowInterupt: 0
-  _timeSettings:
-    reverse: 0
-    reverseValues: 0
-    time: 1.2
-    timeRandomScale: {x: 1, y: 1}
-    initBeforeDelay: 0
-    startDelay: 0
-    randomStartDelay: {x: 0, y: 0}
-    delayEveryLoop: 0
-    startAtTime: {x: 0, y: -1}
-    resetToBegining: 0
-  _interpolation:
-    loop: 0
-    timeRandomEveryLoop: 0
-    loopNumberOfTimes: -1
-    useCurve: 1
-    interpolation:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      m_PreInfinity: 1
-      m_PostInfinity: 1
-      m_RotationOrder: 4
-    nonCurveInterpolation: 0
-    nonCurveInterpolationOut: 0
-    nonCurveLoopMode: 0
-  events:
-    eventTime: 0
-    atTimeCondition: 0
-    atTime:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onCompleteCondition: 0
-    onLoopComplete:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-  target: {fileID: 0}
-  useMaterial: 0
-  materialProperty: 
-  dontInstanceMaterial: 0
-  forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
-  colorOverTime:
-    key0:
-      serializedVersion: 2
-      rgba: 16777215
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 4278190080
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 25317
-    atime2: 57844
-    atime3: 65535
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
-  colorFunction: 0
-  colorOverTimeMultiplier: 1
 --- !u!1 &1266640959
 GameObject:
   m_ObjectHideFlags: 0
@@ -12618,6 +11890,159 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1663182378}
+--- !u!1 &1713382363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1713382365}
+  - component: {fileID: 1713382364}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1713382364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1713382363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ab4fdd85591a4bc3997123ce4f5f281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleMode: 1
+  settingsMask: {fileID: 0}
+  name: 
+  _useNameAsRandomSeed: 0
+  _updateSettings:
+    updateType: 0
+    pauseOffscreen: 2
+    respectGlobalTimeScale: 1
+    playSpeed: 0
+    allowInterupt: 0
+  _timeSettings:
+    reverse: 0
+    reverseValues: 0
+    time: 0
+    timeRandomScale: {x: 1, y: 1}
+    initBeforeDelay: 0
+    startDelay: 0
+    randomStartDelay: {x: 0, y: 0}
+    delayEveryLoop: 0
+    startAtTime: {x: 0, y: -1}
+    resetToBegining: 0
+  _interpolation:
+    loop: 1
+    timeRandomEveryLoop: 0
+    loopNumberOfTimes: -1
+    useCurve: 1
+    interpolation:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 1
+      m_PostInfinity: 1
+      m_RotationOrder: 4
+    nonCurveInterpolation: 0
+    nonCurveInterpolationOut: 0
+    nonCurveLoopMode: 0
+  events:
+    eventTime: 0
+    atTimeCondition: 0
+    atTime:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    onCompleteCondition: 0
+    onLoopComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  target: {fileID: 0}
+  useMaterial: 0
+  materialProperty: 
+  dontInstanceMaterial: 0
+  forceSetMaterial: 0
+  initialColor: {r: 1, g: 1, b: 1, a: 1}
+  colorOverTime:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  colorFunction: 0
+  colorOverTimeMultiplier: 1
+--- !u!4 &1713382365
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1713382363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.230936, y: 0.26741743, z: -12.194315}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1739805577
 GameObject:
   m_ObjectHideFlags: 0
@@ -14372,146 +13797,6 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
---- !u!1 &2130034305
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1040155947744612, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2130034307}
-  - component: {fileID: 2130034306}
-  - component: {fileID: 2130034308}
-  m_Layer: 0
-  m_Name: fx_FloatingNumber 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2130034306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114520210877111698, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2130034305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50986e07a2e104d4aa320dc2e705be43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemQueue:
-  - label: 
-    tweens:
-    - {fileID: 981490575}
-    - {fileID: 410046331}
-    - {fileID: 1063905477}
-    - {fileID: 1260550980}
-    reverse: 0
-    reverseValues: 0
-    timeLengthOverride: -1
-    setInitialTransforms: 0
-  tweenToPlay: 0
---- !u!4 &2130034307
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4231658019994800, guid: c8f12f0d6ee37d647a3d436b57979b1d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2130034305}
-  m_LocalRotation: {x: 0.025253482, y: -0.06403263, z: -0.029452574, w: 0.9971934}
-  m_LocalPosition: {x: 19.99, y: 0, z: -14.546407}
-  m_LocalScale: {x: 10, y: 10, z: 10}
-  m_Children:
-  - {fileID: 981490574}
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 2.6710002, y: -7.431, z: -3.5570002}
---- !u!114 &2130034308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2130034305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f09b400dcfdf6c547aff16997eaf83b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  simpleMode: 0
-  settingsMask: {fileID: 0}
-  name: 
-  _useNameAsRandomSeed: 0
-  _updateSettings:
-    updateType: 0
-    pauseOffscreen: 2
-    respectGlobalTimeScale: 1
-    playSpeed: 0
-    allowInterupt: 0
-  _timeSettings:
-    reverse: 0
-    reverseValues: 0
-    time: 1.8
-    timeRandomScale: {x: 1, y: 1}
-    initBeforeDelay: 0
-    startDelay: 0
-    randomStartDelay: {x: 0, y: 0}
-    delayEveryLoop: 0
-    startAtTime: {x: 0, y: -1}
-    resetToBegining: 0
-  _interpolation:
-    loop: 1
-    timeRandomEveryLoop: 0
-    loopNumberOfTimes: -1
-    useCurve: 1
-    interpolation:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 0
-        value: 0
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 1
-        value: 1
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 1
-      m_RotationOrder: 0
-    nonCurveInterpolation: 0
-    nonCurveInterpolationOut: 0
-    nonCurveLoopMode: 0
-  events:
-    eventTime: 0
-    atTimeCondition: 4
-    atTime:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2130034306}
-          m_MethodName: Play
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-    onCompleteCondition: 0
-    onLoopComplete:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
 --- !u!1 &2134235376
 GameObject:
   m_ObjectHideFlags: 0

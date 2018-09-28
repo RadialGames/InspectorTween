@@ -26,8 +26,7 @@ namespace InspectorTween.InspectorTweenExamples {
 
 			moveTween = (TweenPosition) TweenBase.AddTween<TweenPosition>(gameObject, false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
 			moveTween.interpolation.loop = false;
-			moveTween.updateSettings.pauseOffscreen = TweenBase.VisibilityPause.None;
-
+			moveTween.updateSettings.pauseOffscreen = TweenBase.VisibilityPause.None;//Todo : do smart setup in AddTween for this (ie no renderer)
 		}
 
 		void FixedUpdate() {

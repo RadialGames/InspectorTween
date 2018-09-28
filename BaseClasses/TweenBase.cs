@@ -606,7 +606,13 @@ namespace InspectorTween {
 				}
 				timeSettings.time = value;
 			}
-			get { return timeSettings.time; }
+			get {
+				float timeVal = timeSettings.time;
+				if ( timeVal == 0 ) {
+					timeVal = 1f / 60f;
+				}
+				return timeVal;
+			}
 		}
 
 		/// <summary>
@@ -967,7 +973,7 @@ namespace InspectorTween {
 		/// </summary>
 		/// <returns></returns>
 		private bool TimeCheck() {
-			return (currentlyLooping || (count <= timeSettings.time && count >= 0f));
+			return (currentlyLooping || (count <= time && count >= 0f));
 		}
 
 		protected ProgramaticInterpolation.InterpolationMixer programaticTweenMixer;
@@ -1019,7 +1025,7 @@ namespace InspectorTween {
 
 
 			while ( TimeCheck() && enabled ) {
-				if ( currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount / timeSettings.time >= currentLoopNumberOfTimes ) {
+				if ( currentlyLooping && currentLoopNumberOfTimes != -1 && loopCount / time >= currentLoopNumberOfTimes ) {
 					break; //stop loop, not coroutine.
 				}
 
@@ -1040,9 +1046,9 @@ namespace InspectorTween {
 
 				float lerp; // =  interpolation.Evaluate(count/time);//getLerp(count/time);
 				if ( useCurve ) {
-					lerp = interpolationCurve.Evaluate(count / timeSettings.time); //getLerp(count/time);
+					lerp = interpolationCurve.Evaluate(count / time); //getLerp(count/time);
 				} else {
-					lerp = getLerp(count / timeSettings.time);
+					lerp = getLerp(count / time);
 				}
 
 				LerpParameters(lerp); //*** DO THE ACTUAL LERP***
@@ -1100,7 +1106,7 @@ namespace InspectorTween {
 				}
 
 
-				if ( currentLoop != Mathf.FloorToInt(count / timeSettings.time) ) { //DetectStart of new loop
+				if ( currentLoop != Mathf.FloorToInt(count / time) ) { //DetectStart of new loop
 					//this is technically the 'start' of a new loop, but can be considered the end for the sake of loop complete.
 					if ( events.onCompleteCondition == EventInterface.EventFireCondition.EveryLoop && events.onLoopComplete != null ) {
 						if (loopCount==-1 || (int)loopCount != currentLoop + 1 ) {//try and avoid double invoke on limited count loops.
@@ -1120,7 +1126,7 @@ namespace InspectorTween {
 						timeAtLastUpdate = Time.realtimeSinceStartup;
 					}
 
-					currentLoop = Mathf.FloorToInt(count / timeSettings.time);
+					currentLoop = Mathf.FloorToInt(count / time);
 					
 				}
 
@@ -1142,7 +1148,7 @@ namespace InspectorTween {
 				end = 0f;
 				count = 0;
 			} else {
-				count = timeSettings.time;
+				count = time;
 			}
 
 			float lerpVal;
@@ -1316,7 +1322,7 @@ namespace InspectorTween {
 				StartCoroutine(RestartPlay());
 			} else {
 				initializeCountOnEnable = !reverse; //in case was reversed previously//set this to respect input start time parameter on enable
-				count = reverse ? timeSettings.time : 0;
+				count = reverse ? time : 0;
 				loopCount = 0;
 				DoTween();
 			}
@@ -1362,7 +1368,7 @@ namespace InspectorTween {
 		/// Play the tween backwards, starting at time length of tween.
 		/// </summary>
 		public void PlayReverse() {
-			PlayReverse(timeSettings.time);
+			PlayReverse(time);
 		}
 
 		/// <summary>
@@ -1387,7 +1393,7 @@ namespace InspectorTween {
 				return;
 			}
 
-			PlayReverse(keepTime ? count : timeSettings.time);
+			PlayReverse(keepTime ? count : time);
 		}
 
 		/// <summary>
@@ -1405,11 +1411,11 @@ namespace InspectorTween {
 			}
 			if ( HasValidParameters() ) {
 				if ( initializeCountOnEnable ) { //may have already set start time...
-					count = (startAtTime.x % timeSettings.time) / timeSettings.time;
+					count = (startAtTime.x % time) / time;
 					if ( startAtTime.y >= 0f && startAtTime.x >= 0f ) {
 						string seed = useNameAsRandomSeed ? name + currentLoop.ToString() : null;
-						float modX = Mathf.Min(startAtTime.x, timeSettings.time);
-						float modY = Mathf.Min(startAtTime.y, timeSettings.time);
+						float modX = Mathf.Min(startAtTime.x, time);
+						float modY = Mathf.Min(startAtTime.y, time);
 						count = MathS.TrulyRandomRange(modX, modY, seed);
 					}
 				}

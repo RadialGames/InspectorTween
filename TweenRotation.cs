@@ -87,7 +87,7 @@ namespace InspectorTween{
 		protected Quaternion LerpParameter(Quaternion[] tweenArr,float lerp)
 		{
 			if (useRandomOffset){
-                var testLerp = Mathf.FloorToInt(this.count/timeSettings.time);
+                var testLerp = Mathf.FloorToInt(this.count/time);
 				if (testLerp != randomSetAtLoop) {
 					SetRandom(tweenArr.Length);
 					if (randomRotations==null || randomRotations.Length != oldRandomOffsets.Length) {
@@ -119,7 +119,7 @@ namespace InspectorTween{
 			}
 			if (useRandomOffset) {
 				scaleArrayLerp *= Quaternion.Lerp(LerpQuaternionArray(randomRotations, lerp) ,
-				                                  LerpQuaternionArray(newRandomRotations, lerp), count / timeSettings.time % 1);
+				                                  LerpQuaternionArray(newRandomRotations, lerp), count / time % 1);
 			}
 			return (scaleArrayLerp);
 		}
