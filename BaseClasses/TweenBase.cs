@@ -392,6 +392,14 @@ namespace InspectorTween {
 	//	}
 	//}
 	public abstract class TweenBase : MonoBehaviour {
+		/// <summary>
+		/// Create a Tween programatically
+		/// </summary>
+		/// <param name="t">GameObject to add the tween to</param>
+		/// <param name="play">set enabled state of tween</param>
+		/// <param name="loop">set looping state</param>
+		/// <typeparam name="T">InspectorTween Tween class</typeparam>
+		/// <returns></returns>
 		public static T AddTween<T>(GameObject t,bool play = true,bool loop = true) where T : TweenBase {
 			T newTween = t.AddComponent<T>();
 			newTween.enabled = false;
