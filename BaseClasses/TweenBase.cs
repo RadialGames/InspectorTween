@@ -599,7 +599,13 @@ namespace InspectorTween {
 		/// set tween play length in seconds
 		/// </summary>
 		public float time {
-			set { timeSettings.time = value; }
+			set {
+				if ( time <= 0 ) {
+					Debug.LogWarning("Inspector Tween : Invalid time setting "+value+ " on "+ gameObject.name+". Clamping to greater than 0");
+					value = 1/60f;
+				}
+				timeSettings.time = value;
+			}
 			get { return timeSettings.time; }
 		}
 
