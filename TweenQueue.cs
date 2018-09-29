@@ -11,6 +11,7 @@ namespace InspectorTween{
 		public bool setInitialTransforms;
 	}
 	[AddComponentMenu("InspectorTween/TweenQueue",8)]
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/Tween-Queue")]
 	public class TweenQueue : MonoBehaviour {
 		public TweenQueueItem[] itemQueue = new TweenQueueItem[1]{new TweenQueueItem()};
 		public int tweenToPlay = 0;//for editor script

@@ -391,6 +391,7 @@ namespace InspectorTween {
 	//		return newTween;
 	//	}
 	//}
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki")]
 	public abstract class TweenBase : MonoBehaviour {
 		/// <summary>
 		/// Create a Tween programatically

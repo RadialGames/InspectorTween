@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace InspectorTween {
 	[AddComponentMenu("InspectorTween/TweenSprite",10)]
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenSprite")]
 	public class TweenSprite : TweenBase {
 	
 		/// <summary>

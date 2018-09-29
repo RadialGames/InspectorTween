@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 	namespace InspectorTween {
 	[AddComponentMenu("InspectorTween/TweenMaterialFloat",8)]
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenMaterialFloat")]
 	public class TweenMaterialFloat : TweenBase {
 	
 		public string floatName = "_Multiply"; 

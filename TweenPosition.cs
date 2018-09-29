@@ -5,6 +5,7 @@ using System.Collections;
 namespace InspectorTween{
 
 	[AddComponentMenu("InspectorTween/TweenPosition",1)]
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenPosition")]
 	public class TweenPosition : TweenTransform
 	{
 		[SerializeField]private Vector3[] movePositions = new Vector3[2]{Vector3.zero,Vector3.one};

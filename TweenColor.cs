@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace InspectorTween{
 [AddComponentMenu("InspectorTween/TweenColor",4)]
-
+[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenColor")]
 public class TweenColor : TweenColorBase {
 	public Gradient colorOverTime;
 	public enum colorFunctions{Normal,Add,Multiply,Overlay,MultiplyAdd,Dodge};

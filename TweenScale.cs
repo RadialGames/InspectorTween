@@ -8,7 +8,7 @@ using UnityEngine;
 using System.Collections;
 	namespace InspectorTween{
 	[AddComponentMenu("InspectorTween/TweenScale",3)]
-
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenScale")]
 	public class TweenScale : TweenTransform
 	{
 		[SerializeField]private Vector3[] scales = new Vector3[2]{Vector3.zero,Vector3.one};

@@ -1,10 +1,11 @@
 ﻿// #Generic
 
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-	namespace InspectorTween {
+
+namespace InspectorTween {
 	[AddComponentMenu("InspectorTween/TweenProperty",9)]
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenProperty")]
 	public class TweenProperty : TweenBase {
 	
 		public string propertyName = "";
@@ -15,8 +16,8 @@ using System.Collections;
 		public Vector2 valueStartAndEnd = new Vector2(0,1);
 		public Component target;
 
-		protected System.Reflection.PropertyInfo property;
-		protected System.Reflection.MethodInfo method;
+		protected PropertyInfo property;
+		protected MethodInfo method;
 		protected object[] inValues;
 		protected override void LerpParameters(float lerp)
 		{

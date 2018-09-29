@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 namespace InspectorTween{
 [AddComponentMenu("InspectorTween/TweenColorRotation",8)]
+[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenColorRotation")]
 public class TweenColorRotation : TweenColorBase{
 	
 	public enum ColorSpaces {HSV_YIQ,SaturationOnly,YUV_BlendExperiment}

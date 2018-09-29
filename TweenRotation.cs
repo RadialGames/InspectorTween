@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 namespace InspectorTween{
 	[AddComponentMenu("InspectorTween/TweenRotation",2)]
-
+	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenRotation")]
 	public class TweenRotation : TweenTransform
 	{
 		public enum rotationTypes {Euler,Slerp,Lerp};
