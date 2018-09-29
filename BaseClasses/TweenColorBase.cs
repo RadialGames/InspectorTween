@@ -39,7 +39,7 @@ namespace InspectorTween{
         protected int propID;
         public bool dontInstanceMaterial;
         public bool forceSetMaterial;
-        [FormerlySerializedAs("initialColor")]
+
         protected Color _initialColor = Color.white;
 
         public Color initialColor {
