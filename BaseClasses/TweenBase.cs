@@ -1361,7 +1361,9 @@ namespace InspectorTween {
 				DoTween();
 			}
 		}
-
+		/// <summary>
+		/// Initiates play of tween from 0, hard canceling if tween was already playing.
+		/// </summary>
 		public void PlayForwards(bool cancelActive) {
 			if ( tweenCoroutine != null && cancelActive ) {
 				CancelTween(true);
