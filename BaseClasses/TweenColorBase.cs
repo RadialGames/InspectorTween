@@ -2,6 +2,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 namespace InspectorTween{
     [System.Serializable]
@@ -38,7 +39,14 @@ namespace InspectorTween{
         protected int propID;
         public bool dontInstanceMaterial;
         public bool forceSetMaterial;
-        [HideInInspector]public Color initialColor = Color.white;
+        [FormerlySerializedAs("initialColor")]
+        protected Color _initialColor = Color.white;
+
+        public Color initialColor {
+            get { return _initialColor; }
+            set { _initialColor = value; }
+        }
+
         /// <summary>
         /// Explicitly set the target type if self configuring tween from code. Use at own risk.
         /// </summary>
@@ -123,8 +131,7 @@ namespace InspectorTween{
             canvasGroup = target.GetComponent<CanvasGroup>();
             if(canvasGroup != null){
                 type = objectType.CanvasGroup;
-                initialColor = Color.white;
-                initialColor.a = canvasGroup.alpha;
+                initialColor = new Color(1,1,1,canvasGroup.alpha);
                 return;
             }
             textMesh = target.GetComponent<TextMesh>();
@@ -201,8 +208,7 @@ namespace InspectorTween{
                     break;
                 case objectType.CanvasGroup:
                     if ( canvasGroup != null ) {
-                        initialColor = Color.white; //Canvas group basically only sets alpha
-                        initialColor.a = canvasGroup.alpha;
+                        initialColor = new Color(1,1,1,canvasGroup.alpha); //Canvas group basically only sets alpha
                     }
                     break;
                 case objectType.TextMesh:
