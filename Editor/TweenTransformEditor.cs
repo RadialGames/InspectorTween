@@ -2,6 +2,10 @@
 using UnityEditor;
 using UnityEngine;
 
+namespace InspectorTween {
+    
+
+
 [CustomEditor(typeof(TweenTransform))]
 [CanEditMultipleObjects]
 public class TweenTransformEditor : TweenBaseEditor {
@@ -215,4 +219,5 @@ public class TweenColorEditor : TweenBaseEditor {
 [CustomEditor(typeof(TweenSprite))]
 [CanEditMultipleObjects]
 public class TweenSpriteEditor : TweenBaseEditor {
+}
 }

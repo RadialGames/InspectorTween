@@ -2,7 +2,11 @@ using InspectorTween;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(TweenBase.InterpolationInterface))]
+namespace InspectorTween {
+	
+
+
+[CustomPropertyDrawer(typeof(InspectorTween.TweenBase.InterpolationInterface))]
 public class InterpolationInterfaceInspector : PropertyDrawer {
 	private AnimationCurves.AnimationCurveType setCurve = AnimationCurves.AnimationCurveType.Custom;
 	private AnimationCurves.AnimationCurveType lastCurve;
@@ -108,4 +112,5 @@ public class TweenBaseEditor : Editor {
 		//return EditorGUI.EndChangeCheck();
 	//}
 	
+}
 }
