@@ -24,7 +24,7 @@ namespace InspectorTween{
 		
         public void CancelAll(bool doInterupt){
 			for(int ind=0;ind<itemQueue.Length;ind++){
-				foreach(var tween in itemQueue[ind].tweens){
+				foreach(TweenBase tween in itemQueue[ind].tweens){
 					if(tween && tween.enabled){
 						tween.CancelTween(doInterupt);
 					}
@@ -37,8 +37,11 @@ namespace InspectorTween{
 		/// <param name="queueIndex">index of queue. use GetNamedIndex to find index by name</param>
 		/// <param name="doInterupt"></param>
 		public void Cancel(int queueIndex,bool doInterupt=false) {
-			foreach(var tween in itemQueue[queueIndex].tweens){
-				if(tween && tween.enabled){
+			if ( queueIndex > itemQueue.Length || queueIndex < 0 ) {
+				return;
+			}
+			foreach(TweenBase tween in itemQueue[queueIndex].tweens){
+				if(tween != null && tween.enabled){
 					tween.CancelTween(doInterupt);
 				}
 			}
@@ -81,7 +84,7 @@ namespace InspectorTween{
 			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
 				return;
 			}
-			foreach(var tweenI in itemQueue[ind].tweens){
+			foreach(TweenBase tweenI in itemQueue[ind].tweens){
 				if(itemQueue[ind].setInitialTransforms){
 					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
 						((TweenTransform)tweenI).SetInitial();
@@ -102,6 +105,14 @@ namespace InspectorTween{
 				}
 			}
 		}
-		
+
+		public void SetToLerpPoint(int queueIndex, float val) {
+			if ( queueIndex < 0 || itemQueue.Length <= queueIndex || itemQueue[queueIndex].tweens == null ) {
+				return;
+			}
+			foreach ( TweenBase tweenI in itemQueue[queueIndex].tweens ) {
+				tweenI.SetToLerpPoint(val);
+			}
+		}
 	}
 }
