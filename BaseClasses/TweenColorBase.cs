@@ -57,9 +57,10 @@ namespace InspectorTween{
 
         protected void Initialize() {
            if(useMaterial && (materialProperty != null) ){
-                type = objectType.Material;
+               type = objectType.Material;
                
-                propID = Shader.PropertyToID(materialProperty);
+               propID = Shader.PropertyToID(materialProperty);
+               
                if ( renderer != null ) {
                    if(!dontInstanceMaterial)
                    {
@@ -85,14 +86,13 @@ namespace InspectorTween{
                    if ( image != null ) {
 
                        if ( dontInstanceMaterial ) {
-                           mat = image.material;
-  
+                           mat = image.materialForRendering;
                            //initialColor = mat.GetColor(propID);
                        } else {
-                           mat =  new Material(image.material);
-                           image.material = mat;
+                           mat = new Material(image.materialForRendering);
+                           image.canvasRenderer.SetMaterial(mat,0);
+                           image.SetMaterialDirty();
                        }
-
                        return;
                    }
                }
@@ -251,6 +251,12 @@ namespace InspectorTween{
                     if(forceSetMaterial){
                         mat.SetColor(propID,val);
                     } else {
+                        if ( image != null ) {
+                            var iMat = image.material;
+                            iMat.SetColor(propID,val);
+                            image.SetMaterialDirty();
+                            break;
+                        }
                         renderer.sharedMaterial.SetColor(propID,val); 
                     }
                     break;

@@ -42,6 +42,12 @@ using System.Collections;
 			if(!initialScale.HasValue) {
 				SetInitial();
 			}
+#if UNITY_EDITOR
+			if ( targetTransform == null ) { //this can happen with button usage, or [ExecuteInEditMode] scripts
+				Debug.LogWarning("Target transform for tween uninitialized : " + this.gameObject.name);
+				return;
+			}
+#endif
 			if ( timeSettings.reverseValues) {
 				targetTransform.localScale = LerpParameter(reversedValues,lerp);
 			} else {

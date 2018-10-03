@@ -111,6 +111,9 @@ namespace InspectorTween{
 				return;
 			}
 			foreach ( TweenBase tweenI in itemQueue[queueIndex].tweens ) {
+				if ( tweenI == null ) {
+					continue;
+				}
 				tweenI.SetToLerpPoint(val);
 			}
 		}
