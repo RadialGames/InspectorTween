@@ -350,7 +350,8 @@ namespace InspectorTween {
 			Step=4,
 			BackIn,
 			BackOut,
-			Sin
+			Sin,
+			Parabola
 		};
 		public static AnimationCurve[] savedCurves = {
 			new AnimationCurve(new Keyframe(0,0,1,1),new Keyframe(1,1,1,1)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Linear
@@ -366,7 +367,8 @@ namespace InspectorTween {
 			,new AnimationCurve(new Keyframe(0f,0f,0f,0f),new Keyframe(0.5032355f,-0.1706448f,0.1443379f,0.1443379f),new Keyframe(1f,1f,3.219463f,3.219463f))//Back In
 			,new AnimationCurve(new Keyframe(0f,0f,5.243961f,5.243961f),new Keyframe(0.500102f,1.065629f,0.06565601f,0.06565601f),new Keyframe(1f,1f,0f,0f))//BackOut 
 			,new AnimationCurve(new Keyframe(0f,0f),new Keyframe(0.5f,0.5f,1.854149f,1.854149f),new Keyframe(1f,1f)){postWrapMode = WrapMode.PingPong,preWrapMode = WrapMode.PingPong}//Sin
-		 };
+			,new AnimationCurve(new Keyframe(0f,0f,3.71137f,3.71137f),new Keyframe(0.5f,1f,0f,0f),new Keyframe(0.99823f,0.005275726f,-3.308056f,-3.308056f))  {postWrapMode = WrapMode.Clamp,preWrapMode = WrapMode.Clamp}//Parabola                                    
+		                                             };
 
 		public static void SetAnimationCurve(ref TweenBase.InterpolationInterface interpolationInterface, AnimationCurveType curveType) {
 			if ( curveType == AnimationCurveType.Custom ) {
@@ -1163,7 +1165,12 @@ namespace InspectorTween {
 				end = 0f;
 				count = 0;
 			} else {
-				count = time;
+				if ( loopNumberOfTimes > 0 ) {
+					count = (loopNumberOfTimes*time)-0.0000000001f;
+				} else {
+					count = time-0.0000000001f;
+				}
+
 			}
 
 			float lerpVal;

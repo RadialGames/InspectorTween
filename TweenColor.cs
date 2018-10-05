@@ -10,7 +10,7 @@ namespace InspectorTween{
 [HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenColor")]
 public class TweenColor : TweenColorBase {
 	public Gradient colorOverTime;
-	public enum colorFunctions{Normal,Add,Multiply,Overlay,MultiplyAdd,Dodge};
+	public enum colorFunctions{Normal,Add,Multiply,Overlay,MultiplyAdd,Dodge,AlphaOnly};
 	public colorFunctions colorFunction;
 	public float colorOverTimeMultiplier = 1;
 	#if UNITY_2018_1_OR_NEWER
@@ -45,6 +45,11 @@ public class TweenColor : TweenColorBase {
 			case colorFunctions.Overlay : var = Overlay(var,initial); break;
 			case colorFunctions.MultiplyAdd : var = initial +  (initial * var);break;
 			case colorFunctions.Dodge : var = ColorDodge(initial,var);break;
+			case colorFunctions.AlphaOnly :
+				float a = var.a;
+				var = initial;
+				var.a = a;
+				break;
 		}
 		return var;
 	}

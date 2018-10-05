@@ -94,6 +94,14 @@ public class TweenBaseEditor : Editor {
 	    if ( item.WarningRendererVisibilityCheck(item) ) {
 		    EditorGUILayout.HelpBox("Auto Paused : Check PAUSE OFFSCREEN setting", MessageType.Warning);
 	    }
+
+	    if ( Application.isPlaying ) {
+		    if ( GUILayout.Button("Play") ) {
+			    item.ResetToStart();
+			    item.PlayFromCurrentState();
+		    }
+	    }
+
 	    //DoDrawDefaultInspector(this.serializedObject);
         base.OnInspectorGUI();
     }

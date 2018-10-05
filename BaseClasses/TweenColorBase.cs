@@ -9,7 +9,7 @@ namespace InspectorTween{
     public class TweenColorParameters
     {
         public Gradient colorOverTime;
-        public enum colorFunctions{Normal,Add,Multiply,Overlay};
+        public enum colorFunctions{Normal,Add,Multiply,Overlay,AlphaOnly};
         public colorFunctions colorFunction;
 
     }
@@ -108,7 +108,9 @@ namespace InspectorTween{
             image = target.GetComponent<Graphic>();//Image,Text,RawImage...
             if(image != null){
                 type = objectType.Graphic;
-                updateSettings.pauseOffscreen = VisibilityPause.None; //no renderer on these?
+                if(updateSettings!=null) {
+                    updateSettings.pauseOffscreen = VisibilityPause.None; //no renderer on these?}
+                }
                 initialColor = image.color;
                 return;
             }
