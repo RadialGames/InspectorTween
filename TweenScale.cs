@@ -13,8 +13,11 @@ using System.Collections;
 	{
 		[SerializeField]private Vector3[] scales = new Vector3[2]{Vector3.zero,Vector3.one};
 		public Vector3? initialScale;
+		
+		#pragma warning disable 0169
 		[Obsolete]
 		private bool scaleRelativeEndRelativeToStart;
+		#pragma warning restore 0169
 
 		protected override void Awake() {
 			base.Awake();

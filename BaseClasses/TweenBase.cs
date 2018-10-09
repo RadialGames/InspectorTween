@@ -1202,12 +1202,13 @@ namespace InspectorTween {
 					return reverseState;
 				case EventInterface.EventFireCondition.EveryLoop:
 					return true;
-#if UNITY_2018_1_OR_NEWER
 				default:
+#if UNITY_2018_1_OR_NEWER
 					throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
+#else
+					return true;
 #endif
 			}
-			return true;
 		}
 		
 		private IEnumerator RestartCoroutine() {
