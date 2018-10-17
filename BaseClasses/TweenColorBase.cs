@@ -90,7 +90,15 @@ namespace InspectorTween{
                            //initialColor = mat.GetColor(propID);
                        } else {
                            mat = new Material(image.materialForRendering);
-                           image.canvasRenderer.SetMaterial(mat,0);
+                           if (image.canvasRenderer.materialCount < 1)
+                           {
+                               Debug.LogError("CanvasRenderer doesn't have a material at index 0. Setting material directly?", image.canvasRenderer.gameObject);
+                               image.material = mat;
+                           }
+                           else
+                           {
+                               image.canvasRenderer.SetMaterial(mat,0);                               
+                           }
                            image.SetMaterialDirty();
                        }
                        return;
