@@ -10,7 +10,7 @@ namespace InspectorTween.InspectorTweenExamples {
 		private TweenQueue[] becameSelectedTween;
 		private const string Q_ON_SELECTED = "OnSelected";
 		private const float MIN_TRAVEL_TIME = 0.2f;
-		private const float DISTANCE_PER_SECOND = 10f;
+		private const float DISTANCE_PER_SECOND = 20f;
 
 		private void Start() {
 			becameSelectedTween = new TweenQueue[Selectable.allSelectables.Count];
@@ -84,9 +84,13 @@ namespace InspectorTween.InspectorTweenExamples {
 
 			moveTween.values[0] = transform.position;
 			moveTween.values[1] = currentSelected.transform.position;
-			float distanceToTravel = Mathf.Abs(currentSelected.transform.position.x - transform.position.x);
+			float distanceToTravel = Vector3.Distance(currentSelected.transform.position , transform.position);
 			moveTween.time = Mathf.Max(MIN_TRAVEL_TIME, distanceToTravel / DISTANCE_PER_SECOND);
+			//if ( moveTween.enabled == false ) {
+			moveTween.CancelTween(TweenBase.TweenCancelType.HardStop);
 			moveTween.PlayForwards();
+			//}
+			
 		}
 	}
 }
