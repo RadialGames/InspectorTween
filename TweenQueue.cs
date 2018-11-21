@@ -106,6 +106,13 @@ namespace InspectorTween{
 			}
 		}
 
+		public void PlayReverse(int ind) {
+			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
+				return;
+			}
+			itemQueue[ind].reverse = true;
+			Play(ind);
+		}
 		public void SetToLerpPoint(int queueIndex, float val) {
 			if ( queueIndex < 0 || itemQueue.Length <= queueIndex || itemQueue[queueIndex].tweens == null ) {
 				return;
