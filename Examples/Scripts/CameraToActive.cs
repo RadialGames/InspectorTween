@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace InspectorTween.InspectorTweenExamples {
 	public class CameraToActive : MonoBehaviour {
 		[SerializeField] private EventSystem eventSystem;
-		private TweenPosition moveTween;
-		private GameObject currentSelected;
-		private TweenQueue[] becameSelectedTween;
+		protected TweenPosition moveTween;
+		protected GameObject currentSelected;
+		protected TweenQueue[] becameSelectedTween;
 		private const string Q_ON_SELECTED = "OnSelected";
 		private const float MIN_TRAVEL_TIME = 0.2f;
 		private const float DISTANCE_PER_SECOND = 20f;
 
-		private void Start() {
+		protected void Start() {
 			becameSelectedTween = new TweenQueue[Selectable.allSelectables.Count];
 			for ( int index = 0; index < Selectable.allSelectables.Count; index++ ) {
 				Selectable selectable = Selectable.allSelectables[index];
@@ -28,9 +29,16 @@ namespace InspectorTween.InspectorTweenExamples {
 			}
 
 			moveTween = (TweenPosition) TweenBase.AddTween<TweenPosition>(gameObject, play:false,loop:false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
+			moveTween.events.onLoopComplete = new UnityEvent();
+			moveTween.events.onLoopComplete.AddListener(OnDestinationArrive);
 		}
 
-		private void FixedUpdate() {
+		protected virtual void OnDestinationArrive() {
+		}
+
+		protected virtual void OnDestinationDepart() {
+		}
+		protected void FixedUpdate() {
 			if ( eventSystem.currentSelectedGameObject == null && currentSelected != null ) {
 				eventSystem.SetSelectedGameObject(currentSelected); //fix for mouse click unselecting
 				return;
@@ -53,6 +61,7 @@ namespace InspectorTween.InspectorTweenExamples {
 						}
 					}
 				}
+				OnDestinationDepart();
 			}
 
 			currentSelected = eventSystem.currentSelectedGameObject;
@@ -89,6 +98,7 @@ namespace InspectorTween.InspectorTweenExamples {
 			//if ( moveTween.enabled == false ) {
 			moveTween.CancelTween(TweenBase.TweenCancelType.HardStop);
 			moveTween.PlayForwards();
+			
 			//}
 			
 		}
