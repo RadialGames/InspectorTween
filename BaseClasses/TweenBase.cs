@@ -1182,7 +1182,7 @@ namespace InspectorTween {
 
 			LerpParameters(lerpVal);
 			if(isOkToFireEvent(events.onCompleteCondition,reverse) ) {
-				if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
+				if ( onLoopComplete!= null  ) {
 					onLoopComplete.Invoke();
 				}
 			}
