@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
+
 namespace InspectorTween{
 	[System.Serializable]
 	public class TweenQueueItem{
@@ -9,12 +11,18 @@ namespace InspectorTween{
 		public bool reverseValues;
 		public float timeLengthOverride = -1f;
 		public bool setInitialTransforms;
+		public UnityEvent onPlay;
 	}
 	[AddComponentMenu("InspectorTween/TweenQueue",8)]
 	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/Tween-Queue")]
 	public class TweenQueue : MonoBehaviour {
 		public TweenQueueItem[] itemQueue = new TweenQueueItem[1]{new TweenQueueItem()};
 		public int tweenToPlay = 0;//for editor script
+
+		private void Awake() {
+			wasReversed = new bool[itemQueue.Length];
+		}
+		
 		/// <summary>
 		/// Call CancelTween on all tweens in all queues
 		/// </summary>
@@ -84,6 +92,8 @@ namespace InspectorTween{
 			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
 				return;
 			}
+
+
 			foreach(TweenBase tweenI in itemQueue[ind].tweens){
 				if(itemQueue[ind].setInitialTransforms){
 					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
@@ -104,14 +114,33 @@ namespace InspectorTween{
 					tweenI.PlayForwards(true);
 				}
 			}
+			itemQueue[ind].onPlay.Invoke();
+			if ( !wasReversed[ind] && itemQueue[ind].reverse ) {
+				itemQueue[ind].reverse = false;
+				
+			}
+			wasReversed[ind] = false;//reset
 		}
+		
 
+		[System.NonSerialized] private bool[] wasReversed;
 		public void PlayReverse(int ind) {
 			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
 				return;
 			}
+
+			wasReversed[ind] = itemQueue[ind].reverse;
 			itemQueue[ind].reverse = true;
 			Play(ind);
+			
+		}
+		public void SetToLerpPoint( float val) {
+			foreach ( TweenBase tweenI in itemQueue[0].tweens ) {
+				if ( tweenI == null ) {
+					continue;
+				}
+				tweenI.SetToLerpPoint(val);
+			}
 		}
 		public void SetToLerpPoint(int queueIndex, float val) {
 			if ( queueIndex < 0 || itemQueue.Length <= queueIndex || itemQueue[queueIndex].tweens == null ) {
