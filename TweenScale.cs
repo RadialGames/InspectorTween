@@ -29,9 +29,17 @@ using System.Collections;
 		}
 
 		public override void  MatchStartToCurrent() {
+			if ( targetTransform == null ) {
+				scales[0] = transform.localScale;
+				return;
+			}
 			scales[0] = targetTransform.localScale;
 		}
 		public override void MatchEndToCurrent() {
+			if ( targetTransform == null ) {
+				scales[scales.Length-1] = transform.localScale;
+				return;
+			}
 			scales[scales.Length-1] = targetTransform.localScale;
 		}
 		public override void SetInitial(){
