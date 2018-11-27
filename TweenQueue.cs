@@ -19,9 +19,6 @@ namespace InspectorTween{
 		public TweenQueueItem[] itemQueue = new TweenQueueItem[1]{new TweenQueueItem()};
 		public int tweenToPlay = 0;//for editor script
 
-		private void Awake() {
-			wasReversed = new bool[itemQueue.Length];
-		}
 		
 		/// <summary>
 		/// Call CancelTween on all tweens in all queues
@@ -115,24 +112,29 @@ namespace InspectorTween{
 				}
 			}
 			itemQueue[ind].onPlay.Invoke();
-			if ( !wasReversed[ind] && itemQueue[ind].reverse ) {
-				itemQueue[ind].reverse = false;
-				
-			}
-			wasReversed[ind] = false;//reset
 		}
 		
 
-		[System.NonSerialized] private bool[] wasReversed;
+
 		public void PlayReverse(int ind) {
 			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
 				return;
 			}
+			foreach(TweenBase tweenI in itemQueue[ind].tweens){
+				if(itemQueue[ind].setInitialTransforms){
+					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
+						((TweenTransform)tweenI).SetInitial();
+					}
+				}
+				if(tweenI == null) continue;
+				if(itemQueue[ind].timeLengthOverride != -1){
+					tweenI.time = ( itemQueue[ind].timeLengthOverride );
+				}
+				tweenI.ReverseValues(itemQueue[ind].reverseValues);
+				tweenI.PlayReverse(true);
 
-			wasReversed[ind] = itemQueue[ind].reverse;
-			itemQueue[ind].reverse = true;
-			Play(ind);
-			
+			}
+			itemQueue[ind].onPlay.Invoke();
 		}
 		public void SetToLerpPoint( float val) {
 			foreach ( TweenBase tweenI in itemQueue[0].tweens ) {
