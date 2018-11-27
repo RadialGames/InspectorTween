@@ -2,12 +2,12 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+
 	namespace InspectorTween {
 	[AddComponentMenu("InspectorTween/TweenMaterialFloat",8)]
 	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/TweenMaterialFloat")]
 	public class TweenMaterialFloat : TweenBase {
-	
+		public Transform target;
 		public string floatName = "_Multiply"; 
 		public Vector2 valueStartAndEnd = new Vector2(0,1);
 		//public AnimationCurve valueOverTime = new AnimationCurve(new Keyframe[]{new Keyframe(0,0),new Keyframe(1,1)});
@@ -19,8 +19,8 @@ using System.Collections;
 		public enum colorFunctions{Normal,Add,Multiply};
 		public colorFunctions colorFunction;
 		public bool forceSetMaterial;
-		protected override void LerpParameters(float lerp)
-		{
+		
+		protected override void LerpParameters(float lerp) {
 			float val = initialVal;
 			switch(colorFunction){
 			case colorFunctions.Normal:
@@ -43,10 +43,13 @@ using System.Collections;
 		}
 		protected override void Awake()
 		{
-			renderer = GetComponent<Renderer>();
+			if (target == null) {
+				target = this.transform;
+			}
+			renderer = target.GetComponent<Renderer>();
 			base.Awake();
 			propID= Shader.PropertyToID(floatName);
-			var graphic = this.GetComponent<Graphic>();
+			var graphic = target.GetComponent<Graphic>();
 			if(graphic){
 				if(!dontInstanceMaterial)
 				{
@@ -59,7 +62,7 @@ using System.Collections;
 				}
 			}
 			else{
-				var rend = GetComponent<Renderer>();
+				Renderer rend = renderer;
 				if (!rend) {
 						return;
 				}
@@ -74,7 +77,8 @@ using System.Collections;
 			}
 		
 		}
-		void OnDestroy(){
+
+		private void OnDestroy(){
 			if(!dontInstanceMaterial && mat != null)
 			{
 				Destroy(mat);
