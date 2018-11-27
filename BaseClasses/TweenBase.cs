@@ -439,7 +439,7 @@ namespace InspectorTween {
 		[ConditionalHide("simpleMode", true, true)]
 		public TweenMask settingsMask;
 	#else
-		[HideInInspector][SerializeField]private TweenMask settingsMask; //Keep around for toggling and keeping state.
+		[HideInInspector]public TweenMask settingsMask; //Keep around for toggling and keeping state.
 	#endif
 		private Coroutine tweenCoroutine;
 		static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);

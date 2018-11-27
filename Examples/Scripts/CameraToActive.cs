@@ -14,6 +14,9 @@ namespace InspectorTween.InspectorTweenExamples {
 		private const float DISTANCE_PER_SECOND = 20f;
 
 		protected void Start() {
+			if ( eventSystem == null ) {
+				eventSystem = EventSystem.current;
+			}
 			becameSelectedTween = new TweenQueue[Selectable.allSelectables.Count];
 			for ( int index = 0; index < Selectable.allSelectables.Count; index++ ) {
 				Selectable selectable = Selectable.allSelectables[index];
