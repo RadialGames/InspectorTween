@@ -7,6 +7,7 @@ namespace InspectorTween.InspectorTweenExamples {
 	public class CameraToActive : MonoBehaviour {
 		[SerializeField] private EventSystem eventSystem;
 		protected TweenPosition moveTween;
+		protected TweenRotation rotationTween;
 		protected GameObject currentSelected;
 		protected TweenQueue[] becameSelectedTween;
 		private const string Q_ON_SELECTED = "OnSelected";
@@ -34,6 +35,13 @@ namespace InspectorTween.InspectorTweenExamples {
 			moveTween = (TweenPosition) TweenBase.AddTween<TweenPosition>(gameObject, play:false,loop:false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
 			moveTween.events.onLoopComplete = new UnityEvent();
 			moveTween.events.onLoopComplete.AddListener(OnDestinationArrive);
+			rotationTween = (TweenRotation) TweenBase.AddTween<TweenRotation>(gameObject, play: false, loop: false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
+			rotationTween.interpolationCurve.postWrapMode = WrapMode.Clamp;
+			var initialRotation = transform.eulerAngles;
+			rotationTween.values[0].x = initialRotation.x;
+			rotationTween.values[0].z = initialRotation.z;
+			rotationTween.values[1].x = initialRotation.x;
+			rotationTween.values[1].z = initialRotation.z;
 		}
 
 		protected virtual void OnDestinationArrive() {
@@ -52,6 +60,7 @@ namespace InspectorTween.InspectorTweenExamples {
 			}
 
 			int currentIndex;
+			
 			if ( currentSelected != null ) {
 				//Find queue where we are and deselect that
 				currentIndex = Selectable.allSelectables.IndexOf(currentSelected.GetComponent<Selectable>());
@@ -86,6 +95,17 @@ namespace InspectorTween.InspectorTweenExamples {
 			SetCameraDestination();
 		}
 
+		private float Fix360(float val) {
+			if ( val > 180 ) {
+				val -= 360;
+			}
+
+			if ( val < -180 ) {
+				val += 360;
+			}
+
+			return val;
+		}
 		/// <summary>
 		/// Set the camera tween to point and play
 		/// </summary>
@@ -102,8 +122,13 @@ namespace InspectorTween.InspectorTweenExamples {
 			moveTween.CancelTween(TweenBase.TweenCancelType.HardStop);
 			moveTween.PlayForwards();
 			
-			//}
-			
+			var rot = moveTween.targetTransform.eulerAngles.y;
+			rotationTween.values[0].y = Fix360(rot);
+			rotationTween.values[1].y = Fix360(currentSelected.transform.eulerAngles.y);
+			//TODO: fix 360 flip
+			rotationTween.CancelTween(TweenBase.TweenCancelType.HardStop);
+			rotationTween.PlayForwards();
+			rotationTween.time = moveTween.time; //change to degrees per second calculation?...
 		}
 	}
 }
