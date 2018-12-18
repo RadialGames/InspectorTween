@@ -36,9 +36,14 @@ namespace InspectorTween{
 			if ( timeSettings.reverseValues ) {
 				values = reversedValues;
 			}
-			if(rTransform){
+			if(rTransform != null){
 				rTransform.anchoredPosition3D = LerpParameter(values,lerp);
 			}else{
+				if ( targetTransform == null ) {
+					Debug.LogWarning("Null target transform. Tween maybe not initialized yet...");
+					transform.localPosition = LerpParameter(values,lerp);
+					return;
+				}
 				targetTransform.localPosition = LerpParameter(values,lerp);
 			}
 
