@@ -8,13 +8,13 @@ namespace InspectorTween.InspectorTweenExamples {
 		[SerializeField] private EventSystem eventSystem;
 		protected TweenPosition moveTween;
 		protected TweenRotation rotationTween;
-		protected GameObject currentSelected;
+		public GameObject currentSelected;
 		protected TweenQueue[] becameSelectedTween;
 		private const string Q_ON_SELECTED = "OnSelected";
 		private const float MIN_TRAVEL_TIME = 0.2f;
 		private const float DISTANCE_PER_SECOND = 20f;
 
-		protected void Start() {
+		protected virtual void Start() {
 			if ( eventSystem == null ) {
 				eventSystem = EventSystem.current;
 			}
@@ -49,7 +49,7 @@ namespace InspectorTween.InspectorTweenExamples {
 
 		protected virtual void OnDestinationDepart() {
 		}
-		protected void FixedUpdate() {
+		protected virtual void FixedUpdate() {
 			if ( eventSystem.currentSelectedGameObject == null && currentSelected != null ) {
 				eventSystem.SetSelectedGameObject(currentSelected); //fix for mouse click unselecting
 				return;
@@ -95,7 +95,7 @@ namespace InspectorTween.InspectorTweenExamples {
 			SetCameraDestination();
 		}
 
-		private float Fix360(float val) {
+		protected float Fix360(float val) {
 			if ( val > 180 ) {
 				val -= 360;
 			}
