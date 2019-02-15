@@ -852,6 +852,11 @@ namespace InspectorTween {
 				//Default UI components to have a sane default
 				_updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
 			}
+
+			if ( GetComponent<Camera>() != null ) {
+				_updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
+
+			}
 #if UNITY_EDITOR
 			simpleMode = UnityEditor.EditorPrefs.GetBool("SimpleMode", false);
 #endif

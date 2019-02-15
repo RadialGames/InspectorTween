@@ -12,7 +12,7 @@ namespace InspectorTween.InspectorTweenExamples {
 		protected TweenQueue[] becameSelectedTween;
 		private const string Q_ON_SELECTED = "OnSelected";
 		private const float MIN_TRAVEL_TIME = 0.2f;
-		private const float DISTANCE_PER_SECOND = 20f;
+		public float DISTANCE_PER_SECOND = 20f;
 
 		protected virtual void Start() {
 			if ( eventSystem == null ) {
