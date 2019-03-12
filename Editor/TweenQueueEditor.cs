@@ -107,7 +107,8 @@ namespace InspectorTween {
 				tweenProp.NextVisible(false);
 				do {
 					EditorGUILayout.PropertyField(tweenProp, true); //This draws default inspector elements
-					tweenProp.NextVisible(true);
+					tweenProp.NextVisible(false);
+					
 				} while ( tweenProp.depth == depth );
 
 				prop.serializedObject.ApplyModifiedProperties();
