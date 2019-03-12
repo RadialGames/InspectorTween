@@ -1034,7 +1034,7 @@ namespace InspectorTween {
 				eventFireLoopCount = 0;
 			}
 			
-			if(reverse && events.onCompleteCondition == EventInterface.EventFireCondition.AtReverseTime ) {
+			if((reverse || timeSettings.reverseValues) && events.onCompleteCondition == EventInterface.EventFireCondition.AtReverseTime ) {
 				//At reverse time onComplete becomes on Start
 				if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
 					onLoopComplete.Invoke();
@@ -1094,7 +1094,7 @@ namespace InspectorTween {
 				}
 
 				loopCount += loopIncrement;
-				if ( isOkToFireEvent(events.atTimeCondition, reverse) ) {
+				if ( isOkToFireEvent(events.atTimeCondition, (reverse || timeSettings.reverseValues)) ) {
 					float checkTime = loopCount;
 					if ( events.atTimeCondition == EventInterface.EventFireCondition.EveryLoop ) {
 						checkTime = loopCount % time;
@@ -1106,7 +1106,7 @@ namespace InspectorTween {
 							eventInvoked = false; //reset invoked.
 						}
 					}
-					if ( reverse ) {
+					if ( reverse || timeSettings.reverseValues) {
 						if ( checkTime <= eventAtTime && !eventInvoked ) {
 							if ( atTime != null ) {
 								atTime.Invoke();
@@ -1186,7 +1186,7 @@ namespace InspectorTween {
 			}
 
 			LerpParameters(lerpVal);
-			if(isOkToFireEvent(events.onCompleteCondition,reverse) ) {
+			if(isOkToFireEvent(events.onCompleteCondition,reverse|| timeSettings.reverseValues) ) {
 				if ( onLoopComplete!= null  ) {
 					onLoopComplete.Invoke();
 				}
