@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 
@@ -11,11 +11,19 @@ namespace InspectorTween{
 		public bool reverseValues;
 		public float timeLengthOverride = -1f;
 		public bool setInitialTransforms;
+		
 		public UnityEvent onPlay;
+		[Header("Must enable 'watch for end' to work")]
+		public UnityEvent onEnd;
+
+		public bool test;
 	}
 	[AddComponentMenu("InspectorTween/TweenQueue",8)]
 	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/Tween-Queue")]
 	public class TweenQueue : MonoBehaviour {
+		public bool watchForEnd;
+		private int currentlyPlaying = -1;
+		
 		public TweenQueueItem[] itemQueue = new TweenQueueItem[1]{new TweenQueueItem()};
 		public int tweenToPlay = 0;//for editor script
 
@@ -112,6 +120,8 @@ namespace InspectorTween{
 				}
 			}
 			itemQueue[ind].onPlay.Invoke();
+			currentlyPlaying = ind;
+			this.enabled = true;
 		}
 		
 
@@ -135,6 +145,8 @@ namespace InspectorTween{
 
 			}
 			itemQueue[ind].onPlay.Invoke();
+			currentlyPlaying = ind;
+			this.enabled = true;
 		}
 		public void SetToLerpPoint( float val) {
 			foreach ( TweenBase tweenI in itemQueue[0].tweens ) {
@@ -154,6 +166,32 @@ namespace InspectorTween{
 				}
 				tweenI.SetToLerpPoint(val);
 			}
+		}
+
+		private void OnEnable() {
+			if ( currentlyPlaying < 0 ) {
+				enabled = false;//only stay enabled if invoking a queue item.
+			}
+		}
+
+		private void Update() {
+			if ( !watchForEnd ) {
+				this.enabled = false;
+			}
+
+			if ( currentlyPlaying < 0 ) {
+				return;
+			}
+
+			TweenQueueItem current = itemQueue[currentlyPlaying];
+			foreach ( TweenBase currentTween in current.tweens ) {
+				if ( currentTween.enabled ) {
+					return; //don't do anything if something's playing.
+				}
+			}
+			//if we get here without returning everything should be finished.
+			currentlyPlaying = -1;//stop Watching
+			current.onEnd?.Invoke();
 		}
 	}
 }
