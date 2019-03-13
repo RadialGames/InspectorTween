@@ -22,13 +22,15 @@ using UnityEngine.UI;
 		
 		protected override void LerpParameters(float lerp) {
 			float val = initialVal;
+			float startVal = timeSettings.reverseValues ? valueStartAndEnd.y : valueStartAndEnd.x;
+			float endVal = timeSettings.reverseValues ? valueStartAndEnd.x : valueStartAndEnd.y;
 			switch(colorFunction){
 			case colorFunctions.Normal:
-				val =Mathf.Lerp(valueStartAndEnd.x,valueStartAndEnd.y,lerp); break;
+				val =Mathf.Lerp(startVal,endVal,lerp); break;
 			case colorFunctions.Multiply:
-				val *=Mathf.Lerp(valueStartAndEnd.x,valueStartAndEnd.y,lerp); break;
+				val *=Mathf.Lerp(startVal,endVal,lerp); break;
 			case colorFunctions.Add:
-				val +=Mathf.Lerp(valueStartAndEnd.x,valueStartAndEnd.y,lerp); break;
+				val +=Mathf.Lerp(startVal,endVal,lerp); break;
 			}
 			if(forceSetMaterial){
 				mat.SetFloat(propID,val);
