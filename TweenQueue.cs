@@ -189,9 +189,10 @@ namespace InspectorTween{
 					return; //don't do anything if something's playing.
 				}
 			}
+			current.onEnd?.Invoke();
 			//if we get here without returning everything should be finished.
 			currentlyPlaying = -1;//stop Watching
-			current.onEnd?.Invoke();
+			this.enabled = false;
 		}
 	}
 }
