@@ -185,7 +185,7 @@ namespace InspectorTween{
 
 			TweenQueueItem current = itemQueue[currentlyPlaying];
 			foreach ( TweenBase currentTween in current.tweens ) {
-				if ( currentTween.enabled ) {
+				if ( currentTween != null && currentTween.enabled ) {
 					return; //don't do anything if something's playing.
 				}
 			}
