@@ -236,7 +236,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -518,7 +517,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -1167,7 +1165,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -1225,7 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.8666667, g: 0, b: 0.91764706, a: 0.88235295}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1596,7 +1593,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.8666667, g: 0, b: 0.91764706, a: 0.88235295}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1799,7 +1796,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -2143,7 +2139,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -2201,7 +2196,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -2262,6 +2257,9 @@ RectTransform:
   - {fileID: 365261166}
   - {fileID: 1446023401}
   - {fileID: 1156661187}
+  - {fileID: 691886948}
+  - {fileID: 1455581524}
+  - {fileID: 686129761}
   m_Father: {fileID: 948743454}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2408,7 +2406,6 @@ MonoBehaviour:
   materialProperty: _MatrixYIQ
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorSpace: 0
   hsvValues:
   - {x: 0, y: 1, z: 0.2}
@@ -2561,7 +2558,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorSpace: 0
   hsvValues:
   - {x: 0, y: 1, z: 1}
@@ -2913,7 +2909,6 @@ MonoBehaviour:
   materialProperty: _Color
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -3653,7 +3648,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -3711,7 +3705,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -4231,7 +4225,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -4289,7 +4282,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -4682,7 +4675,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -4787,7 +4780,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -5023,6 +5015,478 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 683507727}
+--- !u!1 &686129760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 686129761}
+  - component: {fileID: 686129766}
+  - component: {fileID: 686129765}
+  - component: {fileID: 686129764}
+  - component: {fileID: 686129763}
+  - component: {fileID: 686129762}
+  m_Layer: 0
+  m_Name: Cube (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &686129761
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 686129760}
+  m_LocalRotation: {x: 0.4113951, y: -0, z: -0, w: 0.9114572}
+  m_LocalPosition: {x: -0.53, y: -4.6300035, z: 0}
+  m_LocalScale: {x: 1, y: 1.0000005, z: 1.0000005}
+  m_Children: []
+  m_Father: {fileID: 312958564}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 48.585003, y: 0, z: 0}
+--- !u!114 &686129762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 686129760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee77e6beba284dc5ae078fda48c242e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleMode: 0
+  settingsMask: {fileID: 0}
+  name: 
+  _useNameAsRandomSeed: 0
+  _updateSettings:
+    updateType: 0
+    pauseOffscreen: 0
+    respectGlobalTimeScale: 1
+    playSpeed: 0
+    allowInterupt: 0
+  _timeSettings:
+    reverse: 0
+    reverseValues: 0
+    time: 3
+    timeRandomScale: {x: 1, y: 1}
+    initBeforeDelay: 0
+    startDelay: 0
+    randomStartDelay: {x: 0, y: 0}
+    delayEveryLoop: 0
+    startAtTime: {x: 0, y: -1}
+    resetToBegining: 0
+  _interpolation:
+    loop: 1
+    timeRandomEveryLoop: 0
+    loopNumberOfTimes: -1
+    useCurve: 1
+    interpolation:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 1
+      m_RotationOrder: 0
+    nonCurveInterpolation: 0
+    nonCurveInterpolationOut: 0
+    nonCurveLoopMode: 0
+  events:
+    eventTime: 0
+    atTimeCondition: 0
+    atTime:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    onCompleteCondition: 0
+    onLoopComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  target: {fileID: 0}
+  useMaterial: 1
+  materialProperty: _Color
+  dontInstanceMaterial: 0
+  forceSetMaterial: 0
+  colorSpace: 2
+  hsvValues:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0.5, z: 1}
+  - {x: 0, y: 1, z: 1}
+  setMatrix: 0
+--- !u!114 &686129763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 686129760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee77e6beba284dc5ae078fda48c242e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleMode: 0
+  settingsMask: {fileID: 0}
+  name: 
+  _useNameAsRandomSeed: 0
+  _updateSettings:
+    updateType: 0
+    pauseOffscreen: 0
+    respectGlobalTimeScale: 1
+    playSpeed: 0
+    allowInterupt: 0
+  _timeSettings:
+    reverse: 0
+    reverseValues: 0
+    time: 3
+    timeRandomScale: {x: 1, y: 1}
+    initBeforeDelay: 0
+    startDelay: 0
+    randomStartDelay: {x: 0, y: 0}
+    delayEveryLoop: 0
+    startAtTime: {x: 0, y: -1}
+    resetToBegining: 0
+  _interpolation:
+    loop: 1
+    timeRandomEveryLoop: 0
+    loopNumberOfTimes: -1
+    useCurve: 1
+    interpolation:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 1
+      m_RotationOrder: 0
+    nonCurveInterpolation: 0
+    nonCurveInterpolationOut: 0
+    nonCurveLoopMode: 0
+  events:
+    eventTime: 0
+    atTimeCondition: 0
+    atTime:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    onCompleteCondition: 0
+    onLoopComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  target: {fileID: 0}
+  useMaterial: 1
+  materialProperty: _Color
+  dontInstanceMaterial: 0
+  forceSetMaterial: 0
+  colorSpace: 0
+  hsvValues:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0.5, z: 1}
+  - {x: 0, y: 1, z: 1}
+  setMatrix: 0
+--- !u!114 &686129764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 686129760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee77e6beba284dc5ae078fda48c242e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleMode: 0
+  settingsMask: {fileID: 0}
+  name: 
+  _useNameAsRandomSeed: 0
+  _updateSettings:
+    updateType: 0
+    pauseOffscreen: 0
+    respectGlobalTimeScale: 1
+    playSpeed: 0
+    allowInterupt: 0
+  _timeSettings:
+    reverse: 0
+    reverseValues: 0
+    time: 3
+    timeRandomScale: {x: 1, y: 1}
+    initBeforeDelay: 0
+    startDelay: 0
+    randomStartDelay: {x: 0, y: 0}
+    delayEveryLoop: 0
+    startAtTime: {x: 0, y: -1}
+    resetToBegining: 0
+  _interpolation:
+    loop: 1
+    timeRandomEveryLoop: 0
+    loopNumberOfTimes: -1
+    useCurve: 1
+    interpolation:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 1
+      m_RotationOrder: 0
+    nonCurveInterpolation: 0
+    nonCurveInterpolationOut: 0
+    nonCurveLoopMode: 0
+  events:
+    eventTime: 0
+    atTimeCondition: 0
+    atTime:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    onCompleteCondition: 0
+    onLoopComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  target: {fileID: 0}
+  useMaterial: 1
+  materialProperty: _Color
+  dontInstanceMaterial: 0
+  forceSetMaterial: 0
+  colorSpace: 0
+  hsvValues:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0.5, z: 1}
+  - {x: 90, y: 1, z: 1}
+  setMatrix: 0
+--- !u!23 &686129765
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 686129760}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: b0566d18334235041baaef1d7f333f82, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &686129766
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 686129760}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &691886947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 691886948}
+  - component: {fileID: 691886951}
+  - component: {fileID: 691886950}
+  - component: {fileID: 691886949}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &691886948
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 691886947}
+  m_LocalRotation: {x: 0.4113951, y: -0, z: -0, w: 0.9114572}
+  m_LocalPosition: {x: 1.87, y: -4.63, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 312958564}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 48.585003, y: 0, z: 0}
+--- !u!114 &691886949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 691886947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee77e6beba284dc5ae078fda48c242e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleMode: 0
+  settingsMask: {fileID: 0}
+  name: 
+  _useNameAsRandomSeed: 0
+  _updateSettings:
+    updateType: 0
+    pauseOffscreen: 0
+    respectGlobalTimeScale: 1
+    playSpeed: 0
+    allowInterupt: 0
+  _timeSettings:
+    reverse: 0
+    reverseValues: 0
+    time: 3
+    timeRandomScale: {x: 1, y: 1}
+    initBeforeDelay: 0
+    startDelay: 0
+    randomStartDelay: {x: 0, y: 0}
+    delayEveryLoop: 0
+    startAtTime: {x: 0, y: -1}
+    resetToBegining: 0
+  _interpolation:
+    loop: 1
+    timeRandomEveryLoop: 0
+    loopNumberOfTimes: -1
+    useCurve: 1
+    interpolation:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 1
+      m_RotationOrder: 0
+    nonCurveInterpolation: 0
+    nonCurveInterpolationOut: 0
+    nonCurveLoopMode: 0
+  events:
+    eventTime: 0
+    atTimeCondition: 0
+    atTime:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    onCompleteCondition: 0
+    onLoopComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  target: {fileID: 0}
+  useMaterial: 1
+  materialProperty: _Color
+  dontInstanceMaterial: 0
+  forceSetMaterial: 0
+  colorSpace: 2
+  hsvValues:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0.5, z: 1}
+  - {x: 90, y: 1, z: 1}
+  setMatrix: 0
+--- !u!23 &691886950
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 691886947}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: b0566d18334235041baaef1d7f333f82, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &691886951
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 691886947}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &692210795
 GameObject:
   m_ObjectHideFlags: 0
@@ -5342,7 +5806,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -5400,7 +5863,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -5988,7 +6451,6 @@ MonoBehaviour:
   materialProperty: _Color
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -6370,7 +6832,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.8666667, g: 0, b: 0.91764706, a: 0.88235295}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -6573,7 +7035,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -7086,7 +7547,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.8666667, g: 0, b: 0.91764706, a: 0.88235295}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -7289,7 +7750,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -7844,7 +8304,6 @@ MonoBehaviour:
   materialProperty: _Color
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -8042,7 +8501,6 @@ MonoBehaviour:
   materialProperty: _MatrixYIQ
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorSpace: 0
   hsvValues:
   - {x: 0, y: 1, z: 1}
@@ -8422,7 +8880,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -8480,7 +8937,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -8717,7 +9174,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -9569,7 +10025,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.8666667, g: 0, b: 0.91764706, a: 0.88235295}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -9772,7 +10228,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -10271,7 +10726,6 @@ MonoBehaviour:
   materialProperty: _MatrixYIQ
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorSpace: 0
   hsvValues:
   - {x: 0, y: 1, z: 1}
@@ -10311,6 +10765,242 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1446023400}
+--- !u!1 &1455581523
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1455581524}
+  - component: {fileID: 1455581528}
+  - component: {fileID: 1455581527}
+  - component: {fileID: 1455581526}
+  - component: {fileID: 1455581525}
+  m_Layer: 0
+  m_Name: Cube (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1455581524
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1455581523}
+  m_LocalRotation: {x: 0.4113951, y: -0, z: -0, w: 0.9114572}
+  m_LocalPosition: {x: 0.71, y: -4.6300015, z: 0}
+  m_LocalScale: {x: 1, y: 1.0000005, z: 1.0000005}
+  m_Children: []
+  m_Father: {fileID: 312958564}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 48.585003, y: 0, z: 0}
+--- !u!114 &1455581525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1455581523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee77e6beba284dc5ae078fda48c242e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleMode: 0
+  settingsMask: {fileID: 0}
+  name: 
+  _useNameAsRandomSeed: 0
+  _updateSettings:
+    updateType: 0
+    pauseOffscreen: 0
+    respectGlobalTimeScale: 1
+    playSpeed: 0
+    allowInterupt: 0
+  _timeSettings:
+    reverse: 0
+    reverseValues: 0
+    time: 3
+    timeRandomScale: {x: 1, y: 1}
+    initBeforeDelay: 0
+    startDelay: 0
+    randomStartDelay: {x: 0, y: 0}
+    delayEveryLoop: 0
+    startAtTime: {x: 0, y: -1}
+    resetToBegining: 0
+  _interpolation:
+    loop: 1
+    timeRandomEveryLoop: 0
+    loopNumberOfTimes: -1
+    useCurve: 1
+    interpolation:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 1
+      m_RotationOrder: 0
+    nonCurveInterpolation: 0
+    nonCurveInterpolationOut: 0
+    nonCurveLoopMode: 0
+  events:
+    eventTime: 0
+    atTimeCondition: 0
+    atTime:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    onCompleteCondition: 0
+    onLoopComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  target: {fileID: 0}
+  useMaterial: 1
+  materialProperty: _Color
+  dontInstanceMaterial: 0
+  forceSetMaterial: 0
+  colorSpace: 0
+  hsvValues:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0.5, z: 1}
+  - {x: 0, y: 1, z: 1}
+  setMatrix: 0
+--- !u!114 &1455581526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1455581523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee77e6beba284dc5ae078fda48c242e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simpleMode: 0
+  settingsMask: {fileID: 0}
+  name: 
+  _useNameAsRandomSeed: 0
+  _updateSettings:
+    updateType: 0
+    pauseOffscreen: 0
+    respectGlobalTimeScale: 1
+    playSpeed: 0
+    allowInterupt: 0
+  _timeSettings:
+    reverse: 0
+    reverseValues: 0
+    time: 3
+    timeRandomScale: {x: 1, y: 1}
+    initBeforeDelay: 0
+    startDelay: 0
+    randomStartDelay: {x: 0, y: 0}
+    delayEveryLoop: 0
+    startAtTime: {x: 0, y: -1}
+    resetToBegining: 0
+  _interpolation:
+    loop: 1
+    timeRandomEveryLoop: 0
+    loopNumberOfTimes: -1
+    useCurve: 1
+    interpolation:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 1
+      m_RotationOrder: 0
+    nonCurveInterpolation: 0
+    nonCurveInterpolationOut: 0
+    nonCurveLoopMode: 0
+  events:
+    eventTime: 0
+    atTimeCondition: 0
+    atTime:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+    onCompleteCondition: 0
+    onLoopComplete:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  target: {fileID: 0}
+  useMaterial: 1
+  materialProperty: _Color
+  dontInstanceMaterial: 0
+  forceSetMaterial: 0
+  colorSpace: 1
+  hsvValues:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0.5, z: 1}
+  - {x: 0, y: 1, z: 1}
+  setMatrix: 0
+--- !u!23 &1455581527
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1455581523}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: b0566d18334235041baaef1d7f333f82, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+--- !u!33 &1455581528
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1455581523}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1488571436
 GameObject:
   m_ObjectHideFlags: 0
@@ -11407,7 +12097,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -11465,7 +12154,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -11693,7 +12382,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -11751,7 +12439,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.86840767, g: 0, b: 0.9191176, a: 0.884}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -12040,7 +12728,6 @@ MonoBehaviour:
   materialProperty: _Color
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -12444,7 +13131,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 5ab768272038e2b48962ece0fe0eb566, type: 2}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.8666667, g: 0, b: 0.91764706, a: 0.88235295}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
@@ -12647,7 +13334,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -12908,7 +13594,6 @@ MonoBehaviour:
   materialProperty: 
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -13686,7 +14371,6 @@ MonoBehaviour:
   materialProperty: _Color
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
@@ -14123,7 +14807,6 @@ MonoBehaviour:
   materialProperty: _Color
   dontInstanceMaterial: 0
   forceSetMaterial: 0
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
   colorOverTime:
     key0:
       serializedVersion: 2
