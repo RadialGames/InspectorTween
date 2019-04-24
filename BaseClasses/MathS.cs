@@ -182,11 +182,19 @@ namespace InspectorTween{
 							  c1.a + (c2.a - c1.a) * value);
 		}
 		public static Color ColorLerpUnclamped(Color c1, Color c2, float value) {
-			return new Color(c1.r + (c2.r - c1.r) * value,
-							  c1.g + (c2.g - c1.g) * value,
-							  c1.b + (c2.b - c1.b) * value,
-							  c1.a + (c2.a - c1.a) * value);
+			c1.r = c1.r + (c2.r - c1.r) * value;
+			c1.g = c1.g + (c2.g - c1.g) * value;
+			c1.b = c1.b + (c2.b - c1.b) * value;
+			c1.a = c1.a + (c2.a - c1.a) * value;
+			return c1;
 		}
+		public static Color ColorLerpUnclamped_RGB(Color c1, Color c2, float value) {
+			c1.r = c1.r + (c2.r - c1.r) * value;
+			c1.g = c1.g + (c2.g - c1.g) * value;
+			c1.b = c1.b + (c2.b - c1.b) * value;
+			return c1;
+		}
+		
 
 		public static Vector2 Vector2Lerp(Vector2 v1, Vector2 v2, float value) {
 			if (value > 1.0f)

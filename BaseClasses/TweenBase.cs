@@ -350,7 +350,8 @@ namespace InspectorTween {
 			Step=4,
 			BackIn,
 			BackOut,
-			Sin
+			Sin,
+			Parabola
 		};
 		public static AnimationCurve[] savedCurves = {
 			new AnimationCurve(new Keyframe(0,0,1,1),new Keyframe(1,1,1,1)){postWrapMode = WrapMode.Loop,preWrapMode = WrapMode.Loop}//Linear
@@ -366,7 +367,8 @@ namespace InspectorTween {
 			,new AnimationCurve(new Keyframe(0f,0f,0f,0f),new Keyframe(0.5032355f,-0.1706448f,0.1443379f,0.1443379f),new Keyframe(1f,1f,3.219463f,3.219463f))//Back In
 			,new AnimationCurve(new Keyframe(0f,0f,5.243961f,5.243961f),new Keyframe(0.500102f,1.065629f,0.06565601f,0.06565601f),new Keyframe(1f,1f,0f,0f))//BackOut 
 			,new AnimationCurve(new Keyframe(0f,0f),new Keyframe(0.5f,0.5f,1.854149f,1.854149f),new Keyframe(1f,1f)){postWrapMode = WrapMode.PingPong,preWrapMode = WrapMode.PingPong}//Sin
-		 };
+			,new AnimationCurve(new Keyframe(0f,0f,3.71137f,3.71137f),new Keyframe(0.5f,1f,0f,0f),new Keyframe(0.99823f,0.005275726f,-3.308056f,-3.308056f))  {postWrapMode = WrapMode.Clamp,preWrapMode = WrapMode.Clamp}//Parabola                                    
+		                                             };
 
 		public static void SetAnimationCurve(ref TweenBase.InterpolationInterface interpolationInterface, AnimationCurveType curveType) {
 			if ( curveType == AnimationCurveType.Custom ) {
@@ -437,7 +439,7 @@ namespace InspectorTween {
 		[ConditionalHide("simpleMode", true, true)]
 		public TweenMask settingsMask;
 	#else
-		[HideInInspector][SerializeField]private TweenMask settingsMask; //Keep around for toggling and keeping state.
+		[HideInInspector]public TweenMask settingsMask; //Keep around for toggling and keeping state.
 	#endif
 		private Coroutine tweenCoroutine;
 		static readonly WaitForSeconds pauseWait = new WaitForSeconds(0.3f);
@@ -850,6 +852,11 @@ namespace InspectorTween {
 				//Default UI components to have a sane default
 				_updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
 			}
+
+			if ( GetComponent<Camera>() != null ) {
+				_updateSettings = new UpdateInterface {pauseOffscreen = VisibilityPause.None, respectGlobalTimeScale = false}; //this hasn't been created yet as that 'usually' happens in UI
+
+			}
 #if UNITY_EDITOR
 			simpleMode = UnityEditor.EditorPrefs.GetBool("SimpleMode", false);
 #endif
@@ -1027,7 +1034,7 @@ namespace InspectorTween {
 				eventFireLoopCount = 0;
 			}
 			
-			if(reverse && events.onCompleteCondition == EventInterface.EventFireCondition.AtReverseTime ) {
+			if((reverse || timeSettings.reverseValues) && events.onCompleteCondition == EventInterface.EventFireCondition.AtReverseTime ) {
 				//At reverse time onComplete becomes on Start
 				if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
 					onLoopComplete.Invoke();
@@ -1087,7 +1094,7 @@ namespace InspectorTween {
 				}
 
 				loopCount += loopIncrement;
-				if ( isOkToFireEvent(events.atTimeCondition, reverse) ) {
+				if ( isOkToFireEvent(events.atTimeCondition, (reverse || timeSettings.reverseValues)) ) {
 					float checkTime = loopCount;
 					if ( events.atTimeCondition == EventInterface.EventFireCondition.EveryLoop ) {
 						checkTime = loopCount % time;
@@ -1099,7 +1106,7 @@ namespace InspectorTween {
 							eventInvoked = false; //reset invoked.
 						}
 					}
-					if ( reverse ) {
+					if ( reverse || timeSettings.reverseValues) {
 						if ( checkTime <= eventAtTime && !eventInvoked ) {
 							if ( atTime != null ) {
 								atTime.Invoke();
@@ -1163,7 +1170,12 @@ namespace InspectorTween {
 				end = 0f;
 				count = 0;
 			} else {
-				count = time;
+				if ( loopNumberOfTimes > 0 ) {
+					count = (loopNumberOfTimes*time)-0.0000000001f;
+				} else {
+					count = time-0.0000000001f;
+				}
+
 			}
 
 			float lerpVal;
@@ -1174,8 +1186,8 @@ namespace InspectorTween {
 			}
 
 			LerpParameters(lerpVal);
-			if(isOkToFireEvent(events.onCompleteCondition,reverse) ) {
-				if ( onLoopComplete!= null && onLoopComplete.GetPersistentEventCount() > 0 ) {
+			if(isOkToFireEvent(events.onCompleteCondition,reverse|| timeSettings.reverseValues) ) {
+				if ( onLoopComplete!= null  ) {
 					onLoopComplete.Invoke();
 				}
 			}
@@ -1195,12 +1207,13 @@ namespace InspectorTween {
 					return reverseState;
 				case EventInterface.EventFireCondition.EveryLoop:
 					return true;
-#if UNITY_2018_1_OR_NEWER
 				default:
+#if UNITY_2018_1_OR_NEWER
 					throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
+#else
+					return true;
 #endif
 			}
-			return true;
 		}
 		
 		private IEnumerator RestartCoroutine() {

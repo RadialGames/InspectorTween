@@ -1,18 +1,23 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace InspectorTween.InspectorTweenExamples {
 	public class CameraToActive : MonoBehaviour {
 		[SerializeField] private EventSystem eventSystem;
-		private TweenPosition moveTween;
-		private GameObject currentSelected;
-		private TweenQueue[] becameSelectedTween;
+		protected TweenPosition moveTween;
+		protected TweenRotation rotationTween;
+		public GameObject currentSelected;
+		protected TweenQueue[] becameSelectedTween;
 		private const string Q_ON_SELECTED = "OnSelected";
 		private const float MIN_TRAVEL_TIME = 0.2f;
-		private const float DISTANCE_PER_SECOND = 10f;
+		public float DISTANCE_PER_SECOND = 20f;
 
-		private void Start() {
+		protected virtual void Start() {
+			if ( eventSystem == null ) {
+				eventSystem = EventSystem.current;
+			}
 			becameSelectedTween = new TweenQueue[Selectable.allSelectables.Count];
 			for ( int index = 0; index < Selectable.allSelectables.Count; index++ ) {
 				Selectable selectable = Selectable.allSelectables[index];
@@ -28,9 +33,23 @@ namespace InspectorTween.InspectorTweenExamples {
 			}
 
 			moveTween = (TweenPosition) TweenBase.AddTween<TweenPosition>(gameObject, play:false,loop:false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
+			moveTween.events.onLoopComplete = new UnityEvent();
+			moveTween.events.onLoopComplete.AddListener(OnDestinationArrive);
+			rotationTween = (TweenRotation) TweenBase.AddTween<TweenRotation>(gameObject, play: false, loop: false).SetAnimationCurve(AnimationCurves.AnimationCurveType.EaseIn);
+			rotationTween.interpolationCurve.postWrapMode = WrapMode.Clamp;
+			var initialRotation = transform.eulerAngles;
+			rotationTween.values[0].x = initialRotation.x;
+			rotationTween.values[0].z = initialRotation.z;
+			rotationTween.values[1].x = initialRotation.x;
+			rotationTween.values[1].z = initialRotation.z;
 		}
 
-		private void FixedUpdate() {
+		protected virtual void OnDestinationArrive() {
+		}
+
+		protected virtual void OnDestinationDepart() {
+		}
+		protected virtual void FixedUpdate() {
 			if ( eventSystem.currentSelectedGameObject == null && currentSelected != null ) {
 				eventSystem.SetSelectedGameObject(currentSelected); //fix for mouse click unselecting
 				return;
@@ -41,6 +60,7 @@ namespace InspectorTween.InspectorTweenExamples {
 			}
 
 			int currentIndex;
+			
 			if ( currentSelected != null ) {
 				//Find queue where we are and deselect that
 				currentIndex = Selectable.allSelectables.IndexOf(currentSelected.GetComponent<Selectable>());
@@ -53,6 +73,7 @@ namespace InspectorTween.InspectorTweenExamples {
 						}
 					}
 				}
+				OnDestinationDepart();
 			}
 
 			currentSelected = eventSystem.currentSelectedGameObject;
@@ -74,6 +95,17 @@ namespace InspectorTween.InspectorTweenExamples {
 			SetCameraDestination();
 		}
 
+		protected float Fix360(float val) {
+			if ( val > 180 ) {
+				val -= 360;
+			}
+
+			if ( val < -180 ) {
+				val += 360;
+			}
+
+			return val;
+		}
 		/// <summary>
 		/// Set the camera tween to point and play
 		/// </summary>
@@ -84,9 +116,19 @@ namespace InspectorTween.InspectorTweenExamples {
 
 			moveTween.values[0] = transform.position;
 			moveTween.values[1] = currentSelected.transform.position;
-			float distanceToTravel = Mathf.Abs(currentSelected.transform.position.x - transform.position.x);
+			float distanceToTravel = Vector3.Distance(currentSelected.transform.position , transform.position);
 			moveTween.time = Mathf.Max(MIN_TRAVEL_TIME, distanceToTravel / DISTANCE_PER_SECOND);
+			//if ( moveTween.enabled == false ) {
+			moveTween.CancelTween(TweenBase.TweenCancelType.HardStop);
 			moveTween.PlayForwards();
+			
+			var rot = moveTween.targetTransform.eulerAngles.y;
+			rotationTween.values[0].y = Fix360(rot);
+			rotationTween.values[1].y = Fix360(currentSelected.transform.eulerAngles.y);
+			//TODO: fix 360 flip
+			rotationTween.CancelTween(TweenBase.TweenCancelType.HardStop);
+			rotationTween.PlayForwards();
+			rotationTween.time = moveTween.time; //change to degrees per second calculation?...
 		}
 	}
 }

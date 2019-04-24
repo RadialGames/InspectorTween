@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 //[ExecuteInEditMode]
+namespace InspectorTween {
+	
+
+
 public class PositionConstraint : MonoBehaviour {
 	public float lag;
 	public float rotLag;
@@ -70,4 +74,5 @@ public class PositionConstraint : MonoBehaviour {
 			}
 		}
 	}
+}
 }

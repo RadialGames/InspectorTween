@@ -9,7 +9,7 @@ namespace InspectorTween{
     public class TweenColorParameters
     {
         public Gradient colorOverTime;
-        public enum colorFunctions{Normal,Add,Multiply,Overlay};
+        public enum colorFunctions{Normal,Add,Multiply,Overlay,AlphaOnly};
         public colorFunctions colorFunction;
 
     }
@@ -57,9 +57,10 @@ namespace InspectorTween{
 
         protected void Initialize() {
            if(useMaterial && (materialProperty != null) ){
-                type = objectType.Material;
+               type = objectType.Material;
                
-                propID = Shader.PropertyToID(materialProperty);
+               propID = Shader.PropertyToID(materialProperty);
+               
                if ( renderer != null ) {
                    if(!dontInstanceMaterial)
                    {
@@ -85,14 +86,21 @@ namespace InspectorTween{
                    if ( image != null ) {
 
                        if ( dontInstanceMaterial ) {
-                           mat = image.material;
-  
+                           mat = image.materialForRendering;
                            //initialColor = mat.GetColor(propID);
                        } else {
-                           mat =  new Material(image.material);
-                           image.material = mat;
+                           mat = new Material(image.materialForRendering);
+                           if (image.canvasRenderer.materialCount < 1)
+                           {
+                               Debug.LogError("CanvasRenderer doesn't have a material at index 0. Setting material directly?", image.canvasRenderer.gameObject);
+                               image.material = mat;
+                           }
+                           else
+                           {
+                               image.canvasRenderer.SetMaterial(mat,0);                               
+                           }
+                           image.SetMaterialDirty();
                        }
-
                        return;
                    }
                }
@@ -108,7 +116,9 @@ namespace InspectorTween{
             image = target.GetComponent<Graphic>();//Image,Text,RawImage...
             if(image != null){
                 type = objectType.Graphic;
-                updateSettings.pauseOffscreen = VisibilityPause.None; //no renderer on these?
+                if(updateSettings!=null) {
+                    updateSettings.pauseOffscreen = VisibilityPause.None; //no renderer on these?}
+                }
                 initialColor = image.color;
                 return;
             }
@@ -251,6 +261,12 @@ namespace InspectorTween{
                     if(forceSetMaterial){
                         mat.SetColor(propID,val);
                     } else {
+                        if ( image != null ) {
+                            var iMat = image.material;
+                            iMat.SetColor(propID,val);
+                            image.SetMaterialDirty();
+                            break;
+                        }
                         renderer.sharedMaterial.SetColor(propID,val); 
                     }
                     break;

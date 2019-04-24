@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
+
 namespace InspectorTween{
 	[System.Serializable]
 	public class TweenQueueItem{
@@ -9,12 +11,23 @@ namespace InspectorTween{
 		public bool reverseValues;
 		public float timeLengthOverride = -1f;
 		public bool setInitialTransforms;
+		
+		public UnityEvent onPlay;
+		[Header("Must enable 'watch for end' to work")]
+		public UnityEvent onEnd;
+
+		public bool test;
 	}
 	[AddComponentMenu("InspectorTween/TweenQueue",8)]
 	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/Tween-Queue")]
 	public class TweenQueue : MonoBehaviour {
+		public bool watchForEnd;
+		private int currentlyPlaying = -1;
+		
 		public TweenQueueItem[] itemQueue = new TweenQueueItem[1]{new TweenQueueItem()};
 		public int tweenToPlay = 0;//for editor script
+
+		
 		/// <summary>
 		/// Call CancelTween on all tweens in all queues
 		/// </summary>
@@ -24,7 +37,7 @@ namespace InspectorTween{
 		
         public void CancelAll(bool doInterupt){
 			for(int ind=0;ind<itemQueue.Length;ind++){
-				foreach(var tween in itemQueue[ind].tweens){
+				foreach(TweenBase tween in itemQueue[ind].tweens){
 					if(tween && tween.enabled){
 						tween.CancelTween(doInterupt);
 					}
@@ -37,8 +50,11 @@ namespace InspectorTween{
 		/// <param name="queueIndex">index of queue. use GetNamedIndex to find index by name</param>
 		/// <param name="doInterupt"></param>
 		public void Cancel(int queueIndex,bool doInterupt=false) {
-			foreach(var tween in itemQueue[queueIndex].tweens){
-				if(tween && tween.enabled){
+			if ( queueIndex > itemQueue.Length || queueIndex < 0 ) {
+				return;
+			}
+			foreach(TweenBase tween in itemQueue[queueIndex].tweens){
+				if(tween != null && tween.enabled){
 					tween.CancelTween(doInterupt);
 				}
 			}
@@ -81,7 +97,9 @@ namespace InspectorTween{
 			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
 				return;
 			}
-			foreach(var tweenI in itemQueue[ind].tweens){
+
+
+			foreach(TweenBase tweenI in itemQueue[ind].tweens){
 				if(itemQueue[ind].setInitialTransforms){
 					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
 						((TweenTransform)tweenI).SetInitial();
@@ -101,7 +119,80 @@ namespace InspectorTween{
 					tweenI.PlayForwards(true);
 				}
 			}
+			itemQueue[ind].onPlay.Invoke();
+			currentlyPlaying = ind;
+			this.enabled = true;
 		}
 		
+
+
+		public void PlayReverse(int ind) {
+			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
+				return;
+			}
+			foreach(TweenBase tweenI in itemQueue[ind].tweens){
+				if(itemQueue[ind].setInitialTransforms){
+					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
+						((TweenTransform)tweenI).SetInitial();
+					}
+				}
+				if(tweenI == null) continue;
+				if(itemQueue[ind].timeLengthOverride != -1){
+					tweenI.time = ( itemQueue[ind].timeLengthOverride );
+				}
+				tweenI.ReverseValues(itemQueue[ind].reverseValues);
+				tweenI.PlayReverse(true);
+
+			}
+			itemQueue[ind].onPlay.Invoke();
+			currentlyPlaying = ind;
+			this.enabled = true;
+		}
+		public void SetToLerpPoint( float val) {
+			foreach ( TweenBase tweenI in itemQueue[0].tweens ) {
+				if ( tweenI == null ) {
+					continue;
+				}
+				tweenI.SetToLerpPoint(val);
+			}
+		}
+		public void SetToLerpPoint(int queueIndex, float val) {
+			if ( queueIndex < 0 || itemQueue.Length <= queueIndex || itemQueue[queueIndex].tweens == null ) {
+				return;
+			}
+			foreach ( TweenBase tweenI in itemQueue[queueIndex].tweens ) {
+				if ( tweenI == null ) {
+					continue;
+				}
+				tweenI.SetToLerpPoint(val);
+			}
+		}
+
+		private void OnEnable() {
+			if ( currentlyPlaying < 0 ) {
+				enabled = false;//only stay enabled if invoking a queue item.
+			}
+		}
+
+		private void Update() {
+			if ( !watchForEnd ) {
+				this.enabled = false;
+			}
+
+			if ( currentlyPlaying < 0 ) {
+				return;
+			}
+
+			TweenQueueItem current = itemQueue[currentlyPlaying];
+			foreach ( TweenBase currentTween in current.tweens ) {
+				if ( currentTween != null && currentTween.enabled ) {
+					return; //don't do anything if something's playing.
+				}
+			}
+			current.onEnd?.Invoke();
+			//if we get here without returning everything should be finished.
+			currentlyPlaying = -1;//stop Watching
+			this.enabled = false;
+		}
 	}
 }

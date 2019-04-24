@@ -13,8 +13,11 @@ using System.Collections;
 	{
 		[SerializeField]private Vector3[] scales = new Vector3[2]{Vector3.zero,Vector3.one};
 		public Vector3? initialScale;
+		
+		#pragma warning disable 0169
 		[Obsolete]
 		private bool scaleRelativeEndRelativeToStart;
+		#pragma warning restore 0169
 
 		protected override void Awake() {
 			base.Awake();
@@ -26,9 +29,17 @@ using System.Collections;
 		}
 
 		public override void  MatchStartToCurrent() {
+			if ( targetTransform == null ) {
+				scales[0] = transform.localScale;
+				return;
+			}
 			scales[0] = targetTransform.localScale;
 		}
 		public override void MatchEndToCurrent() {
+			if ( targetTransform == null ) {
+				scales[scales.Length-1] = transform.localScale;
+				return;
+			}
 			scales[scales.Length-1] = targetTransform.localScale;
 		}
 		public override void SetInitial(){
@@ -42,6 +53,12 @@ using System.Collections;
 			if(!initialScale.HasValue) {
 				SetInitial();
 			}
+#if UNITY_EDITOR
+			if ( targetTransform == null ) { //this can happen with button usage, or [ExecuteInEditMode] scripts
+				Debug.LogWarning("Target transform for tween uninitialized : " + this.gameObject.name);
+				return;
+			}
+#endif
 			if ( timeSettings.reverseValues) {
 				targetTransform.localScale = LerpParameter(reversedValues,lerp);
 			} else {
