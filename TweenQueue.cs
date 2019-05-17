@@ -93,71 +93,85 @@ namespace InspectorTween{
 		public void Play(string label){
 			Play (GetNamedIndex(label));
 		}
-		public void Play(int ind) {
-			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
+		public void Play(int queueIndex) {
+			if (ValidQueueIndex(queueIndex) == false ) {
 				return;
 			}
 
 
-			foreach(TweenBase tweenI in itemQueue[ind].tweens){
-				if(itemQueue[ind].setInitialTransforms){
+			foreach(TweenBase tweenI in itemQueue[queueIndex].tweens){
+				if(itemQueue[queueIndex].setInitialTransforms){
 					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
 						((TweenTransform)tweenI).SetInitial();
 					}
 				}
 				if(tweenI == null) continue;
-				if(itemQueue[ind].timeLengthOverride != -1){
-					tweenI.time = ( itemQueue[ind].timeLengthOverride );
+				if(itemQueue[queueIndex].timeLengthOverride != -1){
+					tweenI.time = ( itemQueue[queueIndex].timeLengthOverride );
 				}
 
-				tweenI.ReverseValues(itemQueue[ind].reverseValues);
+				tweenI.ReverseValues(itemQueue[queueIndex].reverseValues);
 
-				if(itemQueue[ind].reverse){
+				if(itemQueue[queueIndex].reverse){
 					tweenI.PlayReverse(true);
 				}
 				else{
 					tweenI.PlayForwards(true);
 				}
 			}
-			itemQueue[ind].onPlay.Invoke();
-			currentlyPlaying = ind;
+			itemQueue[queueIndex].onPlay.Invoke();
+			currentlyPlaying = queueIndex;
 			this.enabled = true;
 		}
 		
 
 
-		public void PlayReverse(int ind) {
-			if ( ind < 0 || itemQueue.Length <= ind || itemQueue[ind].tweens == null ) {
+		public void PlayReverse(int queueIndex) {
+			if (ValidQueueIndex(queueIndex) == false ) {
 				return;
 			}
-			foreach(TweenBase tweenI in itemQueue[ind].tweens){
-				if(itemQueue[ind].setInitialTransforms){
+			foreach(TweenBase tweenI in itemQueue[queueIndex].tweens){
+				if(itemQueue[queueIndex].setInitialTransforms){
 					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
 						((TweenTransform)tweenI).SetInitial();
 					}
 				}
 				if(tweenI == null) continue;
-				if(itemQueue[ind].timeLengthOverride != -1){
-					tweenI.time = ( itemQueue[ind].timeLengthOverride );
+				if(itemQueue[queueIndex].timeLengthOverride != -1){
+					tweenI.time = ( itemQueue[queueIndex].timeLengthOverride );
 				}
-				tweenI.ReverseValues(itemQueue[ind].reverseValues);
+				tweenI.ReverseValues(itemQueue[queueIndex].reverseValues);
 				tweenI.PlayReverse(true);
 
 			}
-			itemQueue[ind].onPlay.Invoke();
-			currentlyPlaying = ind;
+			itemQueue[queueIndex].onPlay.Invoke();
+			currentlyPlaying = queueIndex;
 			this.enabled = true;
 		}
+
+		
+		private int setToQueueIndex = 0;
+		/// <summary>
+		/// Can only have one input for event functions, so to SetToLerpPoint, call method to set index, then call with value.
+		/// </summary>
+		/// <param name="ind"></param>
+		public void SetToLerpPointActiveIndex(int ind) {
+			setToQueueIndex = ind;
+		}
 		public void SetToLerpPoint( float val) {
-			foreach ( TweenBase tweenI in itemQueue[0].tweens ) {
-				if ( tweenI == null ) {
-					continue;
-				}
-				tweenI.SetToLerpPoint(val);
-			}
+			SetToLerpPoint(setToQueueIndex,val);
+		}
+		/// <summary>
+		/// Test if specified queue index is in the valid range.
+		/// </summary>
+		/// <param name="queueIndex"></param>
+		/// <returns></returns>
+		private bool ValidQueueIndex(int queueIndex) {
+			return (queueIndex < 0 || itemQueue.Length <= queueIndex || itemQueue[queueIndex].tweens == null) == false;
 		}
 		public void SetToLerpPoint(int queueIndex, float val) {
-			if ( queueIndex < 0 || itemQueue.Length <= queueIndex || itemQueue[queueIndex].tweens == null ) {
+			//Debug.Log($"Queue SetToLerpPoint - ind {queueIndex} val :{val} ");
+			if ( ValidQueueIndex(queueIndex) == false ) {
 				return;
 			}
 			foreach ( TweenBase tweenI in itemQueue[queueIndex].tweens ) {
@@ -167,7 +181,36 @@ namespace InspectorTween{
 				tweenI.SetToLerpPoint(val);
 			}
 		}
+		/// <summary>
+		/// Find the MAXIMUM runtime of the specified queue. Some parameters affect a tweens length randomly.
+		/// </summary>
+		/// <param name="queueIndex"></param>
+		/// <returns>time in seconds</returns>
+		public float GetQueuePlayTime(int queueIndex) {
+			float length = 0f;
+			if ( ValidQueueIndex(queueIndex) == false ) {
+				return length;
+			}
+			
+			foreach ( TweenBase tween in itemQueue[queueIndex].tweens ) {
+				if ( tween == null ) {
+					continue;
+				}
+				
+				float maxRuntime = tween.time * Mathf.Max(tween.timeSettings.timeRandomScale.x, tween.timeSettings.timeRandomScale.y);
+				float delay = 0;
+				if ( tween.timeSettings.randomStartDelay.x > 0 || tween.timeSettings.randomStartDelay.y > 0 ) {
+					delay = Mathf.Max(tween.timeSettings.randomStartDelay.x, tween.timeSettings.randomStartDelay.y);
+				} else {
+					delay = tween.timeSettings.startDelay;//this is 0 if not used,
+				}
 
+				maxRuntime += delay;
+				length = Mathf.Max(length,maxRuntime);
+			}
+
+			return length;
+		}
 		private void OnEnable() {
 			if ( currentlyPlaying < 0 ) {
 				enabled = false;//only stay enabled if invoking a queue item.
@@ -185,7 +228,7 @@ namespace InspectorTween{
 
 			TweenQueueItem current = itemQueue[currentlyPlaying];
 			foreach ( TweenBase currentTween in current.tweens ) {
-				if ( currentTween != null && currentTween.enabled ) {
+				if ( currentTween != null && currentTween.enabled && (currentTween.interpolation.loop == false || currentTween.interpolation.loopNumberOfTimes > 0) ) {
 					return; //don't do anything if something's playing.
 				}
 			}
