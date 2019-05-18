@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
 
 namespace InspectorTween{
-	[System.Serializable]
+	[Serializable]
 	public class TweenQueueItem{
 		public string label;
 		public TweenBase[] tweens = new TweenBase[1];
@@ -24,7 +24,7 @@ namespace InspectorTween{
 		public bool watchForEnd;
 		private int currentlyPlaying = -1;
 		
-		public TweenQueueItem[] itemQueue = new TweenQueueItem[1]{new TweenQueueItem()};
+		public TweenQueueItem[] itemQueue = {new TweenQueueItem()};
 		public int tweenToPlay = 0;//for editor script
 
 		
@@ -59,10 +59,12 @@ namespace InspectorTween{
 				}
 			}
 		}
+
 		/// <summary>
-		/// Set overide time on specified queue item
+		/// Set override time on specified queue item
 		/// </summary>
 		/// <param name="index"></param>
+		/// <param name="time">time in seconds</param>
 		public void SetOverrideTime(int index, float time) {
 			itemQueue[index].timeLengthOverride = time;
 		}
@@ -74,7 +76,7 @@ namespace InspectorTween{
 		public int GetNamedIndex(string inStr){
 			int propInd = -1;
 			for(int ind=0;ind<itemQueue.Length;ind++){
-				if(string.Compare(itemQueue[ind].label,inStr,true) == 0){
+				if(string.Compare(itemQueue[ind].label,inStr,StringComparison.OrdinalIgnoreCase) == 0){
 					propInd = ind;
 					break;
 				}
@@ -101,7 +103,7 @@ namespace InspectorTween{
 
 			foreach(TweenBase tweenI in itemQueue[queueIndex].tweens){
 				if(itemQueue[queueIndex].setInitialTransforms){
-					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
+					if(tweenI.GetType().IsSubclassOf(typeof(TweenTransform))){
 						((TweenTransform)tweenI).SetInitial();
 					}
 				}
@@ -132,7 +134,7 @@ namespace InspectorTween{
 			}
 			foreach(TweenBase tweenI in itemQueue[queueIndex].tweens){
 				if(itemQueue[queueIndex].setInitialTransforms){
-					if(tweenI.GetType().IsSubclassOf(typeof(InspectorTween.TweenTransform))){
+					if(tweenI.GetType().IsSubclassOf(typeof(TweenTransform))){
 						((TweenTransform)tweenI).SetInitial();
 					}
 				}
@@ -193,12 +195,12 @@ namespace InspectorTween{
 			}
 			
 			foreach ( TweenBase tween in itemQueue[queueIndex].tweens ) {
-				if ( tween == null ) {
+				if ( tween == null || tween.interpolation.loop) {
 					continue;
 				}
 				
 				float maxRuntime = tween.time * Mathf.Max(tween.timeSettings.timeRandomScale.x, tween.timeSettings.timeRandomScale.y);
-				float delay = 0;
+				float delay;
 				if ( tween.timeSettings.randomStartDelay.x > 0 || tween.timeSettings.randomStartDelay.y > 0 ) {
 					delay = Mathf.Max(tween.timeSettings.randomStartDelay.x, tween.timeSettings.randomStartDelay.y);
 				} else {
@@ -217,6 +219,12 @@ namespace InspectorTween{
 			}
 		}
 
+		private void OnDisable() {
+			if ( watchForEnd && currentlyPlaying != -1 ) {
+				itemQueue[currentlyPlaying].onEnd?.Invoke();
+			}
+		}
+
 		private void Update() {
 			if ( !watchForEnd ) {
 				this.enabled = false;
@@ -229,7 +237,7 @@ namespace InspectorTween{
 			TweenQueueItem current = itemQueue[currentlyPlaying];
 			foreach ( TweenBase currentTween in current.tweens ) {
 				if ( currentTween != null && currentTween.enabled && (currentTween.interpolation.loop == false || currentTween.interpolation.loopNumberOfTimes > 0) ) {
-					return; //don't do anything if something's playing.
+					return; //don't do anything if somethings playing.
 				}
 			}
 			current.onEnd?.Invoke();
