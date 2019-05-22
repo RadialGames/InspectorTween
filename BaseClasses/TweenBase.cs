@@ -1164,16 +1164,16 @@ namespace InspectorTween {
 			}
 
 			var start = 0f;
-			var end = 1f;
+			var end = 1f-(Mathf.Epsilon*3);
 			if ( reverse ) {
-				start = 1f;
+				start = 1f-(Mathf.Epsilon*3);
 				end = 0f;
 				count = 0;
 			} else {
 				if ( loopNumberOfTimes > 0 ) {
-					count = (loopNumberOfTimes*time)-0.0000000001f;
+					count = (loopNumberOfTimes*time)-(Mathf.Epsilon*3);
 				} else {
-					count = time-0.0000000001f;
+					count = time-(Mathf.Epsilon*3);
 				}
 
 			}
