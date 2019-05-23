@@ -20,6 +20,10 @@ namespace InspectorTween {
 			rect.position -= Vector2.right * 30;
 			rect.size = new Vector2(30, 16);
 			EditorGUI.PrefixLabel(rect, GUIUtility.GetControlID(FocusType.Passive), new GUIContent("Tweens : Size"));
+			bool addTweenToArray = GUILayout.Button(new GUIContent("+", "add tween"));
+			if ( addTweenToArray ) {
+				list.arraySize += 1;
+			}
 			EditorGUILayout.PropertyField(list.FindPropertyRelative("Array.size"), GUIContent.none); //Use "Array.size" so that it's editable.
 			EditorGUILayout.EndHorizontal();
 			EditorGUI.indentLevel += 1;
