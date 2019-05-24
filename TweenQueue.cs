@@ -15,8 +15,6 @@ namespace InspectorTween{
 		public UnityEvent onPlay;
 		[Header("Must enable 'watch for end' to work")]
 		public UnityEvent onEnd;
-
-		public bool test;
 	}
 	[AddComponentMenu("InspectorTween/TweenQueue",8)]
 	[HelpURL("https://github.com/RadialGames/InspectorTween/wiki/Tween-Queue")]
@@ -25,8 +23,9 @@ namespace InspectorTween{
 		private int currentlyPlaying = -1;
 		
 		public TweenQueueItem[] itemQueue = {new TweenQueueItem()};
+		[Header("Editor Test Controls")]
 		public int tweenToPlay = 0;//for editor script
-
+		private int setToQueueIndex = 0;
 		
 		/// <summary>
 		/// Call CancelTween on all tweens in all queues
@@ -152,7 +151,7 @@ namespace InspectorTween{
 		}
 
 		
-		private int setToQueueIndex = 0;
+
 		/// <summary>
 		/// Can only have one input for event functions, so to SetToLerpPoint, call method to set index, then call with value.
 		/// </summary>
