@@ -1,5 +1,4 @@
 ﻿using System;
-using InspectorTween;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,9 +7,6 @@ using UnityEngine;
 
 //}
 namespace InspectorTween {
-
-
-
 	[CustomEditor(typeof(TweenQueue))]
 	public class TweenQueueEditor : Editor {
 		public static void Show(SerializedProperty list) {
@@ -23,6 +19,11 @@ namespace InspectorTween {
 			bool addTweenToArray = GUILayout.Button(new GUIContent("+", "add tween"));
 			if ( addTweenToArray ) {
 				list.arraySize += 1;
+			}
+			if ( GUILayout.Button(new GUIContent("-", "remove tween")) ) {
+				if(list.arraySize > 1) {
+					list.arraySize -= 1;
+				}
 			}
 			EditorGUILayout.PropertyField(list.FindPropertyRelative("Array.size"), GUIContent.none); //Use "Array.size" so that it's editable.
 			EditorGUILayout.EndHorizontal();
@@ -91,8 +92,8 @@ namespace InspectorTween {
 		}
 
 
-		public void DoGUI(Rect rect, SerializedProperty prop, GUIContent label) {
-			rect = EditorGUILayout.GetControlRect();
+		public void DoGUI( SerializedProperty prop, bool useEnd) {
+			Rect rect = EditorGUILayout.GetControlRect();
 			rect.size = new Vector2(16, 16);
 			EditorGUI.PropertyField(rect, prop, GUIContent.none, false); //Draw 'Element' / collapser thing
 			rect.position += new Vector2(10, 0);
@@ -110,6 +111,10 @@ namespace InspectorTween {
 				//#Draw the rest
 				tweenProp.NextVisible(false);
 				do {
+					if ( tweenProp.name == "onEnd" && useEnd == false) {
+						tweenProp.NextVisible(false);
+						continue;
+					}
 					EditorGUILayout.PropertyField(tweenProp, true); //This draws default inspector elements
 					tweenProp.NextVisible(false);
 					
@@ -131,24 +136,41 @@ namespace InspectorTween {
 			EditorGUILayout.PropertyField(property, true);
 			bool hasNext = true;
 			property.NextVisible(true); //Assume this to be TweenQueue
+			bool useEndStop = false;
 			while ( hasNext && property.name != "itemQueue" ) {
+				if ( property.name == "watchForEnd" ) {
+					useEndStop = property.boolValue;
+				}
 				EditorGUILayout.PropertyField(property, true); //This draws default inspector elements
 				hasNext = property.NextVisible(true);
 			}
+			//Rect rect = EditorGUILayout.BeginHorizontal();//GUILayoutUtility.GetLastRect();
+			Rect rect = GUILayoutUtility.GetRect(0, 30);
 
-
-
-			Rect rect = GUILayoutUtility.GetLastRect();
-			GUILayoutUtility.GetRect(0, 30);
-
-			rect = GUILayoutUtility.GetLastRect();
+			//rect = GUILayoutUtility.GetLastRect();
 			rect.size = new Vector2(60, 16);
 			EditorGUI.PropertyField(rect, property, new GUIContent(property.displayName), false);
 			rect.position = rect.position + new Vector2(100, 0);
 			rect.size = new Vector2(60, 16);
 			EditorGUI.PropertyField(rect, property.FindPropertyRelative("Array.size"), GUIContent.none, false); //Use "Array.size" so that it's editable.
 
+			
+			rect.position = rect.position + new Vector2(65, -2);
+			rect.size = new Vector2(20, 15);
+			bool addTweenToArray = GUI.Button(rect,"+");
+			if ( addTweenToArray ) {
+				property.arraySize += 1;
+			}
 
+			rect.position = rect.position + new Vector2(25, 0);
+			rect.size = new Vector2(20, 15);
+			if ( GUI.Button(rect,"-") ) {
+				if(property.arraySize > 1) {
+					property.arraySize -= 1;
+				}
+			}
+			
+			//EditorGUILayout.EndHorizontal();
 
 			int depth = property.depth;
 			if ( property.isExpanded ) {
@@ -156,13 +178,13 @@ namespace InspectorTween {
 				GUILayoutUtility.GetRect(30, -16);
 				for ( int i = 0; i < property.arraySize; i++ ) {
 					rect.size = new Vector2(60, 16);
-					DoGUI(rect, property.GetArrayElementAtIndex(i), new GUIContent(property.displayName));
+					DoGUI(property.GetArrayElementAtIndex(i),useEndStop);
 				}
 
 				EditorGUI.indentLevel -= 1;
 			}
 
-			hasNext = property.NextVisible(false); //go onto next non child property
+			property.NextVisible(false); //go onto next non child property
 
 			do {
 				EditorGUILayout.PropertyField(property, true); //This draws default inspector elements
