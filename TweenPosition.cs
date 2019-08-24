@@ -40,7 +40,7 @@ namespace InspectorTween{
 				rTransform.anchoredPosition3D = LerpParameter(values,lerp);
 			}else{
 				if ( targetTransform == null ) {
-					Debug.LogWarning("Null target transform. Tween maybe not initialized yet...");
+					Debug.LogWarning("Null target transform. Tween maybe not initialized yet...", gameObject);
 					transform.localPosition = LerpParameter(values,lerp);
 					return;
 				}
