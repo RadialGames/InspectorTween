@@ -1452,7 +1452,7 @@ namespace InspectorTween {
 
 				tweenCoroutine = StartCoroutine(Tween(count));
 			} else {
-				Debug.LogWarning("Invalid Tween Parameters on " + gameObject.name); //this.GetPath());
+				Debug.LogWarning("Invalid Tween Parameters on `" + gameObject.name+"`", gameObject);
 			}
 		}
 
