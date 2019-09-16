@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,9 +19,19 @@ namespace InspectorTween.InspectorTweenExamples {
 			if ( eventSystem == null ) {
 				eventSystem = EventSystem.current;
 			}
-			becameSelectedTween = new TweenQueue[Selectable.allSelectables.Count];
-			for ( int index = 0; index < Selectable.allSelectables.Count; index++ ) {
+
+#if UNITY_2019_1_OR_NEWER			
+			var numSelectables = Selectable.allSelectablesArray.Length;
+#else
+			var numSelectables = Selectable.allSelectables.Count;
+#endif
+			becameSelectedTween = new TweenQueue[numSelectables];
+			for ( int index = 0; index < numSelectables; index++ ) {
+#if UNITY_2019_1_OR_NEWER
+				Selectable selectable = Selectable.allSelectablesArray[index];
+#else				
 				Selectable selectable = Selectable.allSelectables[index];
+#endif
 				becameSelectedTween[index] = selectable.GetComponent<TweenQueue>();
 				int qInd = becameSelectedTween[index].GetNamedIndex(Q_ON_SELECTED);
 				if ( qInd < 0 ) {
@@ -63,7 +74,11 @@ namespace InspectorTween.InspectorTweenExamples {
 			
 			if ( currentSelected != null ) {
 				//Find queue where we are and deselect that
+#if UNITY_2019_1_OR_NEWER
+				currentIndex = Array.IndexOf<Selectable>(Selectable.allSelectablesArray, currentSelected.GetComponent<Selectable>());
+#else
 				currentIndex = Selectable.allSelectables.IndexOf(currentSelected.GetComponent<Selectable>());
+#endif
 				if ( currentIndex >= 0 && currentIndex < becameSelectedTween.Length ) {
 					if ( becameSelectedTween[currentIndex] != null ) {
 						int qInd = becameSelectedTween[currentIndex].GetNamedIndex(Q_ON_SELECTED);
@@ -80,8 +95,11 @@ namespace InspectorTween.InspectorTweenExamples {
 			if ( currentSelected == null ) {
 				return;
 			}
-
+#if UNITY_2019_1_OR_NEWER
+			currentIndex = Array.IndexOf<Selectable>(Selectable.allSelectablesArray, currentSelected.GetComponent<Selectable>());
+#else
 			currentIndex = Selectable.allSelectables.IndexOf(currentSelected.GetComponent<Selectable>());
+#endif
 			if ( currentIndex >= 0 && currentIndex < becameSelectedTween.Length ) {
 				if ( becameSelectedTween[currentIndex] != null ) {
 					int qInd = becameSelectedTween[currentIndex].GetNamedIndex(Q_ON_SELECTED);
