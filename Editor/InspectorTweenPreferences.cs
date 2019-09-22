@@ -1,4 +1,5 @@
-﻿//Preferences
+﻿#pragma warning disable CS0618
+//Preferences
 
 using UnityEngine;
 using UnityEditor;
