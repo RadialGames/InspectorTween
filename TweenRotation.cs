@@ -8,7 +8,15 @@ namespace InspectorTween{
 	public class TweenRotation : TweenTransform
 	{
 		public enum rotationTypes {Euler,Slerp,Lerp};
-		public rotationTypes rotationType;
+		[SerializeField]private rotationTypes rotationType;
+
+		public rotationTypes RotationType {
+			set {
+				rotationType = value;
+				
+			}
+		}
+
 		[SerializeField]private Vector3[] moveRotations = {new Vector3(0,0,-180),new Vector3(0,0,180)};
 		private Quaternion intitalRotation;
 		private Quaternion[] rotationList = new Quaternion[2];
@@ -25,6 +33,9 @@ namespace InspectorTween{
 		{
 			base.Awake();
 			SetInitial();
+		}
+
+		protected void Start() {
 			rotationList = new Quaternion[moveRotations.Length];
 			for(int i = 0; i<moveRotations.Length;i++){
 				rotationList[i] = Quaternion.Euler(moveRotations[i]);
@@ -40,9 +51,9 @@ namespace InspectorTween{
 			int lengthMinusOne = rotationList.Length - 1;
 			for ( int i = 0; i < rotationList.Length; i++ ) {
 				reversedQuaternions[lengthMinusOne - i] = rotationList[i];
-			}
+			}			
 		}
-		
+
 		public override void MatchStartToCurrent() {//Used by Context menu
 			moveRotations[0] = this.transform.localRotation.eulerAngles;
 		}
