@@ -1,7 +1,11 @@
 {
-    "name": "InspectorTweenAssembly",
-    "references": [],
-    "includePlatforms": [],
+    "name": "InspectorTween.Editor",
+    "references": [
+        "GUID:fae26380cc27b244381416e8686519ce"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
