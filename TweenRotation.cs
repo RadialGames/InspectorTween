@@ -208,12 +208,14 @@ namespace InspectorTween{
 		/// </summary>
 		public TweenRotation SetStartValue(Vector3 val) {
 			this.moveRotations[0] = val;
+			rotationList[0] = Quaternion.Euler(val);
 			return this;
 		}
 		public TweenRotation SetStartValue(float x,float y,float z) {
 			moveRotations[0].x =x;
 			moveRotations[0].y =y;
 			moveRotations[0].z =z;
+			rotationList[0] = Quaternion.Euler(x,y,z);
 			return this;
 		}
 		/// <summary>
@@ -221,12 +223,14 @@ namespace InspectorTween{
 		/// </summary>
 		public TweenRotation SetEndValue(Vector3 val) {
 			moveRotations[moveRotations.Length-1] = val;
+			rotationList[moveRotations.Length - 1] = Quaternion.Euler(val);
 			return this;
 		}
 		public TweenRotation SetEndValue(float x,float y,float z) {
 			moveRotations[moveRotations.Length-1].x =x;
 			moveRotations[moveRotations.Length-1].y =y;
 			moveRotations[moveRotations.Length-1].z =z;
+			rotationList[moveRotations.Length - 1] = Quaternion.Euler(x,y,z);
 			return this;
 		}
 	}
