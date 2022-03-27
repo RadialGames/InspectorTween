@@ -548,33 +548,55 @@ namespace InspectorTween {
 
 		[Serializable]
 		public class TimeInterface {
+			/// <summary>
+			/// Play backwards
+			/// </summary>
 			[Tooltip("Play backwards")] [ConditionalHide("simpleMode", true, true)]
 			public bool reverse;
-
+			/// <summary>
+			/// Play curve forwards over value in reverse order
+			/// </summary>
 			[Tooltip("Play curve forwards over value in reverse order")] [ConditionalHide("simpleMode", true, true)]
 			public bool reverseValues;
-
+			/// <summary>
+			/// Time in seconds to play
+			/// </summary>
 			[Tooltip("Time in seconds to play")] 
 			public float time = 1f;
-
+			/// <summary>
+			/// multiply TIME by amount per instance. random between values specified. Good for multiple objects you want some variation on.
+			/// </summary>
 			[Tooltip("multiply TIME by amount per instance. random between values specified. Good for multiple objects you want some variation on.")]
 			public Vector2 timeRandomScale = Vector2.one;
-
+			/// <summary>
+			/// Sets to start interpolation at script start (before delay)
+			/// </summary>
 			[Header("Tween Start")] [Tooltip("Sets to start interpolation at script start (before delay)")] [ConditionalHide("simpleMode", true, true)]
 			public bool initBeforeDelay;
-
-			[Tooltip("Time in seconds before animation starts playing [depricating in favour of below]")] [ConditionalHide("simpleMode", true, true)]
+			/// <summary>
+			/// Time in seconds before animation starts playing [deprecating in favour of 'random start delay']
+			/// </summary>
+			[Tooltip("Time in seconds before animation starts playing [deprecating in favour of below]")] [ConditionalHide("simpleMode", true, true)]
+			
 			public float startDelay;
-
+			/// <summary>
+			/// Start Delay within random range. Trumps `start Delay.`
+			/// </summary>
 			[Tooltip("Start Delay within random range. Trumps `start Delay.`")]
 			public Vector2 randomStartDelay;
-
+			/// <summary>
+			/// Randomize and run the delay every loop iteration
+			/// </summary>
 			[Tooltip("Randomize and run the delay every loop iteration")] [ConditionalHide("interpolation.loop", true, false)]
 			public bool delayEveryLoop;
-
+			/// <summary>
+			/// Set Y above 0 for random start time. Time in Seconds
+			/// </summary>
 			[Tooltip("Set Y above 0 for random start time. Time in Seconds")]
 			public Vector2 startAtTime = new Vector2(0f, -1f);
-
+			/// <summary>
+			/// Reset to first value at end of playing or script cancel if allowed.
+			/// </summary>
 			[Header("Tween End")] [Tooltip("Reset to first value at end of playing or script cancel if allowed.")] [ConditionalHide("simpleMode", true, true)]
 			public bool resetToBegining;
 			

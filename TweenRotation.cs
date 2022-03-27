@@ -24,6 +24,18 @@ namespace InspectorTween{
 		private Quaternion[] newRandomRotations= new Quaternion[2];
 		private bool useRandomOffset;
 		[NonSerialized]private Quaternion[] reversedQuaternions= new Quaternion[2];
+		
+		public bool worldSpaceRotation {
+			get {
+				return _worldSpaceRotation; 
+				
+			}
+			set {
+				_worldSpaceRotation = value;
+				SetInitial();
+			}
+		}
+		public bool _worldSpaceRotation = false;
 		public override Vector3[] values {
 			get { return moveRotations; }
 			set { moveRotations = value; }
@@ -55,17 +67,17 @@ namespace InspectorTween{
 		}
 
 		public override void MatchStartToCurrent() {//Used by Context menu
-			moveRotations[0] = this.transform.localRotation.eulerAngles;
+			moveRotations[0] = worldSpaceRotation ? targetTransform.eulerAngles :this.transform.localEulerAngles;
 		}
 		public override void MatchEndToCurrent() {//Used by Context menu
-			moveRotations[moveRotations.Length-1] = this.transform.localRotation.eulerAngles;
+			moveRotations[moveRotations.Length-1] = worldSpaceRotation ? targetTransform.eulerAngles :this.transform.localEulerAngles;
 		}
 
 		public override void SetInitial() {
 			if (!targetTransform) {
 				targetTransform = transform;
 			}
-			intitalRotation = targetTransform.localRotation;
+			intitalRotation = worldSpaceRotation ? targetTransform.rotation : targetTransform.localRotation;
 		}
 		protected Quaternion LerpQuaternionArray( Quaternion[] vArr, float lerp)
 		{
@@ -138,11 +150,13 @@ namespace InspectorTween{
         protected override void LerpParameters(float lerp)
         {
 			Transform tform = targetTransform != null? targetTransform : transform;
-            if (rotationType == rotationTypes.Euler) {
+
+			Quaternion setValue;
+			if (rotationType == rotationTypes.Euler) {
 	            if ( timeSettings.reverseValues ) {
-		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.reversedValues, lerp));
+		            setValue = Quaternion.Euler(base.LerpParameter(this.reversedValues, lerp));
 	            } else {
-		            tform.localRotation = Quaternion.Euler(base.LerpParameter(this.moveRotations, lerp));
+		            setValue = Quaternion.Euler(base.LerpParameter(this.moveRotations, lerp));
 	            }
             }else {
 #if UNITY_EDITOR
@@ -154,11 +168,17 @@ namespace InspectorTween{
 				}
 #endif
 	            if ( timeSettings.reverseValues ) {
-		            tform.localRotation = LerpParameter(this.reversedQuaternions,lerp);
+		            setValue = LerpParameter(this.reversedQuaternions,lerp);
 	            } else {
-		            tform.localRotation = LerpParameter(this.rotationList,lerp);
+		            setValue = LerpParameter(this.rotationList,lerp);
 	            }
+            }
 
+			if (worldSpaceRotation) {
+				tform.rotation = setValue;
+			}else{
+
+				tform.localRotation = setValue;
 			}
 		}
 
