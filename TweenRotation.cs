@@ -47,23 +47,26 @@ namespace InspectorTween{
 			SetInitial();
 		}
 
-		protected void Start() {
+		public void SetRotationValues() {
 			rotationList = new Quaternion[moveRotations.Length];
-			for(int i = 0; i<moveRotations.Length;i++){
-				rotationList[i] = Quaternion.Euler(moveRotations[i]);
-			}
-			if(this.addRandomToTargets == Vector3.one * -1f){
-				useRandomOffset = false;
-			} else{
-				useRandomOffset = true;
-			}
-			
-			CacheReversedTweenValues(moveRotations);
-			reversedQuaternions = new Quaternion[rotationList.Length];
-			int lengthMinusOne = rotationList.Length - 1;
-			for ( int i = 0; i < rotationList.Length; i++ ) {
-				reversedQuaternions[lengthMinusOne - i] = rotationList[i];
-			}			
+            for(int i = 0; i<moveRotations.Length;i++){
+            	rotationList[i] = Quaternion.Euler(moveRotations[i]);
+            }
+            if(this.addRandomToTargets == Vector3.one * -1f){
+            	useRandomOffset = false;
+            } else{
+            	useRandomOffset = true;
+            }
+            
+            CacheReversedTweenValues(moveRotations);
+            reversedQuaternions = new Quaternion[rotationList.Length];
+            int lengthMinusOne = rotationList.Length - 1;
+            for ( int i = 0; i < rotationList.Length; i++ ) {
+            	reversedQuaternions[lengthMinusOne - i] = rotationList[i];
+            }			
+		}
+		protected void Start() {
+			SetRotationValues();
 		}
 
 		public override void MatchStartToCurrent() {//Used by Context menu
