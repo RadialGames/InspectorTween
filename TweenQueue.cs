@@ -179,6 +179,7 @@ namespace InspectorTween{
 				if ( tweenI == null ) {
 					continue;
 				}
+				tweenI.reverse = itemQueue[queueIndex].reverse;
 				tweenI.SetToLerpPoint(val);
 			}
 		}
