@@ -92,7 +92,7 @@ namespace InspectorTween{
                            mat = new Material(image.materialForRendering);
                            if (image.canvasRenderer.materialCount < 1)
                            {
-                               Debug.LogError("CanvasRenderer doesn't have a material at index 0. Setting material directly?", image.canvasRenderer.gameObject);
+                               //Debug.LogError("CanvasRenderer doesn't have a material at index 0. Setting material directly?", image.canvasRenderer.gameObject);
                                image.material = mat;
                            }
                            else
