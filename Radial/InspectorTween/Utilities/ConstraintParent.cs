@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace InspectorTween {
 //[ExecuteInEditMode]
-	public class ParentConstraint : MonoBehaviour {
+	public class ConstraintParent : MonoBehaviour {
 		[Serializable]
 		public class ConstraintTarget {
 			public Transform target;
